@@ -1,3 +1,5 @@
+//CRIAÇÃO ADIANTADA DAS CLASSES COMO JOGADOR, FRUTAS E MOCHILA, FOCAR NA PARTE DE CRIAÇÃO DE TERRENO!!!
+
 package cata_frutas;
 import java.util.*;
 import java.math.*;
