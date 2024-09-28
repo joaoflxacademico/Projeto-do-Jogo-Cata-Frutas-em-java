@@ -18,6 +18,11 @@ public class Terreno_Teste extends JFrame {
 	private JPanel painel;
 	public JLabel logo;
 	public JLabel logoD;
+	public Color cor1 = new Color(255,238,138);
+	public Color cor2 = new Color(0,0,0);
+	public LineBorder borda1 = new LineBorder(cor2);
+	public LineBorder borda2 = new LineBorder(cor1);
+	
 	
 	
 	class Botoes extends JButton{
@@ -127,13 +132,6 @@ public class Terreno_Teste extends JFrame {
 		setContentPane(painel);
 		painel.setLayout(null);
 		
-		
-		//Definição de cores
-		
-		Color cor1 = new Color(255,238,138);
-		Color cor2 = new Color(0,0,0);
-		LineBorder borda1 = new LineBorder(cor2);
-		LineBorder borda2 = new LineBorder(cor1);
 		
 		JLabel logo = new JLabel("Cata Frutas");
 		logo.setHorizontalAlignment(SwingConstants.CENTER);
