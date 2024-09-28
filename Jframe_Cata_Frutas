@@ -1,0 +1,146 @@
+package cata_frutas;
+
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+
+public class Terreno_Teste extends JFrame {
+
+	private static final long serialVersionUID = 1L;
+	private JPanel painel;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Terreno_Teste frame = new Terreno_Teste();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public Terreno_Teste() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 510, 400);
+		painel = new JPanel();
+		painel.setBorder(new EmptyBorder(5, 5, 5, 5));
+		painel.setBackground(new Color(255, 238, 138));
+		
+		
+
+		setContentPane(painel);
+		painel.setLayout(null);
+		
+		
+		//Definição de cores
+		Color preto= new Color(0,0,0);
+		Color beje = new Color(255,238,138);
+		LineBorder bordaOriginal = new LineBorder(preto);
+		LineBorder borda2 = new LineBorder(beje);
+		
+		
+		
+		JButton botaoIJ = new JButton("Iniciar Jogo");
+		
+		botaoIJ.setFont(new Font("Segoe UI Semibold", Font.ITALIC, 12));
+	
+		botaoIJ.setForeground(preto);
+		botaoIJ.setBackground(beje);
+		botaoIJ.setFocusPainted(false);
+		botaoIJ.setBorder(bordaOriginal);
+
+		botaoIJ.setBounds(190, 150, 120, 40);
+		
+		botaoIJ.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                // Alterar a cor ao passar o mouse (hover)
+                botaoIJ.setBackground(preto);
+                botaoIJ.setForeground(beje);
+                botaoIJ.setBorder(borda2);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                // Voltar à cor original quando o mouse sair
+                botaoIJ.setBackground(beje);
+                botaoIJ.setForeground(preto);
+                botaoIJ.setBorder(bordaOriginal);
+            }
+        });
+		
+		painel.add(botaoIJ);
+		
+		JButton botaoMJ = new JButton("Modos de Jogo");
+		botaoMJ.setForeground(Color.BLACK);
+		botaoMJ.setFont(new Font("Segoe UI Semibold", Font.ITALIC, 12));
+		botaoMJ.setFocusPainted(false);
+		botaoMJ.setBackground(beje);
+		botaoMJ.setBounds(190, 192, 120, 40);
+		
+		botaoMJ.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                // Alterar a cor ao passar o mouse (hover)
+                botaoMJ.setBackground(preto);
+                botaoMJ.setForeground(beje);
+                botaoMJ.setBorder(borda2);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                // Voltar à cor original quando o mouse sair
+                botaoMJ.setBackground(beje);
+                botaoMJ.setForeground(preto);
+                botaoMJ.setBorder(bordaOriginal);
+            }
+        });
+		painel.add(botaoMJ);
+		
+		JButton botaoCT = new JButton("Criar Terreno");
+		botaoCT.setForeground(Color.BLACK);
+		botaoCT.setFont(new Font("Segoe UI Semibold", Font.ITALIC, 12));
+		botaoCT.setFocusPainted(false);
+		botaoCT.setBackground(beje);
+		botaoCT.setBounds(190, 234, 120, 40);
+		
+		botaoCT.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                // Alterar a cor ao passar o mouse (hover)
+            	botaoCT.setBackground(preto);
+            	botaoCT.setForeground(beje);
+            	botaoCT.setBorder(borda2);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                // Voltar à cor original quando o mouse sair
+            	botaoCT.setBackground(beje);
+                botaoCT.setForeground(preto);
+                botaoCT.setBorder(bordaOriginal);
+            }
+        });
+		
+		painel.add(botaoCT);
+		
+		JLabel ImgLogo = new JLabel("");
+		ImgLogo.setHorizontalAlignment(SwingConstants.CENTER);
+		ImgLogo.setIcon(new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\Logo.png"));
+		ImgLogo.setBounds(123, 11, 250, 113);
+		painel.add(ImgLogo);
+	}
+}
