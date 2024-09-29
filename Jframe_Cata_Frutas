@@ -1,28 +1,32 @@
 package cata_frutas;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.nio.file.attribute.GroupPrincipal;
+import java.util.ArrayList;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
-import java.util.*;
+import cata_frutas.Terreno_Teste.Botoes;
 
-public class Terreno_Teste extends JFrame {
+public class Frame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private JPanel painel;
+	private JPanel painel1;
+	private JPanel painelbot;
 	public JLabel logo;
-	public JLabel logoD;
 	public Color cor1 = new Color(255,238,138);
 	public Color cor2 = new Color(0,0,0);
 	public LineBorder borda1 = new LineBorder(cor2);
 	public LineBorder borda2 = new LineBorder(cor1);
-	
+	public ArrayList<Botoes> listaBotoes;
 	
 	
 	class Botoes extends JButton{
@@ -35,8 +39,6 @@ public class Terreno_Teste extends JFrame {
 		public Color cor2;
 		public LineBorder borda1;
 		public LineBorder borda2;
-		public int x;
-		public int y;
 		
 		
 		public Botoes(String text, Color cor1, Color cor2, LineBorder borda1, LineBorder borda2, int x, int y) {
@@ -45,9 +47,7 @@ public class Terreno_Teste extends JFrame {
 			this.cor2 = cor2;
 			this.borda1 = borda1;
 			this.borda2 = borda2;
-			this.x = x;
-			this.y = y;
-			
+		
 			this.setText(text);
 			this.setBackground(cor1);
 			this.setForeground(cor2);
@@ -59,6 +59,8 @@ public class Terreno_Teste extends JFrame {
 			
 			
 		}
+		
+		
 		
 		public void update(Color cor1, Color cor2, LineBorder borda1, LineBorder borda2) {
 			this.cor1 = cor1;
@@ -94,13 +96,16 @@ public class Terreno_Teste extends JFrame {
 		}
 		
 		public void mode(ArrayList<Botoes> listaBotoes) {
-			painel.setBackground(cor2);
+			painel1.setBackground(cor2);
+			painelbot.setBackground(cor2);
 			for(int i = 0; i < listaBotoes.size(); i++) {
 				listaBotoes.get(i).update(cor2, cor1, borda2, borda1);
 			}
 		}
+		
 	}
 
+	
 	/**
 	 * Launch the application.
 	 */
@@ -108,7 +113,7 @@ public class Terreno_Teste extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Terreno_Teste frame = new Terreno_Teste();
+					Frame frame = new Frame();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -120,42 +125,52 @@ public class Terreno_Teste extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Terreno_Teste() {
+	public Frame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 510, 400);
-		painel = new JPanel();
-		painel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		painel.setBackground(new Color(255, 238, 138));
+		setSize(600, 400);
+		setLocationRelativeTo(null);
+		addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+            	int xbtn = (int) (painel1.getWidth()/2) - 75;
+        		int ybtn = (int) (painel1.getHeight()/2 - 130);
+        		updatePos(listaBotoes, xbtn, ybtn);
+            }
+        });
+		
+		inicializa();
 		
 		
-
-		setContentPane(painel);
-		painel.setLayout(null);
+	}
+	
+	public void inicializa() {
+		painel1 = new JPanel();
+		painel1.setBorder(new EmptyBorder(5, 5, 5, 5));
+		painel1.setBackground(cor1);
+		painel1.setBounds(0, 0, 600, 400);
+				
 		
 		
-		JLabel logo = new JLabel("Cata Frutas");
-		logo.setHorizontalAlignment(SwingConstants.CENTER);
-		logo.setFont(new Font("Georgia", Font.ITALIC, 48));
-		logo.setForeground(cor2);
-		logo.setIcon(null);
-		logo.setBounds(108, 11, 285, 128);
-		painel.add(logo);
+		setContentPane(painel1);
 		
-		ArrayList<Botoes> listaBotoes = new ArrayList<Botoes>();
+		listaBotoes = new ArrayList<Botoes>();
 		
-		Botoes botaoIJ = new Botoes("Iniciar Jogo",cor1,cor2,borda1,borda2,190,150);
-		painel.add(botaoIJ);
+		
+		int xbtn = (int) (painel1.getWidth()/2) - 75;
+		int ybtn = (int) (painel1.getHeight()/2 - 130);
+		
+		
+		Botoes botaoIJ = new Botoes("Iniciar Jogo",cor1,cor2,borda1,borda2,xbtn,ybtn);
 		listaBotoes.add(botaoIJ);
 		
-		Botoes botaoMJ = new Botoes("Modos de Jogo",cor1,cor2,borda1,borda2,190,192);
-		painel.add(botaoMJ);
+
+		Botoes botaoMJ = new Botoes("Modos de Jogo",cor1,cor2,borda1,borda2,xbtn,ybtn + 42);
 		listaBotoes.add(botaoMJ);
 		
-		Botoes botaoCT = new Botoes("Criar Terreno",cor1,cor2,borda1,borda2,190,234);
-		painel.add(botaoCT);
+		Botoes botaoCT = new Botoes("Criar Terreno",cor1,cor2,borda1,borda2,xbtn,ybtn + 84);
 		listaBotoes.add(botaoCT);
 		
-		Botoes botaoM = new Botoes("Light Mode",cor1,cor2,borda1,borda2,190,276);
+		Botoes botaoM = new Botoes("Light Mode",cor1,cor2,borda1,borda2,xbtn,ybtn + 126);
 		listaBotoes.add(botaoM);
 		botaoM.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -171,7 +186,32 @@ public class Terreno_Teste extends JFrame {
 					}
 				}
 			});
-		painel.add(botaoM);
+		painel1.setLayout(new BorderLayout(0, 0));
+		
+		logo = new JLabel("Cata Frutas");
+		logo.setHorizontalAlignment(SwingConstants.CENTER);
+		logo.setFont(new Font("Georgia", Font.ITALIC, 48));
+		logo.setForeground(cor2);
+		logo.setIcon(null);
+		logo.setBounds(10, 10, painel1.getX(), painel1.getY());
+		painel1.add(logo, BorderLayout.NORTH);
+		
+		
+		painelbot = new JPanel();
+		painelbot.setBackground(new Color(255, 238, 138));
+		painel1.add(painelbot, BorderLayout.CENTER);
+		painelbot.setLayout(null);
+		for(int i = 0; i < 4; i++) {
+			painelbot.add(listaBotoes.get(i));
+		}		
+		
 		
 	}
+	
+	public void updatePos(ArrayList<Botoes> lista, int xbtn, int ybtn) {
+		for(int i = 0; i < 4; i++) {
+			lista.get(i).setBounds(xbtn, ybtn + (i*42), lista.get(i).getWidth(), lista.get(i).getHeight());
+		}
+	}
+
 }
