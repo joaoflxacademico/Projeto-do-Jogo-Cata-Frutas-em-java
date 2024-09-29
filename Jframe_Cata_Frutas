@@ -20,13 +20,15 @@ public class Frame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel painel1;
-	private JPanel painelbot;
+	private JPanel painelini;
 	public JLabel logo;
 	public Color cor1 = new Color(255,238,138);
 	public Color cor2 = new Color(0,0,0);
 	public LineBorder borda1 = new LineBorder(cor2);
 	public LineBorder borda2 = new LineBorder(cor1);
 	public ArrayList<Botoes> listaBotoes;
+	private JPanel painelIJ;
+	public Botoes botaoM;
 	
 	
 	class Botoes extends JButton{
@@ -92,12 +94,14 @@ public class Frame extends JFrame {
 	            	Botoes.this.setForeground(Botoes.this.cor2);
 	            	Botoes.this.setBorder(Botoes.this.borda1);
 	            }
-	        });
+			});
 		}
 		
 		public void mode(ArrayList<Botoes> listaBotoes) {
-			painel1.setBackground(cor2);
-			painelbot.setBackground(cor2);
+			painel1.setBackground(this.cor2);
+			painelini.setBackground(this.cor2);
+			painelIJ.setBackground(this.cor2);
+			logo.setForeground(cor1);
 			for(int i = 0; i < listaBotoes.size(); i++) {
 				listaBotoes.get(i).update(cor2, cor1, borda2, borda1);
 			}
@@ -148,7 +152,27 @@ public class Frame extends JFrame {
 		painel1.setBorder(new EmptyBorder(5, 5, 5, 5));
 		painel1.setBackground(cor1);
 		painel1.setBounds(0, 0, 600, 400);
-				
+		painel1.setLayout(new BorderLayout(0, 0));
+		
+		logo = new JLabel("Cata Frutas");
+		logo.setHorizontalAlignment(SwingConstants.CENTER);
+		logo.setFont(new Font("Georgia", Font.ITALIC, 48));
+		logo.setForeground(cor2);
+		logo.setIcon(null);
+		logo.setBounds(10, 10, painel1.getX(), painel1.getY());
+		painel1.add(logo, BorderLayout.NORTH);
+		
+		
+		painelini = new JPanel();
+		painelini.setBackground(new Color(255, 238, 138));
+		painelini.setLayout(null);
+		painel1.add(painelini, BorderLayout.CENTER);
+		
+		
+		painelIJ = new JPanel();
+		painelIJ.setLayout(null);
+		painelIJ.setBackground(painel1.getBackground());
+		
 		
 		
 		setContentPane(painel1);
@@ -162,6 +186,14 @@ public class Frame extends JFrame {
 		
 		Botoes botaoIJ = new Botoes("Iniciar Jogo",cor1,cor2,borda1,borda2,xbtn,ybtn);
 		listaBotoes.add(botaoIJ);
+		botaoIJ.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+					botaoIJ.setBackground(botaoM.getBackground());
+					botaoIJ.setForeground(botaoM.getForeground());
+					botaoIJ.setBorder(botaoM.getBorder());
+					comecaJogo();
+				}
+			});
 		
 
 		Botoes botaoMJ = new Botoes("Modos de Jogo",cor1,cor2,borda1,borda2,xbtn,ybtn + 42);
@@ -170,41 +202,54 @@ public class Frame extends JFrame {
 		Botoes botaoCT = new Botoes("Criar Terreno",cor1,cor2,borda1,borda2,xbtn,ybtn + 84);
 		listaBotoes.add(botaoCT);
 		
-		Botoes botaoM = new Botoes("Light Mode",cor1,cor2,borda1,borda2,xbtn,ybtn + 126);
+		botaoM = new Botoes("Light Mode",cor1,cor2,borda1,borda2,xbtn,ybtn + 126);
 		listaBotoes.add(botaoM);
 		botaoM.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-					if(botaoM.cor1.equals(cor1)){
+					if(botaoM.text.equals("Light Mode")){
 						botaoM.mode(listaBotoes);
-						logo.setForeground(cor1);
 						botaoM.setText("Dark Mode");
+						revalidate();
+						repaint();
 					}
 					else{
 						botaoM.mode(listaBotoes);
-						logo.setForeground(cor2);
 						botaoM.setText("Light Mode");
+						revalidate();
+						repaint();
 					}
 				}
 			});
-		painel1.setLayout(new BorderLayout(0, 0));
 		
-		logo = new JLabel("Cata Frutas");
-		logo.setHorizontalAlignment(SwingConstants.CENTER);
-		logo.setFont(new Font("Georgia", Font.ITALIC, 48));
-		logo.setForeground(cor2);
-		logo.setIcon(null);
-		logo.setBounds(10, 10, painel1.getX(), painel1.getY());
-		painel1.add(logo, BorderLayout.NORTH);
+		Botoes botaoRI = new Botoes("Retornar",cor1,cor2,borda1,borda2,0,0);
+		listaBotoes.add(botaoRI);
+		painelIJ.add(botaoRI);
+		botaoRI.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				botaoRI.setBackground(botaoM.getBackground());
+				botaoRI.setForeground(botaoM.getForeground());
+				botaoRI.setBorder(botaoM.getBorder());
+				painel1.add(painelini, BorderLayout.CENTER);
+				painel1.add(logo, BorderLayout.NORTH);
+				painel1.remove(painelIJ);
+				revalidate();
+				repaint();
+			}
+		});
 		
-		
-		painelbot = new JPanel();
-		painelbot.setBackground(new Color(255, 238, 138));
-		painel1.add(painelbot, BorderLayout.CENTER);
-		painelbot.setLayout(null);
 		for(int i = 0; i < 4; i++) {
-			painelbot.add(listaBotoes.get(i));
+			painelini.add(listaBotoes.get(i));
 		}		
 		
+		
+	}
+	
+	public void comecaJogo() {
+		painel1.add(painelIJ, BorderLayout.CENTER);
+		painel1.remove(logo);
+		painel1.remove(painelini);
+		revalidate();
+		repaint();
 		
 	}
 	
@@ -212,6 +257,8 @@ public class Frame extends JFrame {
 		for(int i = 0; i < 4; i++) {
 			lista.get(i).setBounds(xbtn, ybtn + (i*42), lista.get(i).getWidth(), lista.get(i).getHeight());
 		}
+		revalidate();
+		repaint();
 	}
 
 }
