@@ -49,8 +49,15 @@ public class Frame extends JFrame {
 	public Botoes botaoEN2;
 	public Botoes botaoStart;
 	public Botoes botaoStart2;
-
 	
+	public static int Dimensao;
+	public static int Pedras;
+	public static int[] Arvores;
+	public static int[] Frutas;
+	public static int Mochila;
+	public static float Bichada;
+	public static int frutasTotais;
+	public static int arvoresTotais;
 	
 	JTextArea caixatexto;
 	JTextArea caixatexto2;
@@ -129,6 +136,10 @@ public class Frame extends JFrame {
 			painelIJ.setBackground(cor1);
 			painelini.setBackground(cor1);
 			painelCT.setBackground(cor1);
+			painelIT.setBackground(cor1);
+			painelJogo.setBackground(cor1);
+			caixaentradas.setForeground(cor2);
+			caixaentradas2.setForeground(cor2);
 			logo.setForeground(cor2);
 			for(int i = 0; i < listaBotoes.size(); i++) {
 				listaBotoes.get(i).update(cor1, cor2, borda1, borda2);
@@ -165,6 +176,7 @@ public class Frame extends JFrame {
 		setSize(600,400);
 		setLocationRelativeTo(null);
 		setResizable(false);
+		
 		
 		inicializa();
 		
@@ -449,16 +461,24 @@ public class Frame extends JFrame {
                 for (int j = 0; j < linhas.length; j++) {
                     String linha = linhas[j].trim(); // Remove espaços extras
                     String[] partes = linha.split(" ");
-
-                    if (partes.length == 2) { // Para "dimensao" e "pedras"
+                    
+                    
+                    if(((j <= 1) || (j >= 9)) && partes.length > 2) {
+                    	caixaentradas.setText("Erro: formato da linha " + (j + 1) + " inválido.");
+                        return;
+                    }
+                    else if(partes.length == 2) { // Para "dimensao" e "pedras"
                         memoriaEN[j][0] = partes[0];
                         memoriaEN[j][1] = partes[1];
                         memoriaEN[j][2] = ""; // Deixa o terceiro campo vazio
-                    } else if (partes.length == 3) { // Para frutas
+                    }
+                    else if(partes.length == 3) { // Para frutas
                         memoriaEN[j][0] = partes[0]; // Nome da fruta
                         memoriaEN[j][1] = partes[1]; // Quantidade de árvores
-                        memoriaEN[j][2] = partes[2]; // Quantidade de frutas
-                    } else {
+                        memoriaEN[j][2] = partes[2]; // Quantidade de frutas    
+                    } 
+                    
+                    else{
                         caixaentradas.setText("Erro: formato da linha " + (j + 1) + " inválido.");
                         return; // Sai da função se houver erro no formato da linha
                     }
@@ -468,8 +488,7 @@ public class Frame extends JFrame {
                 boolean resultado = verificaTerreno();
                 if (resultado) {
                     caixaentradas.setText("Entradas aceitas.");
-                } else {
-                    caixaentradas.setText("Erro na verificação do terreno.");
+                    terrenoExemplo();
                 }
             }
         });
@@ -503,22 +522,96 @@ public class Frame extends JFrame {
 		
 	}
 	
+	public int ale(int i) {
+		return (int) Math.round(Math.random()*i);
+	}
+	
 	public void terrenoExemplo() {
+		int[][] matrizTerreno = new int[Dimensao][Dimensao];
+		
+		System.out.println(frutasTotais);
+		System.out.println(arvoresTotais);
+		System.out.println(Pedras);
+		
+		
+		for(int i = 0; i < Dimensao; i++) {
+			for(int j = 0; j < Dimensao; j++) {
+					matrizTerreno[i][j] = 0;
+			}
+		}
+		
+		for(int p = 0; p < Pedras; p++) {
+			int x = ale(Dimensao - 1);
+			int y = ale(Dimensao - 1);
+			matrizTerreno[x][y] = 100;
+		}
+		
+		for(int a = 0; a < arvoresTotais; a++) {
+			int x = ale(Dimensao - 1);
+			int y = ale(Dimensao - 1);
+			for(; matrizTerreno[x][y] == 0;) {
+				if(matrizTerreno[x][y] == 0) {
+					matrizTerreno[x][y] = 200 + a;
+					break;
+				}
+				x = ale(Dimensao - 1);
+				y = ale(Dimensao - 1);
+			}
+		}
+		
+		for(int f = 0; f < frutasTotais; f++) {
+			int x = ale(Dimensao - 1);
+			int y = ale(Dimensao - 1);
+			for(; matrizTerreno[x][y] == 0;) {
+				if(matrizTerreno[x][y] == 0) {
+					matrizTerreno[x][y] = 300 + f;
+					break;
+				}
+				x = ale(Dimensao - 1);
+				y = ale(Dimensao - 1);
+			}
+		}
+		
+		
+		for(int j = 1; j <= 2; j++) {
+			int x = ale(Dimensao - 1);
+			int y = ale(Dimensao - 1);
+			for(;matrizTerreno[x][y] == 0;) {
+				if(matrizTerreno[x][y] == 0) {
+					matrizTerreno[x][y] = j;
+					break;
+				}
+				x = ale(Dimensao - 1);
+				y = ale(Dimensao - 1);
+			}
+		}
+		
+		
+		for(int k = 0; k < Dimensao; k++) {
+			for(int l = 0; l < Dimensao; l++) {
+				System.out.print(matrizTerreno[k][l]);
+				System.out.print(" | ");
+			}
+			System.out.println();
+		}
+		
 		
 	}
 	
 	public boolean verificaTerreno() {
 		
 		try {
-
 			int dimensao = Integer.parseInt(memoriaEN[0][1]);
+			Dimensao = dimensao;
 			int pedra = Integer.parseInt(memoriaEN[1][1]);
+			Pedras = pedra;
 			int espacosDisponiveis = dimensao*dimensao - pedra - 2;
 			int[] arvores = new int[7];
 			int[] frutas = new int[7];
-			float bichada = Integer.parseInt(memoriaEN[9][1]);	
+			float bichada = Integer.parseInt(memoriaEN[9][1]);
+			Bichada = bichada;
 			int mochila = Integer.parseInt(memoriaEN[10][1]);
-			
+			Mochila = mochila;
 			
 			for(int i = 0; i < 7; i++) {
 				arvores[i] = Integer.parseInt(memoriaEN[i+2][1]);
@@ -529,8 +622,15 @@ public class Frame extends JFrame {
 	                uiaceita =  false;
 	                break;
 	            }
-				espacosDisponiveis = espacosDisponiveis - arvores[i] - frutas[i];
+				frutasTotais += frutas[i];
 			}
+			
+			for(int j = 1; j < 7; j++) {
+				arvoresTotais += arvores[j];
+			}
+			
+			espacosDisponiveis -= frutasTotais - arvoresTotais;
+			
 			
 			if (dimensao <= 2) {
 	            caixaentradas.setText("Erro: A dimensão do terreno deve ser pelo menos três.");
@@ -548,6 +648,10 @@ public class Frame extends JFrame {
 	            caixaentradas.setText("Erro: O tamanho da mochila deve ser maior que zero.");
 	            uiaceita = false;
 	        }
+			else if(espacosDisponiveis < 0) {
+				caixaentradas.setText("Erro: A quantidade dos elementos supera o tamanho livre no terreno.");
+				uiaceita = false;
+			}
 			else if(espacosDisponiveis >= 0) {
 				uiaceita = true;
 			}
@@ -573,8 +677,6 @@ public class Frame extends JFrame {
 		painel1.remove(painelini);
 		revalidate();
 		repaint();
-		
-		
 		
 		
 	}
