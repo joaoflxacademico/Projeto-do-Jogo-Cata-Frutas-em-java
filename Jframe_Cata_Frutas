@@ -287,14 +287,12 @@ public class Frame extends JFrame {
 					if(botaoM.getText().equals("Light Mode")){
 						botaoM.mode(listaBotoes);
 						botaoM.setText("Dark Mode");
-						System.out.println(botaoM.getText());
 						revalidate();
 						repaint();
 					}
 					else{
 						botaoM.mode(listaBotoes);
 						botaoM.setText("Light Mode");
-						System.out.println(botaoM.getText());
 						revalidate();
 						repaint();
 					}
