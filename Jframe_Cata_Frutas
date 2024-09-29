@@ -20,13 +20,21 @@ public class Frame extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private static JPanel painel1;
 	private static JPanel painelini;
+	private static JPanel painelIJ;
+	private static JPanel painelCT;
+	private static JPanel painelIT;
+	private static JPanel painelJogo;
+	
 	public JLabel logo;
+	public JLabel caixaentradas;
+	public JLabel caixaentradas2;
+	
 	public static Color cor1 = new Color(255,238,138);
 	public static Color cor2 = new Color(0,0,0);
 	public static LineBorder borda1 = new LineBorder(cor2);
 	public static LineBorder borda2 = new LineBorder(cor1);
 	public ArrayList<Botoes> listaBotoes;
-	private JPanel painelIJ;
+	
 	public Botoes botaoIJ;
 	public Botoes botaoMJ;
 	public Botoes botaoIN;
@@ -34,6 +42,21 @@ public class Frame extends JFrame {
 	public Botoes botaoRI;
 	public Botoes botaoCT;
 	public Botoes botaoIT;
+	public Botoes botaoEN;
+	public Botoes botaoTE;
+	public Botoes botaoRC;
+	public Botoes botaoRC2;
+	public Botoes botaoEN2;
+	public Botoes botaoStart;
+	public Botoes botaoStart2;
+
+	
+	
+	JTextArea caixatexto;
+	JTextArea caixatexto2;
+	
+	public static boolean uiaceita = false;
+	public static String memoriaEN[][];
 	public static int xbtn = 0;
 	public static int ybtn = 0;
 	
@@ -105,6 +128,7 @@ public class Frame extends JFrame {
 			painel1.setBackground(cor1);
 			painelIJ.setBackground(cor1);
 			painelini.setBackground(cor1);
+			painelCT.setBackground(cor1);
 			logo.setForeground(cor2);
 			for(int i = 0; i < listaBotoes.size(); i++) {
 				listaBotoes.get(i).update(cor1, cor2, borda1, borda2);
@@ -140,14 +164,7 @@ public class Frame extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(600,400);
 		setLocationRelativeTo(null);
-		addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent e) {
-            	int xbtn = (int) (painel1.getWidth()/2) - 75;
-        		int ybtn = (int) (painel1.getHeight()/2 - 130);
-        		updatePos(listaBotoes, xbtn, ybtn);
-            }
-        });
+		setResizable(false);
 		
 		inicializa();
 		
@@ -179,37 +196,37 @@ public class Frame extends JFrame {
 		xbtn = (int) (painel1.getWidth()/2) - 75;
 		ybtn = (int) (painel1.getHeight()/2 - 130);
 		
-		JLabel pano = new JLabel();
-		ImageIcon img2 = new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\pano.png");
-		img2.getImage().getScaledInstance(10000, 10000, Image.SCALE_SMOOTH);
-		pano.setIcon(img2);
-		pano.setBounds(-40, 80, 350, 350);
-		painelini.add(pano);
-		
-		JLabel cesta = new JLabel();
-		ImageIcon img1 = new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\Group 28.png");
-		img1.getImage().getScaledInstance(1000, 1000, Image.SCALE_SMOOTH);
-		cesta.setIcon(img1);
-		cesta.setBounds(20, 200, 100, 100);
-		painelini.add(cesta);
-		
-		JLabel morango = new JLabel();
-		ImageIcon img3 = new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\Strawberry.png");
-		img3.getImage().getScaledInstance(10, 10, Image.SCALE_SMOOTH);
-		morango.setIcon(img3);
-		morango.setBounds(10, 150, 100, 100);
-		painelini.add(morango);
-		
-		JLabel morango2 = new JLabel();
-		ImageIcon img4 = new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\Strawberry.png");
-		img4.getImage().getScaledInstance(10, 10, Image.SCALE_SMOOTH);
-		morango2.setIcon(img4);
-		morango2.setBounds(10, 170, 100, 100);
-		painelini.add(morango2);
-		
-		painelini.setComponentZOrder(pano, 2);
-		painelini.setComponentZOrder(cesta, 1);
-		painelini.setComponentZOrder(morango, 0);
+//		JLabel pano = new JLabel();
+//		ImageIcon img2 = new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\pano.png");
+//		img2.getImage().getScaledInstance(10000, 10000, Image.SCALE_SMOOTH);
+//		pano.setIcon(img2);
+//		pano.setBounds(-40, 80, 350, 350);
+//		painelini.add(pano);
+//		
+//		JLabel cesta = new JLabel();
+//		ImageIcon img1 = new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\Group 28.png");
+//		img1.getImage().getScaledInstance(1000, 1000, Image.SCALE_SMOOTH);
+//		cesta.setIcon(img1);
+//		cesta.setBounds(20, 200, 100, 100);
+//		painelini.add(cesta);
+//		
+//		JLabel morango = new JLabel();
+//		ImageIcon img3 = new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\Strawberry.png");
+//		img3.getImage().getScaledInstance(10, 10, Image.SCALE_SMOOTH);
+//		morango.setIcon(img3);
+//		morango.setBounds(10, 150, 100, 100);
+//		painelini.add(morango);
+//		
+//		JLabel morango2 = new JLabel();
+//		ImageIcon img4 = new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\Strawberry.png");
+//		img4.getImage().getScaledInstance(10, 10, Image.SCALE_SMOOTH);
+//		morango2.setIcon(img4);
+//		morango2.setBounds(10, 170, 100, 100);
+//		painelini.add(morango2);
+//		
+//		painelini.setComponentZOrder(pano, 2);
+//		painelini.setComponentZOrder(cesta, 1);
+//		painelini.setComponentZOrder(morango, 0);
 		
 		
 		
@@ -217,6 +234,17 @@ public class Frame extends JFrame {
 		painelIJ.setLayout(null);
 		painelIJ.setBackground(painel1.getBackground());
 		
+		painelCT = new JPanel();
+		painelCT.setLayout(null);
+		painelCT.setBackground(painel1.getBackground());
+		
+		painelIT = new JPanel();
+		painelIT.setLayout(null);
+		painelIT.setBackground(painel1.getBackground());
+		
+		painelJogo = new JPanel();
+		painelJogo.setLayout(null);
+		painelJogo.setBackground(cor1);
 		
 		
 		setContentPane(painel1);
@@ -228,54 +256,162 @@ public class Frame extends JFrame {
 		
 		botaoIJ = new Botoes("Iniciar Jogo",cor1,cor2,borda1,borda2,xbtn,ybtn);
 		listaBotoes.add(botaoIJ);
-		botaoIJ.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-					botaoIJ.setBackground(botaoM.getBackground());
-					botaoIJ.setForeground(botaoM.getForeground());
-					botaoIJ.setBorder(botaoM.getBorder());
-					comecaJogo();
-				}
-			});
+		painelini.add(botaoIJ);
 		
-
 		botaoMJ = new Botoes("Modos de Jogo",cor1,cor2,borda1,borda2,xbtn,ybtn + 42);
 		listaBotoes.add(botaoMJ);
+		painelini.add(botaoMJ);
 		
 		botaoIN = new Botoes("Instruções",cor1,cor2,borda1,borda2,xbtn,ybtn + 84);
 		listaBotoes.add(botaoIN);
+		painelini.add(botaoIN);
 		
 		botaoM = new Botoes("Light Mode",cor1,cor2,borda1,borda2,xbtn,ybtn + 126);
 		listaBotoes.add(botaoM);
+		painelini.add(botaoM);
+		
 		
 		
 		botaoCT = new Botoes("Criar Terreno",cor1,cor2,borda1,borda2,xbtn,ybtn);
 		listaBotoes.add(botaoCT);
 		painelIJ.add(botaoCT);
-		botaoCT.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				}
-			});
 		
 		botaoIT = new Botoes("Importar Terreno",cor1,cor2,borda1,borda2,xbtn,ybtn+42);
 		listaBotoes.add(botaoIT);
 		painelIJ.add(botaoIT);
+		
+		botaoRI = new Botoes("Retornar",cor1,cor2,borda1,borda2,xbtn,ybtn + 84);
+		listaBotoes.add(botaoRI);
+		painelIJ.add(botaoRI);
+		
+		
+		caixaentradas = new JLabel("Entradas");
+		caixaentradas.setHorizontalAlignment(SwingConstants.CENTER);
+		caixaentradas.setFont(new Font("Georgia", Font.ITALIC, 12));
+		caixaentradas.setForeground(cor2);
+		caixaentradas.setIcon(null);
+		caixaentradas.setBounds(xbtn-190, ybtn-50, 500, 40);
+		painelCT.add(caixaentradas);
+		
+		caixatexto = new JTextArea();
+		caixatexto.setBorder(borda1);
+		caixatexto.setFont(caixaentradas.getFont());
+		caixatexto.setLineWrap(true); 
+		caixatexto.setWrapStyleWord(true); 
+		JScrollPane scrollPane = new JScrollPane(caixatexto); 
+		scrollPane.setBorder(borda1);
+		scrollPane.setBounds(xbtn-30, ybtn-20, 180, 60); 
+		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		UIManager.put("ScrollBar.thumb", cor2); 
+        UIManager.put("ScrollBar.track", cor2);
+		painelCT.add(scrollPane);
+		
+		
+		
+		
+		botaoEN = new Botoes("Enviar",cor1,cor2,borda1,borda2,xbtn,ybtn);
+		botaoEN.setBounds(xbtn, ybtn + 42, 120, 42);
+		listaBotoes.add(botaoEN);
+		painelCT.add(botaoEN);
+		
+		botaoTE = new Botoes("Terreno Exemplo",cor1,cor2,borda1,borda2,xbtn,ybtn + 86);
+		listaBotoes.add(botaoTE);
+		painelCT.add(botaoTE);
+		
+		botaoStart2 = new Botoes("Começar Jogo",cor1,cor2,borda1,borda2,xbtn,ybtn + 128);
+		listaBotoes.add(botaoStart2);
+		painelCT.add(botaoStart2);
+		
+		botaoRC = new Botoes("Retornar",cor1,cor2,borda1,borda2,xbtn,ybtn + 170);
+		listaBotoes.add(botaoRC);
+		painelCT.add(botaoRC);
+		
+		
+		
+		
+		caixaentradas2 = new JLabel("Caminho");
+		caixaentradas2.setHorizontalAlignment(SwingConstants.CENTER);
+		caixaentradas2.setFont(new Font("Georgia", Font.ITALIC, 12));
+		caixaentradas2.setForeground(cor2);
+		caixaentradas2.setIcon(null);
+		caixaentradas2.setBounds(xbtn-190, ybtn-42, 500, 40);
+		painelIT.add(caixaentradas2);
+		
+		caixatexto2 = new JTextArea();
+		caixatexto2.setBorder(borda1);
+		caixatexto2.setFont(caixaentradas2.getFont());
+		caixatexto2.setLineWrap(true); 
+		caixatexto2.setWrapStyleWord(true); 
+		caixatexto2.setBounds(xbtn - 140, ybtn, 400, 30);
+		painelIT.add(caixatexto2);
+		
+		botaoStart = new Botoes("Começar Jogo",cor1,cor2,borda1,borda2,xbtn,ybtn + 84);
+		listaBotoes.add(botaoStart);
+		painelIT.add(botaoStart);
+		
+		botaoRC2 = new Botoes("Retornar",cor1,cor2,borda1,borda2,xbtn,ybtn + 168);
+		listaBotoes.add(botaoRC2);
+		painelIT.add(botaoRC2);
+		
+		botaoEN2 = new Botoes("Enviar",cor1,cor2,borda1,borda2,xbtn,ybtn + 42);
+		listaBotoes.add(botaoEN2);
+		painelIT.add(botaoEN2);
+		
+		botaoIJ.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+					botaoIJ.setBackground(botaoM.getBackground());
+					botaoIJ.setForeground(botaoM.getForeground());
+					botaoIJ.setBorder(botaoM.getBorder());
+					painelComecaJogo();
+				}
+			});
+		
+		botaoCT.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+					botaoCT.setBackground(botaoM.getBackground());
+					botaoCT.setForeground(botaoM.getForeground());
+					botaoCT.setBorder(botaoM.getBorder());
+					painelCriarTerreno();
+				}
+			});
+		
+		
 		botaoIT.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				}
 			});
 		
-		botaoRI = new Botoes("Retornar",cor1,cor2,borda1,borda2,xbtn,ybtn + 84);
-		listaBotoes.add(botaoRI);
-		painelIJ.add(botaoRI);
 		botaoRI.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				botaoRI.setBackground(botaoM.getBackground());
 				botaoRI.setForeground(botaoM.getForeground());
 				botaoRI.setBorder(botaoM.getBorder());
-				painel1.remove(botaoRI);
 				painel1.add(painelini, BorderLayout.CENTER);
-				painel1.add(logo, BorderLayout.NORTH);
 				painel1.remove(painelIJ);
+				revalidate();
+				repaint();
+			}
+		});
+		
+		botaoRC.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				botaoRC.setBackground(botaoM.getBackground());
+				botaoRC.setForeground(botaoM.getForeground());
+				botaoRC.setBorder(botaoM.getBorder());
+				painel1.add(painelIJ, BorderLayout.CENTER);
+				painel1.remove(painelCT);
+				revalidate();
+				repaint();
+			}
+		});
+		
+		botaoRC2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				botaoRC2.setBackground(botaoM.getBackground());
+				botaoRC2.setForeground(botaoM.getForeground());
+				botaoRC2.setBorder(botaoM.getBorder());
+				painel1.add(painelIJ, BorderLayout.CENTER);
+				painel1.remove(painelIT);
 				revalidate();
 				repaint();
 			}
@@ -299,29 +435,149 @@ public class Frame extends JFrame {
 				}
 			});
 		
-		for(int i = 0; i < 4; i++) {
-			painelini.add(listaBotoes.get(i));
-		}		
+		botaoEN.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	memoriaEN = new String[11][3];
+            	uiaceita = false;
+            	
+                String userInput = caixatexto.getText();
+                caixatexto.setText(userInput);
+                String[] linhas = userInput.split("\n"); // Divide o texto em linhas
+                
+             // Processar as linhas
+                for (int j = 0; j < linhas.length; j++) {
+                    String linha = linhas[j].trim(); // Remove espaços extras
+                    String[] partes = linha.split(" ");
+
+                    if (partes.length == 2) { // Para "dimensao" e "pedras"
+                        memoriaEN[j][0] = partes[0];
+                        memoriaEN[j][1] = partes[1];
+                        memoriaEN[j][2] = ""; // Deixa o terceiro campo vazio
+                    } else if (partes.length == 3) { // Para frutas
+                        memoriaEN[j][0] = partes[0]; // Nome da fruta
+                        memoriaEN[j][1] = partes[1]; // Quantidade de árvores
+                        memoriaEN[j][2] = partes[2]; // Quantidade de frutas
+                    } else {
+                        caixaentradas.setText("Erro: formato da linha " + (j + 1) + " inválido.");
+                        return; // Sai da função se houver erro no formato da linha
+                    }
+                }
+
+                // Chama a função de verificação do terreno após processar as entradas
+                boolean resultado = verificaTerreno();
+                if (resultado) {
+                    caixaentradas.setText("Entradas aceitas.");
+                } else {
+                    caixaentradas.setText("Erro na verificação do terreno.");
+                }
+            }
+        });
+		
+		
+		botaoIT.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				botaoIT.setBackground(botaoM.getBackground());
+				botaoIT.setForeground(botaoM.getForeground());
+				botaoIT.setBorder(botaoM.getBorder());
+				painel1.add(painelIT, BorderLayout.CENTER);
+				painel1.remove(painelIJ);
+				revalidate();
+				repaint();
+				}
+			});
+		
+		botaoTE.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				botaoTE.setBackground(botaoM.getBackground());
+				botaoTE.setForeground(botaoM.getForeground());
+				botaoTE.setBorder(botaoM.getBorder());
+				painel1.add(painelJogo, BorderLayout.CENTER);
+				painel1.remove(painelCT);
+				revalidate();
+				repaint();
+			}
+		});
+			
 		
 		
 	}
 	
-	public void comecaJogo() {
+	public void terrenoExemplo() {
+		
+	}
+	
+	public boolean verificaTerreno() {
+		
+		try {
+
+			int dimensao = Integer.parseInt(memoriaEN[0][1]);
+			int pedra = Integer.parseInt(memoriaEN[1][1]);
+			int espacosDisponiveis = dimensao*dimensao - pedra - 2;
+			int[] arvores = new int[7];
+			int[] frutas = new int[7];
+			float bichada = Integer.parseInt(memoriaEN[9][1]);	
+			int mochila = Integer.parseInt(memoriaEN[10][1]);
+			
+			
+			for(int i = 0; i < 7; i++) {
+				arvores[i] = Integer.parseInt(memoriaEN[i+2][1]);
+				frutas[i] = Integer.parseInt(memoriaEN[i+2][2]);
+				
+				if (arvores[i] < 0 || frutas[i] < 0) {
+	                caixaentradas.setText("Erro: A quantidade de árvores e frutas não pode ser negativa.");
+	                uiaceita =  false;
+	                break;
+	            }
+				espacosDisponiveis = espacosDisponiveis - arvores[i] - frutas[i];
+			}
+			
+			if (dimensao <= 2) {
+	            caixaentradas.setText("Erro: A dimensão do terreno deve ser pelo menos três.");
+	            uiaceita = false;
+	        }
+			else if (pedra < 0) {
+	            caixaentradas.setText("Erro: A quantidade de pedras não pode ser negativa.");
+	            uiaceita = false;
+	        }
+			else if (bichada < 0 || bichada > 100) {
+	            caixaentradas.setText("Erro: A porcentagem de frutas bichadas deve estar entre 0 e 100.");
+	            uiaceita = false;
+	        }
+			else if (mochila <= 0) {
+	            caixaentradas.setText("Erro: O tamanho da mochila deve ser maior que zero.");
+	            uiaceita = false;
+	        }
+			else if(espacosDisponiveis >= 0) {
+				uiaceita = true;
+			}
+		} catch (NumberFormatException e) {
+	        // Captura erros de formato nos números
+	        caixaentradas.setText("Erro: Verifique se todas as entradas são números válidos.");
+	        uiaceita = false;
+		}
+		return uiaceita;
+		
+		
+	}
+	
+	public void painelCriarTerreno() {
+		painel1.add(painelCT, BorderLayout.CENTER);
+		painel1.remove(painelIJ);
+		revalidate();
+		repaint();
+	}
+	
+	public void painelComecaJogo() {
 		painel1.add(painelIJ, BorderLayout.CENTER);
-		painelIJ.add(botaoRI);
 		painel1.remove(painelini);
 		revalidate();
 		repaint();
 		
 		
+		
+		
 	}
-	
-	public void updatePos(ArrayList<Botoes> lista, int xbtn, int ybtn) {
-		for(int i = 0; i < 4; i++) {
-			lista.get(i).setBounds(xbtn, ybtn + (i*42), lista.get(i).getWidth(), lista.get(i).getHeight());
-		}
-		revalidate();
-		repaint();
-	}
+
 
 }
