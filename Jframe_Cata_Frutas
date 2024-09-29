@@ -7,28 +7,36 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.nio.file.attribute.GroupPrincipal;
 import java.util.ArrayList;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-import cata_frutas.Terreno_Teste.Botoes;
+
 
 public class Frame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private JPanel painel1;
-	private JPanel painelini;
+	private static JPanel painel1;
+	private static JPanel painelini;
 	public JLabel logo;
-	public Color cor1 = new Color(255,238,138);
-	public Color cor2 = new Color(0,0,0);
-	public LineBorder borda1 = new LineBorder(cor2);
-	public LineBorder borda2 = new LineBorder(cor1);
+	public static Color cor1 = new Color(255,238,138);
+	public static Color cor2 = new Color(0,0,0);
+	public static LineBorder borda1 = new LineBorder(cor2);
+	public static LineBorder borda2 = new LineBorder(cor1);
 	public ArrayList<Botoes> listaBotoes;
 	private JPanel painelIJ;
+	public Botoes botaoIJ;
+	public Botoes botaoMJ;
+	public Botoes botaoIN;
 	public Botoes botaoM;
+	public Botoes botaoRI;
+	public Botoes botaoCT;
+	public Botoes botaoIT;
+	public static int xbtn = 0;
+	public static int ybtn = 0;
+	
 	
 	
 	class Botoes extends JButton{
@@ -36,19 +44,9 @@ public class Frame extends JFrame {
 		 * 
 		 */
 		private static final long serialVersionUID = 1L;
-		public String text;
-		public Color cor1;
-		public Color cor2;
-		public LineBorder borda1;
-		public LineBorder borda2;
-		
+		public int cont = 1;
 		
 		public Botoes(String text, Color cor1, Color cor2, LineBorder borda1, LineBorder borda2, int x, int y) {
-			this.text = text;
-			this.cor1 = cor1;
-			this.cor2 = cor2;
-			this.borda1 = borda1;
-			this.borda2 = borda2;
 		
 			this.setText(text);
 			this.setBackground(cor1);
@@ -65,11 +63,6 @@ public class Frame extends JFrame {
 		
 		
 		public void update(Color cor1, Color cor2, LineBorder borda1, LineBorder borda2) {
-			this.cor1 = cor1;
-			this.cor2 = cor2;
-			this.borda1 = borda1;
-			this.borda2 = borda2;
-			
 			this.setBackground(cor1);
 			this.setForeground(cor2);
 			this.setBorder(borda1);
@@ -82,28 +75,39 @@ public class Frame extends JFrame {
 	            @Override
 	            public void mouseEntered(MouseEvent e) {
 	                // Alterar a cor ao passar o mouse (hover)
-	                Botoes.this.setBackground(Botoes.this.cor2);
-	                Botoes.this.setForeground(Botoes.this.cor1);
-	                Botoes.this.setBorder(Botoes.this.borda2);
+	                Botoes.this.setBackground(cor2);
+	                Botoes.this.setForeground(cor1);
+	                Botoes.this.setBorder(borda2);
 	            }
 
 	            @Override
 	            public void mouseExited(MouseEvent e) {
 	                // Voltar à cor original quando o mouse sair
-	            	Botoes.this.setBackground(Botoes.this.cor1);
-	            	Botoes.this.setForeground(Botoes.this.cor2);
-	            	Botoes.this.setBorder(Botoes.this.borda1);
+	            	Botoes.this.setBackground(cor1);
+	            	Botoes.this.setForeground(cor2);
+	            	Botoes.this.setBorder(borda1);
 	            }
 			});
 		}
 		
+		
 		public void mode(ArrayList<Botoes> listaBotoes) {
-			painel1.setBackground(this.cor2);
-			painelini.setBackground(this.cor2);
-			painelIJ.setBackground(this.cor2);
-			logo.setForeground(cor1);
+			Color var = cor1;
+			LineBorder var2 = new LineBorder(cor2);
+			cor1 = cor2;
+			cor2 = var;
+			var = cor1;
+			
+			borda1 = borda2;
+			borda2 = var2;
+			var2 = borda1;
+			
+			painel1.setBackground(cor1);
+			painelIJ.setBackground(cor1);
+			painelini.setBackground(cor1);
+			logo.setForeground(cor2);
 			for(int i = 0; i < listaBotoes.size(); i++) {
-				listaBotoes.get(i).update(cor2, cor1, borda2, borda1);
+				listaBotoes.get(i).update(cor1, cor2, borda1, borda2);
 			}
 		}
 		
@@ -125,13 +129,16 @@ public class Frame extends JFrame {
 			}
 		});
 	}
+	
+	
+	
 
 	/**
 	 * Create the frame.
 	 */
 	public Frame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(600, 400);
+		setSize(600,400);
 		setLocationRelativeTo(null);
 		addComponentListener(new ComponentAdapter() {
             @Override
@@ -148,6 +155,7 @@ public class Frame extends JFrame {
 	}
 	
 	public void inicializa() {
+		
 		painel1 = new JPanel();
 		painel1.setBorder(new EmptyBorder(5, 5, 5, 5));
 		painel1.setBackground(cor1);
@@ -168,6 +176,42 @@ public class Frame extends JFrame {
 		painelini.setLayout(null);
 		painel1.add(painelini, BorderLayout.CENTER);
 		
+		xbtn = (int) (painel1.getWidth()/2) - 75;
+		ybtn = (int) (painel1.getHeight()/2 - 130);
+		
+		JLabel pano = new JLabel();
+		ImageIcon img2 = new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\pano.png");
+		img2.getImage().getScaledInstance(10000, 10000, Image.SCALE_SMOOTH);
+		pano.setIcon(img2);
+		pano.setBounds(-40, 80, 350, 350);
+		painelini.add(pano);
+		
+		JLabel cesta = new JLabel();
+		ImageIcon img1 = new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\Group 28.png");
+		img1.getImage().getScaledInstance(1000, 1000, Image.SCALE_SMOOTH);
+		cesta.setIcon(img1);
+		cesta.setBounds(20, 200, 100, 100);
+		painelini.add(cesta);
+		
+		JLabel morango = new JLabel();
+		ImageIcon img3 = new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\Strawberry.png");
+		img3.getImage().getScaledInstance(10, 10, Image.SCALE_SMOOTH);
+		morango.setIcon(img3);
+		morango.setBounds(10, 150, 100, 100);
+		painelini.add(morango);
+		
+		JLabel morango2 = new JLabel();
+		ImageIcon img4 = new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\Strawberry.png");
+		img4.getImage().getScaledInstance(10, 10, Image.SCALE_SMOOTH);
+		morango2.setIcon(img4);
+		morango2.setBounds(10, 170, 100, 100);
+		painelini.add(morango2);
+		
+		painelini.setComponentZOrder(pano, 2);
+		painelini.setComponentZOrder(cesta, 1);
+		painelini.setComponentZOrder(morango, 0);
+		
+		
 		
 		painelIJ = new JPanel();
 		painelIJ.setLayout(null);
@@ -180,11 +224,9 @@ public class Frame extends JFrame {
 		listaBotoes = new ArrayList<Botoes>();
 		
 		
-		int xbtn = (int) (painel1.getWidth()/2) - 75;
-		int ybtn = (int) (painel1.getHeight()/2 - 130);
 		
 		
-		Botoes botaoIJ = new Botoes("Iniciar Jogo",cor1,cor2,borda1,borda2,xbtn,ybtn);
+		botaoIJ = new Botoes("Iniciar Jogo",cor1,cor2,borda1,borda2,xbtn,ybtn);
 		listaBotoes.add(botaoIJ);
 		botaoIJ.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -196,32 +238,33 @@ public class Frame extends JFrame {
 			});
 		
 
-		Botoes botaoMJ = new Botoes("Modos de Jogo",cor1,cor2,borda1,borda2,xbtn,ybtn + 42);
+		botaoMJ = new Botoes("Modos de Jogo",cor1,cor2,borda1,borda2,xbtn,ybtn + 42);
 		listaBotoes.add(botaoMJ);
 		
-		Botoes botaoCT = new Botoes("Criar Terreno",cor1,cor2,borda1,borda2,xbtn,ybtn + 84);
-		listaBotoes.add(botaoCT);
+		botaoIN = new Botoes("Instruções",cor1,cor2,borda1,borda2,xbtn,ybtn + 84);
+		listaBotoes.add(botaoIN);
 		
 		botaoM = new Botoes("Light Mode",cor1,cor2,borda1,borda2,xbtn,ybtn + 126);
 		listaBotoes.add(botaoM);
-		botaoM.addActionListener(new ActionListener() {
+		
+		
+		botaoCT = new Botoes("Criar Terreno",cor1,cor2,borda1,borda2,xbtn,ybtn);
+		listaBotoes.add(botaoCT);
+		painelIJ.add(botaoCT);
+		botaoCT.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-					if(botaoM.text.equals("Light Mode")){
-						botaoM.mode(listaBotoes);
-						botaoM.setText("Dark Mode");
-						revalidate();
-						repaint();
-					}
-					else{
-						botaoM.mode(listaBotoes);
-						botaoM.setText("Light Mode");
-						revalidate();
-						repaint();
-					}
 				}
 			});
 		
-		Botoes botaoRI = new Botoes("Retornar",cor1,cor2,borda1,borda2,0,0);
+		botaoIT = new Botoes("Importar Terreno",cor1,cor2,borda1,borda2,xbtn,ybtn+42);
+		listaBotoes.add(botaoIT);
+		painelIJ.add(botaoIT);
+		botaoIT.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				}
+			});
+		
+		botaoRI = new Botoes("Retornar",cor1,cor2,borda1,borda2,xbtn,ybtn + 84);
 		listaBotoes.add(botaoRI);
 		painelIJ.add(botaoRI);
 		botaoRI.addActionListener(new ActionListener() {
@@ -229,6 +272,7 @@ public class Frame extends JFrame {
 				botaoRI.setBackground(botaoM.getBackground());
 				botaoRI.setForeground(botaoM.getForeground());
 				botaoRI.setBorder(botaoM.getBorder());
+				painel1.remove(botaoRI);
 				painel1.add(painelini, BorderLayout.CENTER);
 				painel1.add(logo, BorderLayout.NORTH);
 				painel1.remove(painelIJ);
@@ -236,6 +280,26 @@ public class Frame extends JFrame {
 				repaint();
 			}
 		});
+		
+		
+		botaoM.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+					if(botaoM.getText().equals("Light Mode")){
+						botaoM.mode(listaBotoes);
+						botaoM.setText("Dark Mode");
+						System.out.println(botaoM.getText());
+						revalidate();
+						repaint();
+					}
+					else{
+						botaoM.mode(listaBotoes);
+						botaoM.setText("Light Mode");
+						System.out.println(botaoM.getText());
+						revalidate();
+						repaint();
+					}
+				}
+			});
 		
 		for(int i = 0; i < 4; i++) {
 			painelini.add(listaBotoes.get(i));
@@ -246,10 +310,11 @@ public class Frame extends JFrame {
 	
 	public void comecaJogo() {
 		painel1.add(painelIJ, BorderLayout.CENTER);
-		painel1.remove(logo);
+		painelIJ.add(botaoRI);
 		painel1.remove(painelini);
 		revalidate();
 		repaint();
+		
 		
 	}
 	
