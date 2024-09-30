@@ -45,10 +45,8 @@ public class Frame extends JFrame {
 	public Botoes botaoEN;
 	public Botoes botaoTE;
 	public Botoes botaoRC;
-	public Botoes botaoRC2;
 	public Botoes botaoEN2;
 	public Botoes botaoStart;
-	public Botoes botaoStart2;
 	
 	public static int Dimensao;
 	public static int Pedras;
@@ -328,15 +326,9 @@ public class Frame extends JFrame {
 		
 		botaoTE = new Botoes("Terreno Exemplo",cor1,cor2,borda1,borda2,xbtn,ybtn + 86);
 		listaBotoes.add(botaoTE);
-		painelCT.add(botaoTE);
-		
-		botaoStart2 = new Botoes("Começar Jogo",cor1,cor2,borda1,borda2,xbtn,ybtn + 128);
-		listaBotoes.add(botaoStart2);
-		painelCT.add(botaoStart2);
 		
 		botaoRC = new Botoes("Retornar",cor1,cor2,borda1,borda2,xbtn,ybtn + 170);
 		listaBotoes.add(botaoRC);
-		painelCT.add(botaoRC);
 		
 		
 		
@@ -357,13 +349,8 @@ public class Frame extends JFrame {
 		caixatexto2.setBounds(xbtn - 140, ybtn, 400, 30);
 		painelIT.add(caixatexto2);
 		
-		botaoStart = new Botoes("Começar Jogo",cor1,cor2,borda1,borda2,xbtn,ybtn + 84);
+		botaoStart = new Botoes("Começar Jogo",cor1,cor2,borda1,borda2,xbtn,ybtn + 128);
 		listaBotoes.add(botaoStart);
-		painelIT.add(botaoStart);
-		
-		botaoRC2 = new Botoes("Retornar",cor1,cor2,borda1,borda2,xbtn,ybtn + 168);
-		listaBotoes.add(botaoRC2);
-		painelIT.add(botaoRC2);
 		
 		botaoEN2 = new Botoes("Enviar",cor1,cor2,borda1,borda2,xbtn,ybtn + 42);
 		listaBotoes.add(botaoEN2);
@@ -383,15 +370,13 @@ public class Frame extends JFrame {
 					botaoCT.setBackground(botaoM.getBackground());
 					botaoCT.setForeground(botaoM.getForeground());
 					botaoCT.setBorder(botaoM.getBorder());
+					painelCT.add(botaoTE);
+					painelCT.add(botaoStart);
+					painelCT.add(botaoRC);
 					painelCriarTerreno();
 				}
 			});
 		
-		
-		botaoIT.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				}
-			});
 		
 		botaoRI.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -412,17 +397,6 @@ public class Frame extends JFrame {
 				botaoRC.setBorder(botaoM.getBorder());
 				painel1.add(painelIJ, BorderLayout.CENTER);
 				painel1.remove(painelCT);
-				revalidate();
-				repaint();
-			}
-		});
-		
-		botaoRC2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				botaoRC2.setBackground(botaoM.getBackground());
-				botaoRC2.setForeground(botaoM.getForeground());
-				botaoRC2.setBorder(botaoM.getBorder());
-				painel1.add(painelIJ, BorderLayout.CENTER);
 				painel1.remove(painelIT);
 				revalidate();
 				repaint();
@@ -501,6 +475,9 @@ public class Frame extends JFrame {
 				botaoIT.setBorder(botaoM.getBorder());
 				painel1.add(painelIT, BorderLayout.CENTER);
 				painel1.remove(painelIJ);
+				painelIT.add(botaoTE);
+				painelIT.add(botaoStart);
+				painelIT.add(botaoRC);
 				revalidate();
 				repaint();
 				}
@@ -529,8 +506,8 @@ public class Frame extends JFrame {
 	public void terrenoExemplo() {
 		int[][] matrizTerreno = new int[Dimensao][Dimensao];
 		
-		System.out.println(frutasTotais);
 		System.out.println(arvoresTotais);
+		System.out.println(frutasTotais);
 		System.out.println(Pedras);
 		
 		
@@ -549,27 +526,21 @@ public class Frame extends JFrame {
 		for(int a = 0; a < arvoresTotais; a++) {
 			int x = ale(Dimensao - 1);
 			int y = ale(Dimensao - 1);
-			for(; matrizTerreno[x][y] == 0;) {
 				if(matrizTerreno[x][y] == 0) {
 					matrizTerreno[x][y] = 200 + a;
-					break;
 				}
 				x = ale(Dimensao - 1);
 				y = ale(Dimensao - 1);
-			}
 		}
 		
-		for(int f = 0; f < frutasTotais; f++) {
+		for(int f = 0; f < arvoresTotais; f++) {
 			int x = ale(Dimensao - 1);
 			int y = ale(Dimensao - 1);
-			for(; matrizTerreno[x][y] == 0;) {
 				if(matrizTerreno[x][y] == 0) {
 					matrizTerreno[x][y] = 300 + f;
-					break;
 				}
 				x = ale(Dimensao - 1);
 				y = ale(Dimensao - 1);
-			}
 		}
 		
 		
@@ -594,6 +565,9 @@ public class Frame extends JFrame {
 			}
 			System.out.println();
 		}
+		
+		arvoresTotais = 0;
+		frutasTotais = 0;
 		
 		
 	}
@@ -632,22 +606,25 @@ public class Frame extends JFrame {
 			espacosDisponiveis -= frutasTotais - arvoresTotais;
 			
 			
-			if (dimensao <= 2) {
+			if(dimensao <= 2) {
 	            caixaentradas.setText("Erro: A dimensão do terreno deve ser pelo menos três.");
 	            uiaceita = false;
 	        }
-			else if (pedra < 0) {
+			else if(pedra < 0) {
 	            caixaentradas.setText("Erro: A quantidade de pedras não pode ser negativa.");
 	            uiaceita = false;
 	        }
-			else if (bichada < 0 || bichada > 100) {
+			else if(bichada < 0 || bichada > 100) {
 	            caixaentradas.setText("Erro: A porcentagem de frutas bichadas deve estar entre 0 e 100.");
 	            uiaceita = false;
 	        }
-			else if (mochila <= 0) {
+			else if(mochila <= 0) {
 	            caixaentradas.setText("Erro: O tamanho da mochila deve ser maior que zero.");
 	            uiaceita = false;
 	        }
+			else if(mochila < (1 + Math.floor((arvores[0])/2))) {
+				caixaentradas.setText("Erro: o tamanho da mochila deve ser maior que metade +1 do nº de maracujás.");
+			}
 			else if(espacosDisponiveis < 0) {
 				caixaentradas.setText("Erro: A quantidade dos elementos supera o tamanho livre no terreno.");
 				uiaceita = false;
