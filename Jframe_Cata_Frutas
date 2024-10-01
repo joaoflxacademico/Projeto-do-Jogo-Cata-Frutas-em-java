@@ -23,11 +23,13 @@ public class Frame extends JFrame {
 	private static JPanel painelIJ;
 	private static JPanel painelCT;
 	private static JPanel painelIT;
-	private static JPanel painelJogo;
+	private static JPanel painelTE;
 	
 	public JLabel logo;
-	public JLabel caixaentradas;
-	public JLabel caixaentradas2;
+	public JLabel caixasaidas;
+	public JLabel caixasaidas2;
+	
+	public JScrollPane scroll;
 	
 	public static Color cor1 = new Color(255,238,138);
 	public static Color cor2 = new Color(0,0,0);
@@ -47,6 +49,7 @@ public class Frame extends JFrame {
 	public Botoes botaoRC;
 	public Botoes botaoEN2;
 	public Botoes botaoStart;
+	public Botoes botaoRT;
 	
 	public static int Dimensao;
 	public static int Pedras;
@@ -64,6 +67,8 @@ public class Frame extends JFrame {
 	public static String memoriaEN[][];
 	public static int xbtn = 0;
 	public static int ybtn = 0;
+	public static int xbtn2 = 0;
+	public static int ybtn2 = 0;
 	
 	
 	
@@ -135,9 +140,9 @@ public class Frame extends JFrame {
 			painelini.setBackground(cor1);
 			painelCT.setBackground(cor1);
 			painelIT.setBackground(cor1);
-			painelJogo.setBackground(cor1);
-			caixaentradas.setForeground(cor2);
-			caixaentradas2.setForeground(cor2);
+			painelTE.setBackground(cor1);
+			caixasaidas.setForeground(cor2);
+			caixasaidas2.setForeground(cor2);
 			logo.setForeground(cor2);
 			for(int i = 0; i < listaBotoes.size(); i++) {
 				listaBotoes.get(i).update(cor1, cor2, borda1, borda2);
@@ -202,44 +207,7 @@ public class Frame extends JFrame {
 		painelini.setBackground(new Color(255, 238, 138));
 		painelini.setLayout(null);
 		painel1.add(painelini, BorderLayout.CENTER);
-		
-		xbtn = (int) (painel1.getWidth()/2) - 75;
-		ybtn = (int) (painel1.getHeight()/2 - 130);
-		
-//		JLabel pano = new JLabel();
-//		ImageIcon img2 = new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\pano.png");
-//		img2.getImage().getScaledInstance(10000, 10000, Image.SCALE_SMOOTH);
-//		pano.setIcon(img2);
-//		pano.setBounds(-40, 80, 350, 350);
-//		painelini.add(pano);
-//		
-//		JLabel cesta = new JLabel();
-//		ImageIcon img1 = new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\Group 28.png");
-//		img1.getImage().getScaledInstance(1000, 1000, Image.SCALE_SMOOTH);
-//		cesta.setIcon(img1);
-//		cesta.setBounds(20, 200, 100, 100);
-//		painelini.add(cesta);
-//		
-//		JLabel morango = new JLabel();
-//		ImageIcon img3 = new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\Strawberry.png");
-//		img3.getImage().getScaledInstance(10, 10, Image.SCALE_SMOOTH);
-//		morango.setIcon(img3);
-//		morango.setBounds(10, 150, 100, 100);
-//		painelini.add(morango);
-//		
-//		JLabel morango2 = new JLabel();
-//		ImageIcon img4 = new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\Strawberry.png");
-//		img4.getImage().getScaledInstance(10, 10, Image.SCALE_SMOOTH);
-//		morango2.setIcon(img4);
-//		morango2.setBounds(10, 170, 100, 100);
-//		painelini.add(morango2);
-//		
-//		painelini.setComponentZOrder(pano, 2);
-//		painelini.setComponentZOrder(cesta, 1);
-//		painelini.setComponentZOrder(morango, 0);
-		
-		
-		
+				
 		painelIJ = new JPanel();
 		painelIJ.setLayout(null);
 		painelIJ.setBackground(painel1.getBackground());
@@ -252,80 +220,70 @@ public class Frame extends JFrame {
 		painelIT.setLayout(null);
 		painelIT.setBackground(painel1.getBackground());
 		
-		painelJogo = new JPanel();
-		painelJogo.setLayout(null);
-		painelJogo.setBackground(cor1);
+		painelTE = new JPanel();
+		painelTE.setLayout(null);
+		painelTE.setBackground(cor1);
 		
+		xbtn = (int) (painel1.getWidth()/2) - 75;
+		ybtn = (int) (painel1.getHeight()/2 - 130);
 		
 		setContentPane(painel1);
 		
 		listaBotoes = new ArrayList<Botoes>();
 		
 		
-		
-		
 		botaoIJ = new Botoes("Iniciar Jogo",cor1,cor2,borda1,borda2,xbtn,ybtn);
 		listaBotoes.add(botaoIJ);
-		painelini.add(botaoIJ);
 		
 		botaoMJ = new Botoes("Modos de Jogo",cor1,cor2,borda1,borda2,xbtn,ybtn + 42);
 		listaBotoes.add(botaoMJ);
-		painelini.add(botaoMJ);
 		
 		botaoIN = new Botoes("Instruções",cor1,cor2,borda1,borda2,xbtn,ybtn + 84);
 		listaBotoes.add(botaoIN);
-		painelini.add(botaoIN);
 		
 		botaoM = new Botoes("Light Mode",cor1,cor2,borda1,borda2,xbtn,ybtn + 126);
 		listaBotoes.add(botaoM);
-		painelini.add(botaoM);
 		
 		
 		
 		botaoCT = new Botoes("Criar Terreno",cor1,cor2,borda1,borda2,xbtn,ybtn);
 		listaBotoes.add(botaoCT);
-		painelIJ.add(botaoCT);
 		
 		botaoIT = new Botoes("Importar Terreno",cor1,cor2,borda1,borda2,xbtn,ybtn+42);
 		listaBotoes.add(botaoIT);
-		painelIJ.add(botaoIT);
 		
 		botaoRI = new Botoes("Retornar",cor1,cor2,borda1,borda2,xbtn,ybtn + 84);
 		listaBotoes.add(botaoRI);
-		painelIJ.add(botaoRI);
 		
 		
-		caixaentradas = new JLabel("Entradas");
-		caixaentradas.setHorizontalAlignment(SwingConstants.CENTER);
-		caixaentradas.setFont(new Font("Georgia", Font.ITALIC, 12));
-		caixaentradas.setForeground(cor2);
-		caixaentradas.setIcon(null);
-		caixaentradas.setBounds(xbtn-190, ybtn-50, 500, 40);
-		painelCT.add(caixaentradas);
+		
+		caixasaidas = new JLabel("Entradas");
+		caixasaidas.setHorizontalAlignment(SwingConstants.CENTER);
+		caixasaidas.setFont(new Font("Georgia", Font.ITALIC, 12));
+		caixasaidas.setForeground(cor2);
+		caixasaidas.setIcon(null);
+		caixasaidas.setBounds(xbtn-190, ybtn-50, 500, 40);
 		
 		caixatexto = new JTextArea();
 		caixatexto.setBorder(borda1);
-		caixatexto.setFont(caixaentradas.getFont());
+		caixatexto.setFont(caixasaidas.getFont());
 		caixatexto.setLineWrap(true); 
-		caixatexto.setWrapStyleWord(true); 
-		JScrollPane scrollPane = new JScrollPane(caixatexto); 
-		scrollPane.setBorder(borda1);
-		scrollPane.setBounds(xbtn-30, ybtn-20, 180, 60); 
-		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		UIManager.put("ScrollBar.thumb", cor2); 
-        UIManager.put("ScrollBar.track", cor2);
-		painelCT.add(scrollPane);
+		caixatexto.setWrapStyleWord(true);
 		
-		
-		
+		scroll = new JScrollPane(caixatexto);;
+		scroll.setBounds(xbtn-30, ybtn-20, 180, 60); 
+		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		scroll.setBorder(borda1);
 		
 		botaoEN = new Botoes("Enviar",cor1,cor2,borda1,borda2,xbtn,ybtn);
 		botaoEN.setBounds(xbtn, ybtn + 42, 120, 42);
 		listaBotoes.add(botaoEN);
-		painelCT.add(botaoEN);
 		
 		botaoTE = new Botoes("Terreno Exemplo",cor1,cor2,borda1,borda2,xbtn,ybtn + 86);
 		listaBotoes.add(botaoTE);
+		
+		botaoStart = new Botoes("Começar Jogo",cor1,cor2,borda1,borda2,xbtn,ybtn + 128);
+		listaBotoes.add(botaoStart);
 		
 		botaoRC = new Botoes("Retornar",cor1,cor2,borda1,borda2,xbtn,ybtn + 170);
 		listaBotoes.add(botaoRC);
@@ -333,76 +291,69 @@ public class Frame extends JFrame {
 		
 		
 		
-		caixaentradas2 = new JLabel("Caminho");
-		caixaentradas2.setHorizontalAlignment(SwingConstants.CENTER);
-		caixaentradas2.setFont(new Font("Georgia", Font.ITALIC, 12));
-		caixaentradas2.setForeground(cor2);
-		caixaentradas2.setIcon(null);
-		caixaentradas2.setBounds(xbtn-190, ybtn-42, 500, 40);
-		painelIT.add(caixaentradas2);
+		caixasaidas2 = new JLabel("Caminho");
+		caixasaidas2.setHorizontalAlignment(SwingConstants.CENTER);
+		caixasaidas2.setFont(new Font("Georgia", Font.ITALIC, 12));
+		caixasaidas2.setForeground(cor2);
+		caixasaidas2.setIcon(null);
+		caixasaidas2.setBounds(xbtn-190, ybtn-42, 500, 40);
 		
 		caixatexto2 = new JTextArea();
 		caixatexto2.setBorder(borda1);
-		caixatexto2.setFont(caixaentradas2.getFont());
+		caixatexto2.setFont(caixasaidas2.getFont());
 		caixatexto2.setLineWrap(true); 
 		caixatexto2.setWrapStyleWord(true); 
 		caixatexto2.setBounds(xbtn - 140, ybtn, 400, 30);
-		painelIT.add(caixatexto2);
 		
-		botaoStart = new Botoes("Começar Jogo",cor1,cor2,borda1,borda2,xbtn,ybtn + 128);
-		listaBotoes.add(botaoStart);
 		
-		botaoEN2 = new Botoes("Enviar",cor1,cor2,borda1,borda2,xbtn,ybtn + 42);
+		
+		botaoEN2 = new Botoes("Enviar",cor1,cor2,borda1,borda2,xbtn,ybtn + 44);
 		listaBotoes.add(botaoEN2);
-		painelIT.add(botaoEN2);
+		
+		botaoRT = new Botoes("Retornar",cor1,cor2,borda1,borda2,xbtn2,ybtn2 + 126);
+		listaBotoes.add(botaoRT);
+		
+		painelInicio();
 		
 		botaoIJ.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-					botaoIJ.setBackground(botaoM.getBackground());
-					botaoIJ.setForeground(botaoM.getForeground());
-					botaoIJ.setBorder(botaoM.getBorder());
-					painelComecaJogo();
+					botaoClickado(botaoIJ);
+					painelIniciarJogo();
 				}
 			});
 		
 		botaoCT.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-					botaoCT.setBackground(botaoM.getBackground());
-					botaoCT.setForeground(botaoM.getForeground());
-					botaoCT.setBorder(botaoM.getBorder());
-					painelCT.add(botaoTE);
-					painelCT.add(botaoStart);
-					painelCT.add(botaoRC);
-					painelCriarTerreno();
+					botaoClickado(botaoCT);
+					painelCriacaoTerreno();
 				}
 			});
 		
+		botaoIT.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				botaoClickado(botaoIT);
+				painelImportarTerreno();
+				}
+			});
 		
 		botaoRI.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				botaoRI.setBackground(botaoM.getBackground());
-				botaoRI.setForeground(botaoM.getForeground());
-				botaoRI.setBorder(botaoM.getBorder());
-				painel1.add(painelini, BorderLayout.CENTER);
-				painel1.remove(painelIJ);
+				botaoClickado(botaoRI);
+				painelInicio();
 				revalidate();
 				repaint();
 			}
 		});
+		
+		
 		
 		botaoRC.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				botaoRC.setBackground(botaoM.getBackground());
-				botaoRC.setForeground(botaoM.getForeground());
-				botaoRC.setBorder(botaoM.getBorder());
-				painel1.add(painelIJ, BorderLayout.CENTER);
-				painel1.remove(painelCT);
-				painel1.remove(painelIT);
-				revalidate();
-				repaint();
+				botaoClickado(botaoRC);
+				painelIniciarJogo();
 			}
 		});
-		
+
 		
 		botaoM.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -420,6 +371,7 @@ public class Frame extends JFrame {
 					}
 				}
 			});
+
 		
 		botaoEN.addActionListener(new ActionListener() {
             @Override
@@ -438,7 +390,7 @@ public class Frame extends JFrame {
                     
                     
                     if(((j <= 1) || (j >= 9)) && partes.length > 2) {
-                    	caixaentradas.setText("Erro: formato da linha " + (j + 1) + " inválido.");
+                    	caixasaidas.setText("Erro: formato da linha " + (j + 1) + " inválido.");
                         return;
                     }
                     else if(partes.length == 2) { // Para "dimensao" e "pedras"
@@ -453,7 +405,7 @@ public class Frame extends JFrame {
                     } 
                     
                     else{
-                        caixaentradas.setText("Erro: formato da linha " + (j + 1) + " inválido.");
+                        caixasaidas.setText("Erro: formato da linha " + (j + 1) + " inválido.");
                         return; // Sai da função se houver erro no formato da linha
                     }
                 }
@@ -461,43 +413,107 @@ public class Frame extends JFrame {
                 // Chama a função de verificação do terreno após processar as entradas
                 boolean resultado = verificaTerreno();
                 if (resultado) {
-                    caixaentradas.setText("Entradas aceitas.");
-                    terrenoExemplo();
+                    caixasaidas.setText("Entradas aceitas.");
                 }
             }
         });
 		
 		
-		botaoIT.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				botaoIT.setBackground(botaoM.getBackground());
-				botaoIT.setForeground(botaoM.getForeground());
-				botaoIT.setBorder(botaoM.getBorder());
-				painel1.add(painelIT, BorderLayout.CENTER);
-				painel1.remove(painelIJ);
-				painelIT.add(botaoTE);
-				painelIT.add(botaoStart);
-				painelIT.add(botaoRC);
-				revalidate();
-				repaint();
-				}
-			});
+		
 		
 		botaoTE.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				botaoTE.setBackground(botaoM.getBackground());
-				botaoTE.setForeground(botaoM.getForeground());
-				botaoTE.setBorder(botaoM.getBorder());
-				painel1.add(painelJogo, BorderLayout.CENTER);
-				painel1.remove(painelCT);
-				revalidate();
-				repaint();
+				botaoClickado(botaoTE);
+				setExtendedState(MAXIMIZED_BOTH);
+				painelTerrenoExemplo();
+				terrenoExemplo();
+			}
+		});
+		
+		
+		botaoRT.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				botaoClickado(botaoRT);
+				setSize(600, 400);
+				setLocationRelativeTo(null);
+				setResizable(false);
+				painelIniciarJogo();
 			}
 		});
 			
 		
 		
+		
 	}
+	
+	public void botaoClickado(Botoes botao) {
+		botao.setBackground(botaoM.getBackground());
+		botao.setForeground(botaoM.getForeground());
+		botao.setBorder(botaoM.getBorder());
+		revalidate();
+		repaint();
+	}
+	
+	public void painelInicio() {
+		painelini.add(botaoIJ);
+		painelini.add(botaoMJ);
+		painelini.add(botaoIN);
+		painelini.add(botaoM);
+		painel1.removeAll();
+		painel1.add(logo, BorderLayout.NORTH);
+		painel1.add(painelini);
+		revalidate();
+		repaint();
+	}
+	
+	public void painelIniciarJogo() {
+		painelIJ.add(botaoCT);
+		painelIJ.add(botaoIT);
+		painelIJ.add(botaoRI);
+		painel1.removeAll();
+		painel1.add(logo, BorderLayout.NORTH);
+		painel1.add(painelIJ, BorderLayout.CENTER);
+		revalidate();
+		repaint();
+	}
+	
+	public void painelCriacaoTerreno() {
+		painelCT.add(caixasaidas);
+		painelCT.add(scroll);
+		painelCT.add(botaoEN);
+		painelCT.add(botaoTE);
+		painelCT.add(botaoStart);
+		painelCT.add(botaoRC);
+		painel1.removeAll();
+		painel1.add(logo, BorderLayout.NORTH);
+		painel1.add(painelCT, BorderLayout.CENTER);
+		revalidate();
+		repaint();
+	}
+	
+	public void painelImportarTerreno() {
+		painelIT.add(caixasaidas2);
+		painelIT.add(caixatexto2);
+		painelIT.add(botaoEN2);
+		painelIT.add(botaoTE);
+		painelIT.add(botaoStart);
+		painelIT.add(botaoRC);
+		painel1.removeAll();
+		painel1.add(logo, BorderLayout.NORTH);
+		painel1.add(painelIT, BorderLayout.CENTER);
+		revalidate();
+		repaint();
+	}
+	
+	public void painelTerrenoExemplo() {
+		painelTE.add(botaoRT);
+		painel1.removeAll();
+		painel1.add(logo, BorderLayout.NORTH);
+		painel1.add(painelTE, BorderLayout.CENTER);
+		revalidate();
+		repaint();
+	}
+	
 	
 	public int ale(int i) {
 		return (int) Math.round(Math.random()*i);
@@ -592,7 +608,7 @@ public class Frame extends JFrame {
 				frutas[i] = Integer.parseInt(memoriaEN[i+2][2]);
 				
 				if (arvores[i] < 0 || frutas[i] < 0) {
-	                caixaentradas.setText("Erro: A quantidade de árvores e frutas não pode ser negativa.");
+	                caixasaidas.setText("Erro: A quantidade de árvores e frutas não pode ser negativa.");
 	                uiaceita =  false;
 	                break;
 	            }
@@ -607,26 +623,26 @@ public class Frame extends JFrame {
 			
 			
 			if(dimensao <= 2) {
-	            caixaentradas.setText("Erro: A dimensão do terreno deve ser pelo menos três.");
+	            caixasaidas.setText("Erro: A dimensão do terreno deve ser pelo menos três.");
 	            uiaceita = false;
 	        }
 			else if(pedra < 0) {
-	            caixaentradas.setText("Erro: A quantidade de pedras não pode ser negativa.");
+	            caixasaidas.setText("Erro: A quantidade de pedras não pode ser negativa.");
 	            uiaceita = false;
 	        }
 			else if(bichada < 0 || bichada > 100) {
-	            caixaentradas.setText("Erro: A porcentagem de frutas bichadas deve estar entre 0 e 100.");
+	            caixasaidas.setText("Erro: A porcentagem de frutas bichadas deve estar entre 0 e 100.");
 	            uiaceita = false;
 	        }
 			else if(mochila <= 0) {
-	            caixaentradas.setText("Erro: O tamanho da mochila deve ser maior que zero.");
+	            caixasaidas.setText("Erro: O tamanho da mochila deve ser maior que zero.");
 	            uiaceita = false;
 	        }
 			else if(mochila < (1 + Math.floor((arvores[0])/2))) {
-				caixaentradas.setText("Erro: o tamanho da mochila deve ser maior que metade +1 do nº de maracujás.");
+				caixasaidas.setText("Erro: o tamanho da mochila deve ser maior que metade +1 do nº de maracujás.");
 			}
 			else if(espacosDisponiveis < 0) {
-				caixaentradas.setText("Erro: A quantidade dos elementos supera o tamanho livre no terreno.");
+				caixasaidas.setText("Erro: A quantidade dos elementos supera o tamanho livre no terreno.");
 				uiaceita = false;
 			}
 			else if(espacosDisponiveis >= 0) {
@@ -634,7 +650,7 @@ public class Frame extends JFrame {
 			}
 		} catch (NumberFormatException e) {
 	        // Captura erros de formato nos números
-	        caixaentradas.setText("Erro: Verifique se todas as entradas são números válidos.");
+	        caixasaidas.setText("Erro: Verifique se todas as entradas são números válidos.");
 	        uiaceita = false;
 		}
 		return uiaceita;
@@ -642,21 +658,6 @@ public class Frame extends JFrame {
 		
 	}
 	
-	public void painelCriarTerreno() {
-		painel1.add(painelCT, BorderLayout.CENTER);
-		painel1.remove(painelIJ);
-		revalidate();
-		repaint();
-	}
-	
-	public void painelComecaJogo() {
-		painel1.add(painelIJ, BorderLayout.CENTER);
-		painel1.remove(painelini);
-		revalidate();
-		repaint();
-		
-		
-	}
 
 
 }
