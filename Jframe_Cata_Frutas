@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 
 
@@ -30,6 +32,8 @@ public class Frame extends JFrame {
 	public JLabel caixasaidas2;
 	
 	public JScrollPane scroll;
+	public JScrollPane scrollTE;
+	public JScrollPane scrollTE2;
 	
 	public static Color cor1 = new Color(255,238,138);
 	public static Color cor2 = new Color(0,0,0);
@@ -50,6 +54,7 @@ public class Frame extends JFrame {
 	public Botoes botaoEN2;
 	public Botoes botaoStart;
 	public Botoes botaoRT;
+	public Botoes botaoST;
 	
 	public static int Dimensao;
 	public static int Pedras;
@@ -59,9 +64,12 @@ public class Frame extends JFrame {
 	public static float Bichada;
 	public static int frutasTotais;
 	public static int arvoresTotais;
+	public String userInput;
 	
 	JTextArea caixatexto;
 	JTextArea caixatexto2;
+	
+	GridBagConstraints gbc; 
 	
 	public static boolean uiaceita = false;
 	public static String memoriaEN[][];
@@ -220,9 +228,6 @@ public class Frame extends JFrame {
 		painelIT.setLayout(null);
 		painelIT.setBackground(painel1.getBackground());
 		
-		painelTE = new JPanel();
-		painelTE.setLayout(null);
-		painelTE.setBackground(cor1);
 		
 		xbtn = (int) (painel1.getWidth()/2) - 75;
 		ybtn = (int) (painel1.getHeight()/2 - 130);
@@ -310,8 +315,11 @@ public class Frame extends JFrame {
 		botaoEN2 = new Botoes("Enviar",cor1,cor2,borda1,borda2,xbtn,ybtn + 44);
 		listaBotoes.add(botaoEN2);
 		
-		botaoRT = new Botoes("Retornar",cor1,cor2,borda1,borda2,xbtn2,ybtn2 + 126);
+		botaoRT = new Botoes("Retornar",cor1,cor2,borda1,borda2, 1366/2 - 75 , 720/2 + 325);
 		listaBotoes.add(botaoRT);
+		
+		botaoST = new Botoes("Salvar Terreno",cor1,cor2,borda1,borda2, 1366/2 - 75 , 720/2 + 283);
+		listaBotoes.add(botaoST);
 		
 		painelInicio();
 		
@@ -379,7 +387,7 @@ public class Frame extends JFrame {
             	memoriaEN = new String[11][3];
             	uiaceita = false;
             	
-                String userInput = caixatexto.getText();
+                userInput = caixatexto.getText();
                 caixatexto.setText(userInput);
                 String[] linhas = userInput.split("\n"); // Divide o texto em linhas
                 
@@ -417,6 +425,60 @@ public class Frame extends JFrame {
                 }
             }
         });
+
+/*botaoEN2.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			String userInput = caixatexto2.getText();
+			File arquivoTerreno = new File("C:\\Users\\Wendel\\Desktop\\UFS\\POO\\CATAFRUTAS\teste");
+			if(!arquivoTerreno.exists()) {
+				caixatexto2.setText("Erro: Path inválido. Tente Nomamente!");
+			}else {
+				memoriaEN = new String[11][3];
+				String[] linhas= new String[11];
+				int i=0;
+				try {
+				FileReader FR= new FileReader("C:\\Users\\Wendel\\Desktop\\UFS\\POO\\CATAFRUTAS\teste");
+				BufferedReader BR= new BufferedReader(FR);
+				while(i<11) {
+					linhas[i]= BR.readLine();				
+				}
+				i=0;
+				  for (int j = 0; j < linhas.length; j++) {
+	                    String linha = linhas[j].trim(); // Remove espaços extras
+	                    String[] partes = linha.split(" ");
+
+
+	                    if(((j <= 1) || (j >= 9)) && partes.length > 2) {
+	                    	caixatexto2.setText("Erro: formato da linha " + (j + 1) + " inválido.");
+	                        return;
+	                    }
+	                    else if(partes.length == 2) { // Para "dimensao" e "pedras"
+	                        memoriaEN[j][0] = partes[0];
+	                        memoriaEN[j][1] = partes[1];
+	                        memoriaEN[j][2] = ""; // Deixa o terceiro campo vazio
+	                    }
+	                    else if(partes.length == 3) { // Para frutas
+	                        memoriaEN[j][0] = partes[0]; // Nome da fruta
+	                        memoriaEN[j][1] = partes[1]; // Quantidade de árvores
+	                        memoriaEN[j][2] = partes[2]; // Quantidade de frutas    
+	                    } 
+
+	                    else{
+	                    	caixatexto2.setText("Erro: formato da linha " + (j + 1) + " inválido.");
+	                        return; // Sai da função se houver erro no formato da linha
+	                    }
+	                }
+				  BR.close();
+				  FR.close();
+				} catch( Exception IOException ) {caixatexto2.setText("Erro: EPath inválido. Tente Nomamente!");
+ }
+
+			}
+		}
+
+		});
+
+}*/
 		
 		
 		
@@ -424,9 +486,12 @@ public class Frame extends JFrame {
 		botaoTE.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				botaoClickado(botaoTE);
-				setExtendedState(MAXIMIZED_BOTH);
-				painelTerrenoExemplo();
-				terrenoExemplo();
+				if(verificaTerreno()) {
+					setExtendedState(MAXIMIZED_BOTH);
+					painelTerrenoExemplo();
+					criandoTerreno();
+					terrenoExemploSist();				
+					}
 			}
 		});
 		
@@ -453,60 +518,6 @@ public class Frame extends JFrame {
 		revalidate();
 		repaint();
 	}
-
-	/*botaoEN2.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-			String userInput = caixatexto2.getText();
-			File arquivoTerreno = new File("C:\\Users\\Wendel\\Desktop\\UFS\\POO\\CATAFRUTAS\teste");
-			if(!arquivoTerreno.exists()) {
-				caixatexto2.setText("Erro: Path inválido. Tente Nomamente!");
-			}else {
-				memoriaEN = new String[11][3];
-				String[] linhas= new String[11];
-				int i=0;
-				try {
-				FileReader FR= new FileReader("C:\\Users\\Wendel\\Desktop\\UFS\\POO\\CATAFRUTAS\teste");
-				BufferedReader BR= new BufferedReader(FR);
-				while(i<11) {
-					linhas[i]= BR.readLine();				
-				}
-				i=0;
-				  for (int j = 0; j < linhas.length; j++) {
-	                    String linha = linhas[j].trim(); // Remove espaços extras
-	                    String[] partes = linha.split(" ");
-	                    
-	                    
-	                    if(((j <= 1) || (j >= 9)) && partes.length > 2) {
-	                    	caixatexto2.setText("Erro: formato da linha " + (j + 1) + " inválido.");
-	                        return;
-	                    }
-	                    else if(partes.length == 2) { // Para "dimensao" e "pedras"
-	                        memoriaEN[j][0] = partes[0];
-	                        memoriaEN[j][1] = partes[1];
-	                        memoriaEN[j][2] = ""; // Deixa o terceiro campo vazio
-	                    }
-	                    else if(partes.length == 3) { // Para frutas
-	                        memoriaEN[j][0] = partes[0]; // Nome da fruta
-	                        memoriaEN[j][1] = partes[1]; // Quantidade de árvores
-	                        memoriaEN[j][2] = partes[2]; // Quantidade de frutas    
-	                    } 
-	                    
-	                    else{
-	                    	caixatexto2.setText("Erro: formato da linha " + (j + 1) + " inválido.");
-	                        return; // Sai da função se houver erro no formato da linha
-	                    }
-	                }
-				  BR.close();
-				  FR.close();
-				} catch( Exception IOException ) {caixatexto2.setText("Erro: EPath inválido. Tente Nomamente!");
- }
-				
-			}
-		}
-		
-		});
-	
-}*/
 	
 	public void painelInicio() {
 		painelini.add(botaoIJ);
@@ -560,91 +571,174 @@ public class Frame extends JFrame {
 	}
 	
 	public void painelTerrenoExemplo() {
-		painelTE.add(botaoRT);
 		painel1.removeAll();
-		painel1.add(logo, BorderLayout.NORTH);
+		painel1.add(botaoRT);
+		painel1.add(botaoST);
+		painel1.add(logo, BorderLayout.NORTH);	
+		painelTE = new JPanel();
+		painelTE.setLayout(new GridBagLayout());
+		gbc = new GridBagConstraints();
+		gbc.weightx = 0;
+		gbc.weighty = 0;
+		gbc.insets = new Insets (0,0,0,0);
+		gbc.anchor = GridBagConstraints.CENTER;
+		painelTE.setBounds(1366/2, 720/2 , 300, 300);
+		scrollTE = new JScrollPane(painelTE); 
+		scrollTE.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		scrollTE.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scrollTE.setBorder(borda1);
+		painelTE.setBackground(cor1);
+		painelTE.setBorder(borda1);
 		painel1.add(painelTE, BorderLayout.CENTER);
 		revalidate();
 		repaint();
 	}
 	
+
+	public void TerrenoExemplo() {
+	    painel1.removeAll();
+	    painel1.add(botaoRT);
+	    painel1.add(botaoST);
+	    painel1.add(logo, BorderLayout.NORTH);
+
+	    painelTE = new JPanel();
+	    painelTE.setLayout(new GridBagLayout());
+	    gbc = new GridBagConstraints();
+
+	    painelTE.setBackground(cor1);
+	    painelTE.setBorder(borda1);
+
+	    scrollTE = new JScrollPane(painelTE);
+	    scrollTE.setBounds(50, 50, 1366/2 + 300 , 720/2);
+	    scrollTE.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+	    scrollTE.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+
+	    painel1.add(scrollTE);
+
+		
+	    revalidate();
+	    repaint();
+	}
+	
+	public ImageIcon criandoImagem(int tamanho, String Caminho) {
+		ImageIcon img = new ImageIcon(Caminho);
+	    Image img1 = img.getImage().getScaledInstance(tamanho, tamanho, Image.SCALE_SMOOTH);
+	    img = new ImageIcon(img1);
+	    return img;
+	}
+
+	public void criandoTerreno() {
+		int tamanhoCelula = 480 / Dimensao;
+	    painelTE.removeAll();  // Limpa o painel antes de recriar as células
+	    ImageIcon img2 = criandoImagem(tamanhoCelula, "C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\UpView guy-1.png");
+	    ImageIcon img3 = criandoImagem(tamanhoCelula, "C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\images.jpeg");
+
+	    for (int i = 0; i < Dimensao; i++) {
+	        for (int j = 0; j < Dimensao; j++) {
+	    	    JButton celula = new JButton();
+	            celula.setBackground(null);
+	            if(i==3 && j==3) {celula.setIcon(img2);}
+	            else{celula.setIcon(img3);}
+	            celula.setPreferredSize(new Dimension(tamanhoCelula, tamanhoCelula));
+
+	            gbc.gridx = j;
+	            gbc.gridy = i;
+	            painelTE.add(celula, gbc);
+	        }
+	    }
+	    revalidate();
+	    repaint();
+	}
 	
 	public int ale(int i) {
 		return (int) Math.round(Math.random()*i);
 	}
 	
-	public void terrenoExemplo() {
-		int[][] matrizTerreno = new int[Dimensao][Dimensao];
-		
-		System.out.println(arvoresTotais);
-		System.out.println(frutasTotais);
-		System.out.println(Pedras);
-		
-		
-		for(int i = 0; i < Dimensao; i++) {
-			for(int j = 0; j < Dimensao; j++) {
-					matrizTerreno[i][j] = 0;
-			}
-		}
-		
-		for(int p = 0; p < Pedras; p++) {
-			int x = ale(Dimensao - 1);
-			int y = ale(Dimensao - 1);
-			matrizTerreno[x][y] = 100;
-		}
-		
-		for(int a = 0; a < arvoresTotais; a++) {
-			int x = ale(Dimensao - 1);
-			int y = ale(Dimensao - 1);
-				if(matrizTerreno[x][y] == 0) {
-					matrizTerreno[x][y] = 200 + a;
-				}
-				x = ale(Dimensao - 1);
-				y = ale(Dimensao - 1);
-		}
-		
-		for(int f = 0; f < arvoresTotais; f++) {
-			int x = ale(Dimensao - 1);
-			int y = ale(Dimensao - 1);
-				if(matrizTerreno[x][y] == 0) {
-					matrizTerreno[x][y] = 300 + f;
-				}
-				x = ale(Dimensao - 1);
-				y = ale(Dimensao - 1);
-		}
-		
-		
-		for(int j = 1; j <= 2; j++) {
-			int x = ale(Dimensao - 1);
-			int y = ale(Dimensao - 1);
-			for(;matrizTerreno[x][y] == 0;) {
-				if(matrizTerreno[x][y] == 0) {
-					matrizTerreno[x][y] = j;
-					break;
-				}
-				x = ale(Dimensao - 1);
-				y = ale(Dimensao - 1);
-			}
-		}
-		
-		
-		for(int k = 0; k < Dimensao; k++) {
-			for(int l = 0; l < Dimensao; l++) {
-				System.out.print(matrizTerreno[k][l]);
-				System.out.print(" | ");
-			}
-			System.out.println();
-		}
-		
-		arvoresTotais = 0;
-		frutasTotais = 0;
-		
-		
+	public void terrenoExemploSist() {
+	    int[][] matrizTerreno = new int[Dimensao][Dimensao];
+
+	    System.out.println(arvoresTotais);
+	    System.out.println(frutasTotais);
+	    System.out.println(Pedras);
+
+	    // Inicializa o terreno com zeros
+	    for (int i = 0; i < Dimensao; i++) {
+	        for (int j = 0; j < Dimensao; j++) {
+	            matrizTerreno[i][j] = 0;
+	        }
+	    }
+	    System.out.println("iniciado");
+
+	    // Colocar Pedras
+	    for (int p = 0; p < Pedras; p++) {
+	        int x = ale(Dimensao - 1);
+	        int y = ale(Dimensao - 1);
+	        matrizTerreno[x][y] = 100;
+	        System.out.println("pedra");// Pedra representada por 100
+	    }
+
+	    // Colocar Árvores
+	    for (int a = 0; a < arvoresTotais;) {
+	        int x = ale(Dimensao - 1);
+	        int y = ale(Dimensao - 1);
+	        if (matrizTerreno[x][y] == 0) { // Verifica se a posição está livre
+	            matrizTerreno[x][y] = 200 + a; // Árvore representada por 200 + índice
+	            a++;
+	            System.out.println("arvore");
+	        }
+	    }
+
+	    // Colocar Frutas
+	    for (int f = 0; f < frutasTotais;) {
+	        int x = ale(Dimensao - 1);
+	        int y = ale(Dimensao - 1);
+	        if (matrizTerreno[x][y] == 0) { // Verifica se a posição está livre
+	            matrizTerreno[x][y] = 300 + f; // Fruta representada por 300 + índice
+	            f++;
+	            System.out.println("fruta");
+	        }
+	    }
+
+	    // Colocar Jogadores
+	    for (int j = 1; j < 3;) {
+	        int x = ale(Dimensao - 1);
+	        int y = ale(Dimensao - 1);
+	        if (matrizTerreno[x][y] == 0) { // Verifica se a posição está livre
+	            matrizTerreno[x][y] = j; // Jogador representado por 1 e 2
+	            j++;
+	            System.out.println("jogador");
+	        }
+	    }
+
+	    // Imprimir o terreno
+	    imprimirMatriz(matrizTerreno);
+
+	    // Zerar contadores
+	    arvoresTotais = 0;
+	    frutasTotais = 0;
 	}
+
+	// Função para imprimir a matriz
+	private void imprimirMatriz(int[][] matriz) {
+	    for (int k = 0; k < Dimensao; k++) {
+	        for (int l = 0; l < Dimensao; l++) {
+	            System.out.print(matriz[k][l] + " | ");
+	        }
+	        System.out.println();
+	    }
+	}
+
 	
 	public boolean verificaTerreno() {
-		
+		arvoresTotais = 0;
+		frutasTotais = 0;
 		try {
+			
+			if(userInput == null) {
+				caixasaidas.setText("Erro: A entrada não pode ser vazia.");
+				return false;
+			}
+			
 			int dimensao = Integer.parseInt(memoriaEN[0][1]);
 			Dimensao = dimensao;
 			int pedra = Integer.parseInt(memoriaEN[1][1]);
