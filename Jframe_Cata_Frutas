@@ -30,7 +30,7 @@ public class Frame extends JFrame {
 	private static JPanel painelIJ;
 	private static JPanel painelCT;
 	private static JPanel painelIT;
-	private static JPanel painelTE;
+	private static CustomPanel painelTE;
 	
 	public JLabel logo;
 	public JLabel caixasaidas;
@@ -60,6 +60,7 @@ public class Frame extends JFrame {
 	public Botoes botaoStart;
 	public Botoes botaoRT;
 	public Botoes botaoST;
+	public Botoes botaoNT;
 	
 	
 	public static int[][] Matriz;
@@ -238,6 +239,9 @@ public class Frame extends JFrame {
 		painelIT.setLayout(null);
 		painelIT.setBackground(painel1.getBackground());
 		
+		painelTE = new CustomPanel("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\grama.jpg");
+		painelTE.setLayout(new GridBagLayout());
+		
 		
 		xbtn = (int) (painel1.getWidth()/2) - 75;
 		ybtn = (int) (painel1.getHeight()/2 - 130);
@@ -330,6 +334,9 @@ public class Frame extends JFrame {
 		
 		botaoST = new Botoes("Salvar Terreno",cor1,cor2,borda1,borda2, 1366/2 - 75 , 720/2 + 283);
 		listaBotoes.add(botaoST);
+		
+		botaoNT = new Botoes("Novo Terreno",cor1,cor2,borda1,borda2, 1366/2 - 75 , 100);
+		listaBotoes.add(botaoNT);
 		
 		painelInicio();
 		
@@ -513,6 +520,7 @@ public class Frame extends JFrame {
 				if(verificaTerreno()) {
 					setExtendedState(MAXIMIZED_BOTH);
 					painelTerrenoExemplo();
+				    Matriz = new int[Dimensao][Dimensao];
 					terrenoExemploSist();
 					criandoTerreno();				
 					}
@@ -527,6 +535,14 @@ public class Frame extends JFrame {
 				setLocationRelativeTo(null);
 				setResizable(false);
 				painelIniciarJogo();
+			}
+		});
+		
+		botaoNT.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				botaoClickado(botaoNT);
+				terrenoExemploSist();
+				criandoTerreno();
 			}
 		});
 			
@@ -598,9 +614,8 @@ public class Frame extends JFrame {
 		painel1.removeAll();
 		painel1.add(botaoRT);
 		painel1.add(botaoST);
+		painel1.add(botaoNT);
 		painel1.add(logo, BorderLayout.NORTH);	
-		painelTE = new JPanel();
-		painelTE.setLayout(new GridBagLayout());
 		gbc = new GridBagConstraints();
 		gbc.weightx = 0;
 		gbc.weighty = 0;
@@ -624,9 +639,8 @@ public class Frame extends JFrame {
 	    painel1.add(botaoRT);
 	    painel1.add(botaoST);
 	    painel1.add(logo, BorderLayout.NORTH);
-
-	    painelTE = new JPanel();
-	    painelTE.setLayout(new GridBagLayout());
+ 
+	    
 	    gbc = new GridBagConstraints();
 
 	    painelTE.setBackground(cor1);
@@ -653,40 +667,94 @@ public class Frame extends JFrame {
 
 	public void criandoTerreno() {
 		int tamanhoCelula = 480 / Dimensao;
+		painelTE.setLayout(new GridBagLayout());  // Mantém o layout
+	    painelTE.removeAll();
 	    painelTE.removeAll();  // Limpa o painel antes de recriar as células
 	    
 	    ImageIcon imgjogador1 = criandoImagem(tamanhoCelula, "C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\UpView guy-1.png");
 	    ImageIcon imgjogador2 = criandoImagem(tamanhoCelula, "C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\UpView guy-2.png");
-	    ImageIcon imgArvoreAbacate = criandoImagem(tamanhoCelula, "C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\arvore abacate.png");
-	    ImageIcon imgArvoreAmora = criandoImagem(tamanhoCelula, "C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\arvore amora.png");
-	    ImageIcon imgArvoreLaranja = criandoImagem(tamanhoCelula, "C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\arvore laranja.png");
-	    ImageIcon imgArvoreAcerola= criandoImagem(tamanhoCelula, "C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\arvore acerola.png");
-	    ImageIcon imgArovreGoiaba= criandoImagem(tamanhoCelula, "C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\arvore goiaba.png");
-	    ImageIcon imgArvoreCoco = criandoImagem(tamanhoCelula, "C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\arvore coco.png");
+	    ImageIcon imgArvoreAbacate = criandoImagem(tamanhoCelula, "C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\ArvoreAbacate.png");
+	    ImageIcon imgArvoreAmora = criandoImagem(tamanhoCelula, "C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\ArvoreAmora.png");
+	    ImageIcon imgArvoreLaranja = criandoImagem(tamanhoCelula, "C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\ArvoreLaranja.png");
+	    ImageIcon imgArvoreAcerola= criandoImagem(tamanhoCelula, "C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\arvoreAcerola.png");
+	    ImageIcon imgArvoreGoiaba= criandoImagem(tamanhoCelula, "C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\ArvoreGoiaba.png");
+	    ImageIcon imgArvoreCoco = criandoImagem(tamanhoCelula, "C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\ArvoreCoco.png");
+	    ImageIcon imgFrutaMaracuja = criandoImagem(tamanhoCelula, "C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\maracuja.png");
 	    ImageIcon imgFrutaLaranja = criandoImagem(tamanhoCelula, "C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\laranja.png"); 
 	    ImageIcon imgFrutaAbacate = criandoImagem(tamanhoCelula, "C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\abacate.png");
 	    ImageIcon imgFrutaGoiaba = criandoImagem(tamanhoCelula, "C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\goiaba.png");
 	    ImageIcon imgFrutaAmora = criandoImagem(tamanhoCelula, "C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\amora.png");
 	    ImageIcon imgFrutaCoco = criandoImagem(tamanhoCelula, "C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\coco.png");
 	    ImageIcon imgFrutaAcerola = criandoImagem(tamanhoCelula, "C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\acerola.png");
-	    ImageIcon imggrama = criandoImagem(tamanhoCelula, "C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\images.jpeg");
+	    ImageIcon imggrama = criandoImagem(tamanhoCelula, "C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\grama.jpeg");
 	    ImageIcon imgPedra= criandoImagem(tamanhoCelula, "C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\pedra.png");
+	    
 	    
 	    for (int i = 0; i < Dimensao; i++) {
 	        for (int j = 0; j < Dimensao; j++) {
 	    	    JButton celula = new JButton();
+	    	    celula.setBorderPainted(false);
 	            celula.setBackground(null);
+	            celula.setOpaque(false);
 	            if(Matriz[i][j] > 0 && Matriz[i][j] < 3) {
-	            	celula.setIcon(imgjogador1);
+	            	switch(Matriz[i][j]) {
+	            	case 1:
+	            		celula.setIcon(imgjogador1);
+	            		break;
+	            	case 2:
+	            		celula.setIcon(imgjogador2);
+	            		break;
+	            	}
 	            }
 	            else if(Matriz[i][j] > 99 && Matriz[i][j] < 200) {
 	            	celula.setIcon(imgPedra);
 	            }
 	            else if(Matriz[i][j] > 199 && Matriz[i][j] < 300) {
-	            	celula.setIcon(imgArvoreLaranja);
+	            	switch(Matriz[i][j]) {
+	            	case 201:
+	            		celula.setIcon(imgArvoreLaranja);
+	            		break;
+	            	case 202:
+	            		celula.setIcon(imgArvoreAbacate);
+	            		break;
+	            	case 203:
+	            		celula.setIcon(imgArvoreCoco);
+	            		break;
+	            	case 204:
+	            		celula.setIcon(imgArvoreAcerola);
+	            		break;
+	            	case 205:
+	            		celula.setIcon(imgArvoreAmora);
+	            		break;
+	            	case 206:
+	            		celula.setIcon(imgArvoreGoiaba);
+	            		break;
+	            	}
 	            }
 	            else if(Matriz[i][j] > 299 && Matriz[i][j] < 400) {
-	            	celula.setIcon(imgFrutaLaranja);
+	            	switch(Matriz[i][j]) {
+	            	case 300:
+	            		celula.setIcon(imgFrutaMaracuja);
+	            		break;
+	            	case 301:
+	            		celula.setIcon(imgFrutaLaranja);
+	            		break;
+	            	case 302:
+	            		celula.setIcon(imgFrutaAbacate);
+	            		break;
+	            	case 303:
+	            		celula.setIcon(imgFrutaCoco);
+	            		break;
+	            	case 304:
+	            		celula.setIcon(imgFrutaAcerola);
+	            		break;
+	            	case 305:
+	            		celula.setIcon(imgFrutaAmora);
+	            		break;
+	            	case 306:
+	            		celula.setIcon(imgFrutaGoiaba);
+	            		break;
+	            	}
 	            }
 	            else{
 	            	celula.setIcon(imggrama);
@@ -707,8 +775,8 @@ public class Frame extends JFrame {
 	}
 	
 	public void terrenoExemploSist() {
-	    Matriz = new int[Dimensao][Dimensao];
 
+	    Matriz = new int[Dimensao][Dimensao];
 	    System.out.println(arvoresTotais);
 	    System.out.println(frutasTotais);
 	    System.out.println(Pedras);
@@ -730,25 +798,29 @@ public class Frame extends JFrame {
 	    }
 
 	    // Colocar Árvores
-	    for (int a = 0; a < arvoresTotais;) {
-	        int x = ale(Dimensao - 1);
-	        int y = ale(Dimensao - 1);
-	        if (Matriz[x][y] == 0) { // Verifica se a posição está livre
-	            Matriz[x][y] = 200 + a; // Árvore representada por 200 + índice
-	            a++;
-	            System.out.println("arvore");
-	        }
+	    for(int i = 1; i < 7; i++) {
+		    for (int a = 0; a < Arvores[i];) {
+		        int x = ale(Dimensao - 1);
+		        int y = ale(Dimensao - 1);
+		        if (Matriz[x][y] == 0) { // Verifica se a posição está livre
+		            Matriz[x][y] = 200 + i; // Árvore representada por 200 + tipo
+		            a++;
+		            System.out.println("arvore"+i);
+		        }
+		    }
 	    }
 
 	    // Colocar Frutas
-	    for (int f = 0; f < frutasTotais;) {
-	        int x = ale(Dimensao - 1);
-	        int y = ale(Dimensao - 1);
-	        if (Matriz[x][y] == 0) { // Verifica se a posição está livre
-	            Matriz[x][y] = 300 + f; // Fruta representada por 300 + índice
-	            f++;
-	            System.out.println("fruta");
-	        }
+	    for(int j = 0; j < 7; j++) {
+		    for (int f = 0; f < Frutas[j];) {
+		        int x = ale(Dimensao - 1);
+		        int y = ale(Dimensao - 1);
+		        if (Matriz[x][y] == 0) { // Verifica se a posição está livre
+		            Matriz[x][y] = 300 + j; // Fruta representada por 300 + tipo
+		            f++;
+		            System.out.println("fruta"+j);
+		        }
+		    }
 	    }
 
 	    // Colocar Jogadores
@@ -765,10 +837,9 @@ public class Frame extends JFrame {
 	    // Imprimir o terreno
 	    imprimirMatriz(Matriz);
 
-	    // Zerar contadores
-	    arvoresTotais = 0;
-	    frutasTotais = 0;
 	}
+	
+	
 
 	// Função para imprimir a matriz
 	private void imprimirMatriz(int[][] matriz) {
@@ -784,6 +855,8 @@ public class Frame extends JFrame {
 	public boolean verificaTerreno() {
 		arvoresTotais = 0;
 		frutasTotais = 0;
+		Frutas = new int[7];
+		Arvores = new int[7];
 		try {
 			
 			int dimensao = Integer.parseInt(memoriaEN[0][1]);
@@ -808,6 +881,8 @@ public class Frame extends JFrame {
 	                break;
 	            }
 				frutasTotais += frutas[i];
+				Frutas[i] = frutas[i];
+				Arvores[i] = arvores[i];
 			}
 			
 			for(int j = 1; j < 7; j++) {
@@ -853,6 +928,50 @@ public class Frame extends JFrame {
 		
 	}
 	
+	public class ImageInPanel extends JPanel {
+	    /**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		private Image image;
+
+	    // Construtor que carrega a imagem
+	    public ImageInPanel(String imagePath) {
+	        // Carrega a imagem a partir do caminho fornecido
+	        image = new ImageIcon(imagePath).getImage();
+	    }
+
+	    // Sobrescreve o método paintComponent para desenhar a imagem
+	    @Override
+	    protected void paintComponent(Graphics g) {
+	        super.paintComponent(g); // Chama o método da classe pai para garantir o comportamento padrão
+	        // Desenha a imagem no painel
+	        if (image != null) {
+	            g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
+	        }
+	    }
+	}
+
+	
+	public class CustomPanel extends JPanel {
+	    /**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		private Image backgroundImage;
+
+	    // Construtor que carrega a imagem de fundo
+	    public CustomPanel(String imagePath) {
+	        backgroundImage = new ImageIcon(imagePath).getImage();
+	    }
+
+	    @Override
+	    protected void paintComponent(Graphics g) {
+	        super.paintComponent(g);
+	        // Desenha a imagem de fundo cobrindo todo o painel
+	        g.drawImage(backgroundImage, 0, 0, 1366, 766, this);
+	    }
+	}
 
 
 }
