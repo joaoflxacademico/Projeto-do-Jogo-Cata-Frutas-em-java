@@ -25,6 +25,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.plaf.ColorUIResource;
+import javax.swing.plaf.basic.BasicScrollBarUI;
 
 
 
@@ -38,7 +40,9 @@ public class Frame extends JFrame {
 	private static JPanel painelIT;
 	private static CustomPanel painelTE;
 	private static JPanel painelAR;
+	private static JPanel painelIN;
 	
+	private static JFrame frameIN;
 	private static JFrame frameAR;
 	
 	public JLabel logo;
@@ -47,6 +51,7 @@ public class Frame extends JFrame {
 	public JLabel caixasaidas3;
 	
 	public JScrollPane scroll;
+	public JScrollPane scrollIN;
 	public JScrollPane scrollTE;
 	public JScrollPane scrollTE2;
 	
@@ -72,8 +77,10 @@ public class Frame extends JFrame {
 	public Botoes botaoRT;
 	public Botoes botaoST;
 	public Botoes botaoNT;
+	public Botoes botaoRI2;
 	
-	
+	public static ImageIcon imglogo = new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\Logo.png");
+    
 	public static int[][] Matriz;
 	public static int Dimensao;
 	public static int Pedras;
@@ -88,6 +95,7 @@ public class Frame extends JFrame {
 	
 	JTextArea caixatexto;
 	JTextArea caixatexto2;
+	JTextArea caixainstru;
 	JTextField caixatexto3;
 	
 	
@@ -167,6 +175,7 @@ public class Frame extends JFrame {
 			
 			painel1.setBackground(cor1);
 			painelIJ.setBackground(cor1);
+			painelIN.setBackground(cor1);
 			painelini.setBackground(cor1);
 			painelCT.setBackground(cor1);
 			painelIT.setBackground(cor1);
@@ -175,6 +184,7 @@ public class Frame extends JFrame {
 			caixasaidas.setForeground(cor2);
 			caixasaidas2.setForeground(cor2);
 			caixasaidas3.setForeground(cor2);
+			caixainstru.setForeground(cor2);
 			if(corGrama == 1) {
 				corGrama = 0;
 				painelTE.updateImagem("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\grama" + corGrama +".png");
@@ -221,14 +231,16 @@ public class Frame extends JFrame {
 		setSize(600,400);
 		setLocationRelativeTo(null);
 		setResizable(false);
-		
-		
+		setIconImage(imglogo.getImage());
+		setTitle("Cata Frutas");
 		inicializa();
 		
 		
 	}
 	
 	public void inicializa() {
+		
+		
 		
 		painel1 = new JPanel();
 		painel1.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -255,6 +267,10 @@ public class Frame extends JFrame {
 		painelIJ.setLayout(null);
 		painelIJ.setBackground(painel1.getBackground());
 		
+		painelIN = new JPanel();
+		painelIN.setLayout(null);
+		painelIN.setBackground(cor1);
+		
 		painelCT = new JPanel();
 		painelCT.setLayout(null);
 		painelCT.setBackground(painel1.getBackground());
@@ -265,6 +281,7 @@ public class Frame extends JFrame {
 		
 		painelTE = new CustomPanel("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\grama" + corGrama + ".jpg");
 		painelTE.setLayout(new GridBagLayout());
+		
 				
 		xbtn = (int) (painel1.getWidth()/2) - 75;
 		ybtn = (int) (painel1.getHeight()/2 - 130);
@@ -312,10 +329,37 @@ public class Frame extends JFrame {
 		caixatexto.setLineWrap(true); 
 		caixatexto.setWrapStyleWord(true);
 		
-		scroll = new JScrollPane(caixatexto);;
+		scroll = new JScrollPane(caixatexto);
 		scroll.setBounds(xbtn-30, ybtn-50, 180, 90); 
 		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		scroll.setBorder(borda1);
+		
+		scroll.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
+            @Override
+            protected void configureScrollBarColors() {
+                this.thumbColor = cor2;   // Cor da parte deslizante (thumb)
+                this.trackColor = new Color(240,240,240);  // Cor do trilho (track)
+                this.thumbHighlightColor = cor1;  // Cor de destaque do thumb
+                this.thumbDarkShadowColor = new Color(30, 100, 200); // Cor da sombra do thumb
+                this.trackHighlightColor = new Color(150, 150, 150); // Cor de destaque do trilho
+            }
+
+            @Override
+            protected JButton createDecreaseButton(int orientation) {
+                return createZeroButton();  // Remove o botão de diminuir (rolar para cima)
+            }
+
+            @Override
+            protected JButton createIncreaseButton(int orientation) {
+                return createZeroButton();  // Remove o botão de aumentar (rolar para baixo)
+            }
+
+            private JButton createZeroButton() {
+                JButton button = new JButton();
+                button.setPreferredSize(new Dimension(0, 0));  // Define o tamanho do botão como 0
+                return button;
+            }
+        });
 		
 		botaoEN = new Botoes("Enviar",cor1,cor2,borda1,borda2,xbtn,ybtn);
 		botaoEN.setBounds(xbtn, ybtn + 42, 120, 42);
@@ -335,7 +379,7 @@ public class Frame extends JFrame {
 		
 		caixasaidas2 = new JLabel("Caminho");
 		caixasaidas2.setHorizontalAlignment(SwingConstants.CENTER);
-		caixasaidas2.setFont(new Font("Georgia", Font.ITALIC, 12));
+		caixasaidas2.setFont(new Font("Georgia", Font.ITALIC, 14));
 		caixasaidas2.setForeground(cor2);
 		caixasaidas2.setIcon(null);
 		caixasaidas2.setBounds(xbtn-190, ybtn-42, 500, 40);
@@ -345,7 +389,7 @@ public class Frame extends JFrame {
 		caixatexto2.setFont(caixasaidas2.getFont());
 		caixatexto2.setLineWrap(true); 
 		caixatexto2.setWrapStyleWord(true); 
-		caixatexto2.setBounds(xbtn - 140, ybtn, 400, 30);
+		caixatexto2.setBounds(xbtn - 140, ybtn, 400, 40);
 		
 		
 		
@@ -363,6 +407,8 @@ public class Frame extends JFrame {
 		
 		
 		frameAR = new JFrame();
+		frameAR.setTitle("Nome Terreno");
+		frameAR.setIconImage(imglogo.getImage());
 		frameAR.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frameAR.setSize(300,150);
 		frameAR.setLocationRelativeTo(null);
@@ -401,6 +447,120 @@ public class Frame extends JFrame {
             }
         });
 		painelAR.add(caixatexto3);
+		
+		frameIN = new JFrame();
+		frameIN.setTitle("Instruções");
+		frameIN.setIconImage(imglogo.getImage());
+		frameIN.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frameIN.setSize(800,500);
+		frameIN.setLocationRelativeTo(null);
+		frameIN.setResizable(false);
+		frameIN.setVisible(false);
+		
+		
+		botaoRI2 = new Botoes("Retornar",cor1,cor2,borda1,borda2,xbtn + 100,ybtn + 340);
+		listaBotoes.add(botaoRI2);
+		
+		caixainstru = new JTextArea(
+			    "Regras do Jogo:\n"
+			    	    + "1 - Movimentação:\n"
+			    	    + "	Cada competidor lança dois dados no início de sua vez para determinar os pontos de movimento disponíveis.\n"
+			    	    + "	O competidor pode se mover para células adjacentes (cima, baixo, esquerda, direita) até que os pontos de\n"
+			    	    + "	movimento se esgotem.\n"
+			    	    + "	Movimentos e interações possíveis:\n"
+			    	    + "		Grama: movimentar-se custa 1 ponto.\n"
+			    	    + "		Árvore: movimentar-se custa 1 ponto. Permanecer 1 turno sem se mover garante uma fruta,\n"
+			    	    + "	com um limite de uma fruta a cada 5 turnos.\n"
+			    	    + "		Pedra: não pode ser ocupada, mas pode ser pulada ao custo de 3 pontos.\n"
+			    	    + "		Frutas: coletar uma fruta custa 1 ponto (a mesma de andar na grama), e ela é colocada na mochila\n"
+			    	    + "	do competidor.\n"
+			    	    + "	A movimentação termina quando todos os pontos são usados ou o jogador decide finalizar seu turno.\n"
+			    	    + "\n"
+			    	    + "2 - Interação com Frutas:\n"
+			    	    + "	Ao entrar em uma célula com uma fruta, o competidor pode coletá-la e colocá-la na sua mochila.\n"
+			    	    + "	Frutas podem ser usadas para fortalecer o competidor ou para efeitos especiais\n"
+			    	    + "	(como aumento de força ou agilidade).\n"
+			    	    + "	Frutas \"bichadas\" impedem o competidor de se mover no próximo turno, a menos que ele coma uma laranja.\n"
+			    	    + "\n"
+			    	    + "3 - Conflitos entre Competidores:\n"
+			    	    + "	Quando dois competidores tentam entrar em células adjacentes, ocorre um empurrão. O competidor da vez\n"
+			    	    + "	empurra o adversário, derrubando frutas da mochila do outro competidor.\n"
+			    	    + "	A quantidade de frutas derrubadas é calculada usando a força do ataque e da defesa de cada competidor:\n"
+			    	    + "		Força de Ataque (fa) = quantidade de frutas no atacante.\n"
+			    	    + "		Força de Defesa (fd) = quantidade de frutas no defensor.\n"
+			    	    + "	O número de frutas derrubadas é calculado como:\n"
+			    	    + "		empurrão = round(log2(fa + 1)) - round(log2(fd + 1))\n"
+			    	    + "	O defensor perde um número de frutas igual ao valor do empurrão (ou todas as frutas se tiver menos que o valor).\n"
+			    	    + "\n"
+			    	    + "4 - Mochila e Limite de Frutas:\n"
+			    	    + "	Cada competidor tem uma mochila com uma capacidade limitada de frutas. Quando a mochila atinge o limite,\n"
+			    	    + "	o competidor deve consumir ou perder frutas antes de coletar mais.\n"
+			    	    + "	A força do competidor aumenta conforme ele coleta frutas, tornando-o mais forte em confrontos.\n"
+			    	    + "\n"
+			    	    + "5 - Condicional de Vitória:\n"
+			    	    + "	O jogo termina quando um dos competidores acumula mais da metade dos maracujás (frutas ouro)\n"
+			    	    + "	em sua mochila.\n"
+			    	    + "	A verificação de vitória é feita no início de cada turno. O competidor que atingir o número necessário de maracujás\n"
+			    	    + "	vence na rodada seguinte.\n"
+			    	    + "6 - Controles:\n"
+			    	    + "	6.1 - Movimento:"
+			    	    + "		Via teclado: use as setas direcionais para mover o competidor.\n"
+			    	    + "		Via mouse: clique na célula adjacente desejada para mover o competidor.\n"
+			    	    + "	6.2 - Ações:"
+			    	    + "		Coletar frutas: o competidor coleta automaticamente ao entrar na célula com a fruta.\n"
+			    	    + "		Consumir frutas: pode ser feito a qualquer momento durante o turno,\n"
+			    	    + "		selecionando uma fruta na mochila.\n"
+			    	    + "		Finalizar turno: pressione o botão de \"Concluir Jogada\" para passar a vez ao outro competidor.\n"
+			    	);
+		caixainstru.setLineWrap(false);  // Quebra automática de linha
+		caixainstru.setWrapStyleWord(true);  // Quebra de linha em palavras inteiras
+		caixainstru.setFont(new Font("Georgia", Font.ITALIC, 12));
+		caixainstru.setForeground(cor2);
+		caixainstru.setBackground(painelIN.getBackground());
+		caixainstru.setEditable(false);  // Impede edição do texto
+		caixainstru.setOpaque(false);  // Torna o fundo transparente para combinar com o painel
+
+		
+		
+		scrollIN = new JScrollPane(caixainstru);
+		scrollIN.setBounds(16, 30, 750, 360);
+		scrollIN.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollIN.setBorder(borda1);
+		scrollIN.setOpaque(false);  // Torna o fundo do JScrollPane transparente
+		scrollIN.getViewport().setOpaque(false);  // Torna a área de exibição transparente
+		
+		scrollIN.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
+	            @Override
+	            protected void configureScrollBarColors() {
+	                this.thumbColor = cor2;   // Cor da parte deslizante (thumb)
+	                this.trackColor = new Color(240,240,240);  // Cor do trilho (track)
+	                this.thumbHighlightColor = cor1;  // Cor de destaque do thumb
+	                this.thumbDarkShadowColor = new Color(30, 100, 200); // Cor da sombra do thumb
+	                this.trackHighlightColor = new Color(150, 150, 150); // Cor de destaque do trilho
+	            }
+
+	            @Override
+	            protected JButton createDecreaseButton(int orientation) {
+	                return createZeroButton();  // Remove o botão de diminuir (rolar para cima)
+	            }
+
+	            @Override
+	            protected JButton createIncreaseButton(int orientation) {
+	                return createZeroButton();  // Remove o botão de aumentar (rolar para baixo)
+	            }
+
+	            private JButton createZeroButton() {
+	                JButton button = new JButton();
+	                button.setPreferredSize(new Dimension(0, 0));  // Define o tamanho do botão como 0
+	                return button;
+	            }
+	        });
+		
+		frameIN.add(painelIN);	
+		painelIN.add(scrollIN);
+		painelIN.add(botaoRI2);
+		
+		
 		
 		
 		painelInicio();
@@ -620,10 +780,23 @@ public class Frame extends JFrame {
 				criandoTerreno();
 			}
 		});
-			
+		
+		botaoIN.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				botaoClickado(botaoIN);
+				painelInstrucoes();
+			}
+		});
 		
 		
-		
+		botaoRI2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				botaoClickado(botaoRI);
+				frameIN.setVisible(false);
+				revalidate();
+				repaint();
+			}
+		});
 	}
 	
 	public void botaoClickado(Botoes botao) {
@@ -653,6 +826,12 @@ public class Frame extends JFrame {
 		painel1.removeAll();
 		painel1.add(logo, BorderLayout.NORTH);
 		painel1.add(painelIJ, BorderLayout.CENTER);
+		revalidate();
+		repaint();
+	}
+	
+	public void painelInstrucoes() {
+		frameIN.setVisible(true);
 		revalidate();
 		repaint();
 	}
@@ -779,12 +958,15 @@ public class Frame extends JFrame {
 	    repaint();
 	}
 	
+	
+	
 	public ImageIcon criandoImagem(int tamanho, String Caminho) {
 		ImageIcon img = new ImageIcon(Caminho);
 	    Image img1 = img.getImage().getScaledInstance(tamanho, tamanho, Image.SCALE_SMOOTH);
 	    img = new ImageIcon(img1);
 	    return img;
 	}
+	
 
 	public void criandoTerreno() {
 		int tamanhoCelula = 480 / Dimensao;
@@ -891,9 +1073,11 @@ public class Frame extends JFrame {
 	    repaint();
 	}
 	
+	
 	public int ale(int i) {
 		return (int) Math.round(Math.random()*i);
 	}
+	
 	
 	public void terrenoExemploSist() {
 
@@ -961,6 +1145,7 @@ public class Frame extends JFrame {
 	}
 	
 	// Função para imprimir a matriz
+	
 	private void imprimirMatriz(int[][] matriz) {
 	    for (int k = 0; k < Dimensao; k++) {
 	        for (int l = 0; l < Dimensao; l++) {
@@ -970,6 +1155,7 @@ public class Frame extends JFrame {
 	    }
 	}
 
+	
 	
 	public boolean verificaTerreno() {
 		arvoresTotais = 0;
@@ -1051,6 +1237,7 @@ public class Frame extends JFrame {
 		
 	}
 	
+	
 	public class ImageInPanel extends JPanel {
 	    /**
 		 * 
@@ -1075,6 +1262,7 @@ public class Frame extends JFrame {
 	    }
 	}
 
+	
 	
 	public class CustomPanel extends JPanel {
 	    /**
