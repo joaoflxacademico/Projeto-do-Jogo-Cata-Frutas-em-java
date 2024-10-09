@@ -65,7 +65,7 @@ public class Frame extends JFrame {
 	public Botoes botaoIJ;
 	public Botoes botaoMJ;
 	public Botoes botaoIN;
-	public Botoes botaoM;
+	public Botoes botaoT;
 	public Botoes botaoRI;
 	public Botoes botaoCT;
 	public Botoes botaoIT;
@@ -326,8 +326,8 @@ public class Frame extends JFrame {
 		listaBotoes.add(botaoIN); // Adiciona o botão à lista de botões
 	
 		// Botão "Light Mode" para alternar entre modos claro e escuro, posicionado abaixo do botão "Instruções"
-		botaoM = new Botoes("Light Mode", cor1, cor2, borda1, borda2, xbtn, ybtn + 126); 
-		listaBotoes.add(botaoM); // Adiciona o botão à lista de botões
+		botaoT = new Botoes("Light Mode", cor1, cor2, borda1, borda2, xbtn, ybtn + 126); 
+		listaBotoes.add(botaoT); // Adiciona o botão à lista de botões
 	
 		// Botões relacionados à manipulação de terrenos (criação e importação), também no painel principal
 	
@@ -652,8 +652,6 @@ public class Frame extends JFrame {
 		    public void actionPerformed(ActionEvent e) {
 		        botaoClickado(botaoRI);  // Marca o botão como clicado
 		        painelInicio();  // Volta para o painel inicial
-		        revalidate();  // Atualiza o layout
-		        repaint();  // Redesenha o painel
 		    }
 		});
 
@@ -666,14 +664,14 @@ public class Frame extends JFrame {
 		});
 
 		// Alterna entre Light Mode e Dark Mode quando o botão correspondente é clicado
-		botaoM.addActionListener(new ActionListener() {
+		botaoT.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
-		        if (botaoM.getText().equals("Light Mode")) {
-		            botaoM.mode(listaBotoes);  // Aplica o modo claro aos botões
-		            botaoM.setText("Dark Mode");  // Muda o texto para "Dark Mode"
+		        if (botaoT.getText().equals("Light Mode")) {
+		            botaoT.mode(listaBotoes);  // Aplica o modo claro aos botões
+		            botaoT.setText("Dark Mode");  // Muda o texto para "Dark Mode"
 		        } else {
-		            botaoM.mode(listaBotoes);  // Aplica o modo escuro aos botões
-		            botaoM.setText("Light Mode");  // Muda o texto para "Light Mode"
+		            botaoT.mode(listaBotoes);  // Aplica o modo escuro aos botões
+		            botaoT.setText("Light Mode");  // Muda o texto para "Light Mode"
 		        }
 		        revalidate();  // Atualiza o layout
 		        repaint();  // Redesenha o painel
@@ -871,9 +869,9 @@ public class Frame extends JFrame {
 	}
 	
 	public void botaoClickado(Botoes botao) {
-	    botao.setBackground(botaoM.getBackground());  // Define o fundo do botão clicado com o fundo de botaoM
-	    botao.setForeground(botaoM.getForeground());  // Define a cor do texto do botão clicado com a de botaoM
-	    botao.setBorder(botaoM.getBorder());  // Define a borda do botão clicado com a borda de botaoM
+	    botao.setBackground(botaoT.getBackground());  // Define o fundo do botão clicado com o fundo de botaoM
+	    botao.setForeground(botaoT.getForeground());  // Define a cor do texto do botão clicado com a de botaoM
+	    botao.setBorder(botaoT.getBorder());  // Define a borda do botão clicado com a borda de botaoM
 	    revalidate();  // Revalida o layout para refletir as mudanças
 	    repaint();  // Redesenha a interface para garantir que as mudanças sejam exibidas
 	}
@@ -882,7 +880,7 @@ public class Frame extends JFrame {
 	    painelini.add(botaoIJ);  // Adiciona o botão "Iniciar Jogo"
 	    painelini.add(botaoMJ);  // Adiciona o botão "Modos de Jogo"
 	    painelini.add(botaoIN);   // Adiciona o botão "Instruções"
-	    painelini.add(botaoM);    // Adiciona o botão de alternar entre modos de tema
+	    painelini.add(botaoT);    // Adiciona o botão de alternar entre modos de tema
 	    painel1.removeAll();      // Remove todos os componentes do painel principal
 	    painel1.add(logo, BorderLayout.NORTH);  // Adiciona o logo ao topo do painel
 	    painel1.add(painelini);   // Adiciona o painel inicial ao centro
@@ -938,10 +936,10 @@ public class Frame extends JFrame {
 
 	
 	public void painelTerrenoExemplo() {
-	    painel1.removeAll();             // Remove todos os componentes do painel principal
-	    painel1.add(botaoRT);            // Adiciona o botão "Retornar"
-	    painel1.add(botaoST);            // Adiciona o botão "Salvar Terreno"
-	    painel1.add(botaoNT);            // Adiciona o botão "Novo Terreno"
+	    painel1.removeAll(); // Remove todos os componentes do painel principal
+	    painel1.add(botaoRT); // Adiciona o botão "Retornar"
+	    painel1.add(botaoST); // Adiciona o botão "Salvar Terreno"
+	    painel1.add(botaoNT); // Adiciona o botão "Novo Terreno"
 	    painel1.add(logo, BorderLayout.NORTH);  // Adiciona o logo ao topo do painel
 	    gbc = new GridBagConstraints();  // Cria um novo GridBagConstraints
 	    gbc.weightx = 0;                 
