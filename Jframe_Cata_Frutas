@@ -3,14 +3,11 @@ package cata_frutas;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import java.io.*;
 import java.io.BufferedReader;
 import java.io.Writer;
 import java.io.FileWriter;
@@ -19,19 +16,18 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 
-import javax.print.attribute.standard.JobHoldUntil;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 
 
 
 public class Frame extends JFrame {
 
+	/* Inicialização dos objetos utilizados na construção dos painéis, variam desde
+	frames, painéis, labels, scrolls, caixas de texto, caixas de saida, cores e bordas.
+	*/
 	private static final long serialVersionUID = 1L;
 	private static JPanel painel1;
 	private static JPanel painelini;
@@ -52,15 +48,19 @@ public class Frame extends JFrame {
 	
 	public JScrollPane scroll;
 	public JScrollPane scrollIN;
+	public JScrollPane scrollIM;
 	public JScrollPane scrollTE;
 	public JScrollPane scrollTE2;
+
+
+	JTextArea caixatexto;
+	JTextArea caixatexto2;
+	JTextArea caixainstru;
+	JTextField caixatexto3;
 	
-	public static Color cor1 = new Color(255,238,138);
-	public static Color cor2 = new Color(0,0,0);
-	public static LineBorder borda1 = new LineBorder(cor2);
-	public static LineBorder borda2 = new LineBorder(cor1);
-	public static String nomeArquivo;
-	public ArrayList<Botoes> listaBotoes;
+	
+	GridBagConstraints gbc; 
+	
 	
 	public Botoes botaoIJ;
 	public Botoes botaoMJ;
@@ -79,8 +79,26 @@ public class Frame extends JFrame {
 	public Botoes botaoNT;
 	public Botoes botaoRI2;
 	
+	
+	public static Color cor1 = new Color(255,238,138);
+	public static Color cor2 = new Color(0,0,0);
+	public static LineBorder borda1 = new LineBorder(cor2);
+	public static LineBorder borda2 = new LineBorder(cor1);
+	
 	public static ImageIcon imglogo = new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\Logo.png");
     
+	
+	/*Inicialização dos objetos que serão utilizados na construção do terreno, na 
+	 * importação do terreno, e no salvamento do arquivo com as entradas. 
+	 * Variam desde inteiros, Strings e booleanos.
+	 */
+	
+	public static String nomeArquivo;
+	
+	//Arraylist utilizada para a atualização das cores dos botões na mudança de interface.
+	public ArrayList<Botoes> listaBotoes;
+	
+	
 	public static int[][] Matriz;
 	public static int Dimensao;
 	public static int Pedras;
@@ -93,13 +111,6 @@ public class Frame extends JFrame {
 	public static int  corGrama = 1;
 	public String userInput;
 	
-	JTextArea caixatexto;
-	JTextArea caixatexto2;
-	JTextArea caixainstru;
-	JTextField caixatexto3;
-	
-	
-	GridBagConstraints gbc; 
 	
 	public static boolean uiaceita = false;
 	public static String memoriaEN[][] = new String[11][3];
@@ -109,6 +120,8 @@ public class Frame extends JFrame {
 	public static int ybtn2 = 0;
 	
 	
+	//Criação de uma classe chamada Botoes com o intuito de facilitar a criação dos botões.
+	//Também é utilizada para chamar o método que atualiza a cor dos botões, plano de fundos e textos.
 	
 	class Botoes extends JButton{
 		/**
@@ -117,6 +130,7 @@ public class Frame extends JFrame {
 		private static final long serialVersionUID = 1L;
 		public int cont = 1;
 		
+		//Construtor da clase Botoes.
 		public Botoes(String text, Color cor1, Color cor2, LineBorder borda1, LineBorder borda2, int x, int y) {
 		
 			this.setText(text);
@@ -132,7 +146,7 @@ public class Frame extends JFrame {
 		}
 		
 		
-		
+		//Método auxiliar para atalizar a cor dos botões
 		public void update(Color cor1, Color cor2, LineBorder borda1, LineBorder borda2) {
 			this.setBackground(cor1);
 			this.setForeground(cor2);
@@ -140,7 +154,7 @@ public class Frame extends JFrame {
 			this.hover();
 		}
 		
-		
+		//Método que permite a mudança de cores ao passar o mouse por cima do botão
 		public void hover() {
 			this.addMouseListener(new MouseAdapter() {
 	            @Override
@@ -161,7 +175,7 @@ public class Frame extends JFrame {
 			});
 		}
 		
-		
+		//Método que atualiza as cores dos planos de fundos, textos e botões.
 		public void mode(ArrayList<Botoes> listaBotoes) {
 			Color var = cor1;
 			LineBorder var2 = new LineBorder(cor2);
@@ -185,6 +199,7 @@ public class Frame extends JFrame {
 			caixasaidas2.setForeground(cor2);
 			caixasaidas3.setForeground(cor2);
 			caixainstru.setForeground(cor2);
+			scrollIN.setBorder(borda1);
 			if(corGrama == 1) {
 				corGrama = 0;
 				painelTE.updateImagem("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\grama" + corGrama +".png");
@@ -203,7 +218,7 @@ public class Frame extends JFrame {
 
 	
 	/**
-	 * Launch the application.
+	 * Começa o código.
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -224,7 +239,7 @@ public class Frame extends JFrame {
 	
 
 	/**
-	 * Create the frame.
+	 * Cria o frame.
 	 */
 	public Frame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -238,102 +253,121 @@ public class Frame extends JFrame {
 		
 	}
 	
+	//Função que incializa desde os painéis, aos botões, as ações que cada um deles realizam,
+	//as caixas de texto, as caixas de saída e os labels.
 	public void inicializa() {
+
+	    // Painel principal onde os outros componentes serão adicionados
+	    painel1 = new JPanel();
+	    painel1.setBorder(new EmptyBorder(5, 5, 5, 5)); // Define uma borda vazia com preenchimento
+	    painel1.setBackground(cor1); // Define a cor de fundo do painel
+	    painel1.setBounds(0, 0, 600, 400); // Define o tamanho e a posição do painel
+	    painel1.setLayout(new BorderLayout(0, 0)); // Utiliza o layout BorderLayout para organizar os componentes
+
+	    // Logo que será exibido no topo da tela
+	    logo = new JLabel("Cata Frutas");
+	    logo.setHorizontalAlignment(SwingConstants.CENTER); // Alinha o texto ao centro
+	    logo.setFont(new Font("Georgia", Font.ITALIC, 48)); // Define a fonte do texto
+	    logo.setForeground(cor2); // Define a cor do texto
+	    logo.setIcon(null); // Não há ícone associado ao rótulo
+	    logo.setBounds(10, 10, painel1.getX(), painel1.getY()); // Define a posição e o tamanho do rótulo, mas isso não afeta pois o BorderLayout cuida disso
+	    painel1.add(logo, BorderLayout.NORTH); // Adiciona o logo no topo do painel principal (região Norte)
+
+	    // Painel inicial central onde outros componentes podem ser adicionados
+	    painelini = new JPanel();
+	    painelini.setBackground(new Color(255, 238, 138)); // Define a cor de fundo do painel
+	    painelini.setLayout(null); // Usa um layout nulo, permitindo que os componentes sejam posicionados manualmente
+	    painel1.add(painelini, BorderLayout.CENTER); // Adiciona o painel central no painel principal
+
+	    // Painel para opções de iniciar jogo, ainda sem componentes adicionados
+	    painelIJ = new JPanel();
+	    painelIJ.setLayout(null); // Layout nulo para posicionamento manual dos componentes
+	    painelIJ.setBackground(painel1.getBackground()); // Cor de fundo igual ao painel principal
+
+	    // Painel de instruções, sem componentes no momento
+	    painelIN = new JPanel();
+	    painelIN.setLayout(null);
+	    painelIN.setBackground(cor1); // Usa a cor cor1 definida anteriormente
+
+	    // Painel para criar terreno
+	    painelCT = new JPanel();
+	    painelCT.setLayout(null);
+	    painelCT.setBackground(painel1.getBackground());
+
+	    // Painel para importar terreno
+	    painelIT = new JPanel();
+	    painelIT.setLayout(null);
+	    painelIT.setBackground(painel1.getBackground());
+
+	    // Painel personalizado com uma imagem de fundo (grama)
+	    painelTE = new CustomPanel("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\grama" + corGrama + ".jpg");
+	    painelTE.setLayout(new GridBagLayout()); // Utiliza um layout GridBag para flexibilidade na organização dos componentes
+
+	    // Posição inicial dos botões
+	    xbtn = (int) (painel1.getWidth() / 2) - 75; // Centraliza os botões horizontalmente
+	    ybtn = (int) (painel1.getHeight() / 2 - 130); // Define a posição vertical dos botões
+
+	    setContentPane(painel1); // Define o painel1 como o conteúdo principal da janela
+
+	    listaBotoes = new ArrayList<Botoes>(); // Inicializa a lista de botões
+
+		// Inicializa os botões que serão exibidos no painel principal, definindo cores, bordas e suas posições.
+	
+	    // Botão "Iniciar Jogo" na posição (xbtn, ybtn) com cores e bordas definidas
+		botaoIJ = new Botoes("Iniciar Jogo", cor1, cor2, borda1, borda2, xbtn, ybtn); 
+		listaBotoes.add(botaoIJ); // Adiciona o botão à lista de botões
+	
+		 // Botão "Modos de Jogo" posicionado abaixo do botão "Iniciar Jogo"
+		botaoMJ = new Botoes("Modos de Jogo", cor1, cor2, borda1, borda2, xbtn, ybtn + 42); 
+		listaBotoes.add(botaoMJ); // Adiciona o botão à lista de botões
+	
+		// Botão "Instruções" posicionado abaixo do botão "Modos de Jogo"
+		botaoIN = new Botoes("Instruções", cor1, cor2, borda1, borda2, xbtn, ybtn + 84); 
+		listaBotoes.add(botaoIN); // Adiciona o botão à lista de botões
+	
+		// Botão "Light Mode" para alternar entre modos claro e escuro, posicionado abaixo do botão "Instruções"
+		botaoM = new Botoes("Light Mode", cor1, cor2, borda1, borda2, xbtn, ybtn + 126); 
+		listaBotoes.add(botaoM); // Adiciona o botão à lista de botões
+	
+		// Botões relacionados à manipulação de terrenos (criação e importação), também no painel principal
+	
+		// Botão "Criar Terreno" para iniciar a criação de um novo terreno, na posição (xbtn, ybtn)
+		botaoCT = new Botoes("Criar Terreno", cor1, cor2, borda1, borda2, xbtn, ybtn);
+		listaBotoes.add(botaoCT); // Adiciona o botão à lista de botões
+	
+		// Botão "Importar Terreno" posicionado logo abaixo do botão "Criar Terreno"
+		botaoIT = new Botoes("Importar Terreno", cor1, cor2, borda1, borda2, xbtn, ybtn + 42);
+		listaBotoes.add(botaoIT); // Adiciona o botão à lista de botões
+	
+		// Botão "Retornar" para voltar ao menu anterior, posicionado abaixo do botão "Importar Terreno"
+		botaoRI = new Botoes("Retornar", cor1, cor2, borda1, borda2, xbtn, ybtn + 84);
+		listaBotoes.add(botaoRI); // Adiciona o botão à lista de botões
+
+
+	    // Rótulo que indica onde as entradas serão exibidas
+	    caixasaidas = new JLabel("Entradas");
+	    caixasaidas.setHorizontalAlignment(SwingConstants.CENTER); // Centraliza o texto
+	    caixasaidas.setFont(new Font("Georgia", Font.ITALIC, 14)); // Define a fonte e o estilo do texto
+	    caixasaidas.setForeground(cor2); // Define a cor do texto
+	    caixasaidas.setIcon(null); // Sem ícone associado
+	    caixasaidas.setBounds(xbtn - 190, ybtn - 80, 500, 40); // Define o tamanho e a posição do rótulo
+
+	    // Área de texto onde o usuário pode digitar
+	    caixatexto = new JTextArea();
+	    caixatexto.setBorder(borda1); // Define a borda da área de texto
+	    caixatexto.setFont(caixasaidas.getFont()); // Usa a mesma fonte do rótulo
+	    caixatexto.setLineWrap(true); // Habilita a quebra de linha automática
+	    caixatexto.setWrapStyleWord(true); // Quebra a linha por palavra
+
+	    // Componente de rolagem para a área de texto
+	    scroll = new JScrollPane(caixatexto);
+	    scroll.setBounds(xbtn - 30, ybtn - 50, 180, 90); // Define a posição e o tamanho do componente de rolagem
+	    scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); // Barra de rolagem vertical sempre visível
+	    scroll.setBorder(borda1); // Define a borda do componente de rolagem
+
+
 		
-		
-		
-		painel1 = new JPanel();
-		painel1.setBorder(new EmptyBorder(5, 5, 5, 5));
-		painel1.setBackground(cor1);
-		painel1.setBounds(0, 0, 600, 400);
-		painel1.setLayout(new BorderLayout(0, 0));
-		
-		logo = new JLabel("Cata Frutas");
-		logo.setHorizontalAlignment(SwingConstants.CENTER);
-		logo.setFont(new Font("Georgia", Font.ITALIC, 48));
-		logo.setForeground(cor2);
-		logo.setIcon(null);
-		logo.setBounds(10, 10, painel1.getX(), painel1.getY());
-		painel1.add(logo, BorderLayout.NORTH);
-		
-		
-		painelini = 
-				new JPanel();
-		painelini.setBackground(new Color(255, 238, 138));
-		painelini.setLayout(null);
-		painel1.add(painelini, BorderLayout.CENTER);
-				
-		painelIJ = new JPanel();
-		painelIJ.setLayout(null);
-		painelIJ.setBackground(painel1.getBackground());
-		
-		painelIN = new JPanel();
-		painelIN.setLayout(null);
-		painelIN.setBackground(cor1);
-		
-		painelCT = new JPanel();
-		painelCT.setLayout(null);
-		painelCT.setBackground(painel1.getBackground());
-		
-		painelIT = new JPanel();
-		painelIT.setLayout(null);
-		painelIT.setBackground(painel1.getBackground());
-		
-		painelTE = new CustomPanel("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\grama" + corGrama + ".jpg");
-		painelTE.setLayout(new GridBagLayout());
-		
-				
-		xbtn = (int) (painel1.getWidth()/2) - 75;
-		ybtn = (int) (painel1.getHeight()/2 - 130);
-		
-		setContentPane(painel1);
-		
-		listaBotoes = new ArrayList<Botoes>();
-		
-		
-		botaoIJ = new Botoes("Iniciar Jogo",cor1,cor2,borda1,borda2,xbtn,ybtn);
-		listaBotoes.add(botaoIJ);
-		
-		botaoMJ = new Botoes("Modos de Jogo",cor1,cor2,borda1,borda2,xbtn,ybtn + 42);
-		listaBotoes.add(botaoMJ);
-		
-		botaoIN = new Botoes("Instruções",cor1,cor2,borda1,borda2,xbtn,ybtn + 84);
-		listaBotoes.add(botaoIN);
-		
-		botaoM = new Botoes("Light Mode",cor1,cor2,borda1,borda2,xbtn,ybtn + 126);
-		listaBotoes.add(botaoM);
-		
-		
-		
-		botaoCT = new Botoes("Criar Terreno",cor1,cor2,borda1,borda2,xbtn,ybtn);
-		listaBotoes.add(botaoCT);
-		
-		botaoIT = new Botoes("Importar Terreno",cor1,cor2,borda1,borda2,xbtn,ybtn+42);
-		listaBotoes.add(botaoIT);
-		
-		botaoRI = new Botoes("Retornar",cor1,cor2,borda1,borda2,xbtn,ybtn + 84);
-		listaBotoes.add(botaoRI);
-		
-		
-		
-		caixasaidas = new JLabel("Entradas");
-		caixasaidas.setHorizontalAlignment(SwingConstants.CENTER);
-		caixasaidas.setFont(new Font("Georgia", Font.ITALIC, 12));
-		caixasaidas.setForeground(cor2);
-		caixasaidas.setIcon(null);
-		caixasaidas.setBounds(xbtn-190, ybtn-80, 500, 40);
-		
-		caixatexto = new JTextArea();
-		caixatexto.setBorder(borda1);
-		caixatexto.setFont(caixasaidas.getFont());
-		caixatexto.setLineWrap(true); 
-		caixatexto.setWrapStyleWord(true);
-		
-		scroll = new JScrollPane(caixatexto);
-		scroll.setBounds(xbtn-30, ybtn-50, 180, 90); 
-		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		scroll.setBorder(borda1);
-		
+		//Cria um scroll personalizado sem os botões, e com uma coloração diferente
 		scroll.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
             @Override
             protected void configureScrollBarColors() {
@@ -361,105 +395,123 @@ public class Frame extends JFrame {
             }
         });
 		
-		botaoEN = new Botoes("Enviar",cor1,cor2,borda1,borda2,xbtn,ybtn);
-		botaoEN.setBounds(xbtn, ybtn + 42, 120, 42);
-		listaBotoes.add(botaoEN);
-		
-		botaoTE = new Botoes("Terreno Exemplo",cor1,cor2,borda1,borda2,xbtn,ybtn + 86);
+		// Inicializa o botão "Enviar" com suas propriedades e adiciona à lista de botões
+		botaoEN = new Botoes("Enviar", cor1, cor2, borda1, borda2, xbtn, ybtn);
+		botaoEN.setBounds(xbtn, ybtn + 42, 120, 42); // Define a posição e o tamanho do botão
+		listaBotoes.add(botaoEN); // Adiciona o botão à lista de botões
+
+		// Inicializa o botão "Terreno Exemplo" e adiciona à lista de botões
+		botaoTE = new Botoes("Terreno Exemplo", cor1, cor2, borda1, borda2, xbtn, ybtn + 86);
 		listaBotoes.add(botaoTE);
-		
-		botaoStart = new Botoes("Começar Jogo",cor1,cor2,borda1,borda2,xbtn,ybtn + 128);
+
+		// Inicializa o botão "Começar Jogo" e adiciona à lista de botões
+		botaoStart = new Botoes("Começar Jogo", cor1, cor2, borda1, borda2, xbtn, ybtn + 128);
 		listaBotoes.add(botaoStart);
-		
-		botaoRC = new Botoes("Retornar",cor1,cor2,borda1,borda2,xbtn,ybtn + 170);
+
+		// Inicializa o botão "Retornar" e adiciona à lista de botões
+		botaoRC = new Botoes("Retornar", cor1, cor2, borda1, borda2, xbtn, ybtn + 170);
 		listaBotoes.add(botaoRC);
-		
-		
-		
-		
+
+		// Label que indica a entrada de caminho
 		caixasaidas2 = new JLabel("Caminho");
-		caixasaidas2.setHorizontalAlignment(SwingConstants.CENTER);
-		caixasaidas2.setFont(new Font("Georgia", Font.ITALIC, 14));
-		caixasaidas2.setForeground(cor2);
-		caixasaidas2.setIcon(null);
-		caixasaidas2.setBounds(xbtn-190, ybtn-42, 500, 40);
-		
+		caixasaidas2.setHorizontalAlignment(SwingConstants.CENTER); // Centraliza o texto no label
+		caixasaidas2.setFont(new Font("Georgia", Font.ITALIC, 14)); // Define a fonte
+		caixasaidas2.setForeground(cor2); // Define a cor do texto
+		caixasaidas2.setIcon(null); // Não há ícone associado ao rótulo
+		caixasaidas2.setBounds(xbtn - 190, ybtn - 32, 500, 40); // Define a posição e tamanho do rótulo
+
+		// Área de texto para entrada de caminho, sem quebra de linha
 		caixatexto2 = new JTextArea();
-		caixatexto2.setBorder(borda1);
-		caixatexto2.setFont(caixasaidas2.getFont());
-		caixatexto2.setLineWrap(true); 
-		caixatexto2.setWrapStyleWord(true); 
-		caixatexto2.setBounds(xbtn - 140, ybtn, 400, 40);
-		
-		
-		
-		botaoEN2 = new Botoes("Enviar",cor1,cor2,borda1,borda2,xbtn,ybtn + 44);
+		caixatexto2.setBorder(borda1); // Define a borda
+		caixatexto2.setFont(caixasaidas2.getFont()); // Define a mesma fonte do rótulo
+		caixatexto2.setLineWrap(false); // Desabilita a quebra de linha
+
+		// Componente de rolagem para a área de texto, com barra de rolagem horizontal conforme necessário
+		scrollIM = new JScrollPane(caixatexto2);
+		scrollIM.setBounds(xbtn - 140, ybtn + 10, 400, 20); // Define a posição e tamanho do componente de rolagem
+		scrollIM.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED); // Barra de rolagem horizontal
+		scrollIM.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER); // Desabilita a rolagem vertical
+		scrollIM.setHorizontalScrollBar(null); // Remove a barra de rolagem horizontal inicialmente
+
+		// Inicializa outro botão "Enviar" e adiciona à lista de botões
+		botaoEN2 = new Botoes("Enviar", cor1, cor2, borda1, borda2, xbtn, ybtn + 44);
 		listaBotoes.add(botaoEN2);
-		
-		botaoRT = new Botoes("Retornar",cor1,cor2,borda1,borda2, 1366/2 - 75 , 720/2 + 325);
+
+		// Inicializa o botão "Retornar" com uma posição diferente
+		botaoRT = new Botoes("Retornar", cor1, cor2, borda1, borda2, 1366 / 2 - 75, 720 / 2 + 325);
 		listaBotoes.add(botaoRT);
-		
-		botaoST = new Botoes("Salvar Terreno",cor1,cor2,borda1,borda2, 1366/2 - 75 , 720/2 + 283);
+
+		// Inicializa o botão "Salvar Terreno"
+		botaoST = new Botoes("Salvar Terreno", cor1, cor2, borda1, borda2, 1366 / 2 - 75, 720 / 2 + 283);
 		listaBotoes.add(botaoST);
-		
-		botaoNT = new Botoes("Novo Terreno",cor1,cor2,borda1,borda2, 1366/2 - 75 , 100);
+
+		// Inicializa o botão "Novo Terreno"
+		botaoNT = new Botoes("Novo Terreno", cor1, cor2, borda1, borda2, 1366 / 2 - 75, 100);
 		listaBotoes.add(botaoNT);
-		
-		
+
+		// Inicializa uma nova janela para o nome do terreno
 		frameAR = new JFrame();
-		frameAR.setTitle("Nome Terreno");
-		frameAR.setIconImage(imglogo.getImage());
-		frameAR.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		frameAR.setSize(300,150);
-		frameAR.setLocationRelativeTo(null);
-		frameAR.setResizable(false);
-		frameAR.setVisible(false);
-		
+		frameAR.setTitle("Nome Terreno"); // Define o título da janela
+		frameAR.setIconImage(imglogo.getImage()); // Define o ícone da janela
+		frameAR.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Fecha a janela ao ser fechada sem finalizar o programa
+		frameAR.setSize(300, 150); // Define o tamanho da janela
+		frameAR.setLocationRelativeTo(null); // Centraliza a janela na tela
+		frameAR.setResizable(false); // Impede que a janela seja redimensionada
+		frameAR.setVisible(false); // Define a janela como invisível inicialmente
+
+		// Painel para a janela de nome do terreno
 		painelAR = new JPanel();
-		painelAR.setLayout(null);
-		painelAR.setBackground(painel1.getBackground());
-		frameAR.add(painelAR);
-		
+		painelAR.setLayout(null); // Layout nulo para posicionamento manual
+		painelAR.setBackground(painel1.getBackground()); // Define o fundo do painel
+		frameAR.add(painelAR); // Adiciona o painel à janela
+
+		// Label para indicar o nome do arquivo
 		caixasaidas3 = new JLabel("Nome do Arquivo");
-		caixasaidas3.setHorizontalAlignment(SwingConstants.CENTER);
-		caixasaidas3.setFont(new Font("Georgia", Font.ITALIC, 14));
-		caixasaidas3.setForeground(cor2);
-		caixasaidas3.setBounds(0, 10, 300, 50);
-		painelAR.add(caixasaidas3);
-		
+		caixasaidas3.setHorizontalAlignment(SwingConstants.CENTER); // Centraliza o texto
+		caixasaidas3.setFont(new Font("Georgia", Font.ITALIC, 14)); // Define a fonte
+		caixasaidas3.setForeground(cor2); // Define a cor do texto
+		caixasaidas3.setBounds(0, 10, 300, 50); // Define a posição e tamanho do rótulo
+		painelAR.add(caixasaidas3); // Adiciona o rótulo ao painel
+
+		// Campo de texto para inserir o nome do arquivo
 		caixatexto3 = new JTextField();
-		caixatexto3.setHorizontalAlignment(SwingConstants.CENTER);
-		caixatexto3.setBorder(borda1);
-		caixatexto3.setFont(caixasaidas3.getFont());
-		caixatexto3.setBounds(50, 50, 200, 30);
+		caixatexto3.setHorizontalAlignment(SwingConstants.CENTER); // Centraliza o texto
+		caixatexto3.setBorder(borda1); // Define a borda
+		caixatexto3.setFont(caixasaidas3.getFont()); // Usa a mesma fonte do rótulo
+		caixatexto3.setBounds(50, 50, 200, 30); // Define a posição e tamanho do campo de texto
+
+		// Adiciona um evento para o campo de texto que salva o terreno ao pressionar Enter
 		caixatexto3.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                	receberTexto();
-                	try {
-    					SalvarTerreno();
-    				} catch (IOException | InterruptedException e1) {
-    					// TODO Auto-generated catch block
-    					e1.printStackTrace();
-    				}
-                }
-            }
-        });
-		painelAR.add(caixatexto3);
-		
+		    @Override
+		    public void keyPressed(KeyEvent e) {
+		        if (e.getKeyCode() == KeyEvent.VK_ENTER) { // Verifica se a tecla Enter foi pressionada
+		            receberTexto(); // Função para processar o texto inserido
+		            try {
+		                SalvarTerreno(); // Chama o método para salvar o terreno
+		            } catch (IOException | InterruptedException e1) { // Captura possíveis exceções
+		                e1.printStackTrace(); // Imprime o erro no console
+		            }
+		        }
+		    }
+		});
+		painelAR.add(caixatexto3); // Adiciona o campo de texto ao painel
+
+		// Inicializa uma janela para exibir instruções
 		frameIN = new JFrame();
-		frameIN.setTitle("Instruções");
-		frameIN.setIconImage(imglogo.getImage());
-		frameIN.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		frameIN.setSize(800,500);
-		frameIN.setLocationRelativeTo(null);
-		frameIN.setResizable(false);
-		frameIN.setVisible(false);
+		frameIN.setTitle("Instruções"); // Define o título da janela
+		frameIN.setIconImage(imglogo.getImage()); // Define o ícone da janela
+		frameIN.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Fecha a janela sem finalizar o programa
+		frameIN.setSize(800, 500); // Define o tamanho da janela
+		frameIN.setLocationRelativeTo(null); // Centraliza a janela na tela
+		frameIN.setResizable(false); // Impede o redimensionamento da janela
+		frameIN.setVisible(false); // A janela é invisível inicialmente
+
 		
 		
-		botaoRI2 = new Botoes("Retornar",cor1,cor2,borda1,borda2,xbtn + 100,ybtn + 340);
-		listaBotoes.add(botaoRI2);
+		// Botão "Retornar" adicional, posicionado em (xbtn + 100, ybtn + 340)
+		botaoRI2 = new Botoes("Retornar", cor1, cor2, borda1, borda2, xbtn + 100, ybtn + 340); 
+		listaBotoes.add(botaoRI2); // Adiciona o botão à lista de botões
+
 		
 		caixainstru = new JTextArea(
 			    "Regras do Jogo:\n"
@@ -512,222 +564,240 @@ public class Frame extends JFrame {
 			    	    + "		selecionando uma fruta na mochila.\n"
 			    	    + "		Finalizar turno: pressione o botão de \"Concluir Jogada\" para passar a vez ao outro competidor.\n"
 			    	);
-		caixainstru.setLineWrap(false);  // Quebra automática de linha
-		caixainstru.setWrapStyleWord(true);  // Quebra de linha em palavras inteiras
-		caixainstru.setFont(new Font("Georgia", Font.ITALIC, 12));
-		caixainstru.setForeground(cor2);
-		caixainstru.setBackground(painelIN.getBackground());
-		caixainstru.setEditable(false);  // Impede edição do texto
-		caixainstru.setOpaque(false);  // Torna o fundo transparente para combinar com o painel
+		
+		// Configurações da área de texto para exibição de instruções
+		caixainstru.setLineWrap(false);  // Desabilita a quebra automática de linha
+		caixainstru.setWrapStyleWord(true);  // Quebra de linha respeitando palavras inteiras
+		caixainstru.setFont(new Font("Georgia", Font.ITALIC, 12));  // Define a fonte do texto
+		caixainstru.setForeground(cor2);  // Define a cor do texto
+		caixainstru.setBackground(painelIN.getBackground());  // Usa a mesma cor de fundo do painel
+		caixainstru.setEditable(false);  // Impede que o texto seja editável
+		caixainstru.setOpaque(false);  // Torna o fundo transparente
 
-		
-		
+		// Configura o JScrollPane para exibir a área de texto
 		scrollIN = new JScrollPane(caixainstru);
-		scrollIN.setBounds(16, 30, 750, 360);
-		scrollIN.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		scrollIN.setBorder(borda1);
-		scrollIN.setOpaque(false);  // Torna o fundo do JScrollPane transparente
-		scrollIN.getViewport().setOpaque(false);  // Torna a área de exibição transparente
-		
+		scrollIN.setBounds(16, 30, 750, 360);  // Define as dimensões e posição do JScrollPane
+		scrollIN.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);  // Adiciona uma barra de rolagem vertical
+		scrollIN.setBorder(borda1);  // Define a borda do JScrollPane
+		scrollIN.setOpaque(false);  // Torna o JScrollPane transparente
+		scrollIN.getViewport().setOpaque(false);  // Torna a área visível transparente
+
+		// Personaliza a aparência da barra de rolagem usando BasicScrollBarUI
 		scrollIN.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
-	            @Override
-	            protected void configureScrollBarColors() {
-	                this.thumbColor = cor2;   // Cor da parte deslizante (thumb)
-	                this.trackColor = new Color(240,240,240);  // Cor do trilho (track)
-	                this.thumbHighlightColor = cor1;  // Cor de destaque do thumb
-	                this.thumbDarkShadowColor = new Color(30, 100, 200); // Cor da sombra do thumb
-	                this.trackHighlightColor = new Color(150, 150, 150); // Cor de destaque do trilho
-	            }
+		    @Override
+		    protected void configureScrollBarColors() {
+		        this.thumbColor = cor2;  // Define a cor da parte deslizante (thumb)
+		        this.trackColor = new Color(240, 240, 240);  // Define a cor do trilho (track)
+		        this.thumbHighlightColor = cor1;  // Define a cor de destaque do thumb
+		        this.thumbDarkShadowColor = new Color(30, 100, 200);  // Define a cor da sombra do thumb
+		        this.trackHighlightColor = new Color(150, 150, 150);  // Define a cor de destaque do trilho
+		    }
 
-	            @Override
-	            protected JButton createDecreaseButton(int orientation) {
-	                return createZeroButton();  // Remove o botão de diminuir (rolar para cima)
-	            }
+		    // Remove os botões de rolagem para cima e para baixo
+		    @Override
+		    protected JButton createDecreaseButton(int orientation) {
+		        return createZeroButton();  // Remove o botão de diminuir
+		    }
 
-	            @Override
-	            protected JButton createIncreaseButton(int orientation) {
-	                return createZeroButton();  // Remove o botão de aumentar (rolar para baixo)
-	            }
+		    @Override
+		    protected JButton createIncreaseButton(int orientation) {
+		        return createZeroButton();  // Remove o botão de aumentar
+		    }
 
-	            private JButton createZeroButton() {
-	                JButton button = new JButton();
-	                button.setPreferredSize(new Dimension(0, 0));  // Define o tamanho do botão como 0
-	                return button;
-	            }
-	        });
-		
-		frameIN.add(painelIN);	
+		    // Método auxiliar para criar um botão invisível
+		    private JButton createZeroButton() {
+		        JButton button = new JButton();
+		        button.setPreferredSize(new Dimension(0, 0));  // Define o tamanho do botão como 0
+		        return button;
+		    }
+		});
+
+		// Adiciona o JScrollPane e o botão "Retornar" ao painel
+		frameIN.add(painelIN);
 		painelIN.add(scrollIN);
 		painelIN.add(botaoRI2);
-		
+
 		
 		
 		
 		painelInicio();
 		
 		
+		// Adiciona a ação do botão "Iniciar Jogo"
 		botaoIJ.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-					botaoClickado(botaoIJ);
-					painelIniciarJogo();
-				}
-			});
-		
+		    public void actionPerformed(ActionEvent e) {
+		        botaoClickado(botaoIJ);  // Marca o botão como clicado
+		        painelIniciarJogo();  // Troca para o painel de iniciar o jogo
+		    }
+		});
+
+		// Adiciona a ação do botão "Criar Terreno"
 		botaoCT.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-					botaoClickado(botaoCT);
-					painelCriacaoTerreno();
-				}
-			});
-		
+		    public void actionPerformed(ActionEvent e) {
+		        botaoClickado(botaoCT);  // Marca o botão como clicado
+		        painelCriacaoTerreno();  // Troca para o painel de criação de terreno
+		    }
+		});
+
+		// Adiciona a ação do botão "Importar Terreno"
 		botaoIT.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				botaoClickado(botaoIT);
-				painelImportarTerreno();
-				}
-			});
-		
+		    public void actionPerformed(ActionEvent e) {
+		        botaoClickado(botaoIT);  // Marca o botão como clicado
+		        painelImportarTerreno();  // Troca para o painel de importação de terreno
+		    }
+		});
+
+		// Adiciona a ação do botão "Retornar" (botaoRI) para voltar ao menu inicial
 		botaoRI.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				botaoClickado(botaoRI);
-				painelInicio();
-				revalidate();
-				repaint();
-			}
+		    public void actionPerformed(ActionEvent e) {
+		        botaoClickado(botaoRI);  // Marca o botão como clicado
+		        painelInicio();  // Volta para o painel inicial
+		        revalidate();  // Atualiza o layout
+		        repaint();  // Redesenha o painel
+		    }
 		});
-		
-		
-		
+
+		// Adiciona a ação do botão "Retornar" (botaoRC) para voltar ao jogo
 		botaoRC.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				botaoClickado(botaoRC);
-				painelIniciarJogo();
-			}
+		    public void actionPerformed(ActionEvent e) {
+		        botaoClickado(botaoRC);  // Marca o botão como clicado
+		        painelIniciarJogo();  // Troca para o painel de início de jogo
+		    }
+		});
+
+		// Alterna entre Light Mode e Dark Mode quando o botão correspondente é clicado
+		botaoM.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		        if (botaoM.getText().equals("Light Mode")) {
+		            botaoM.mode(listaBotoes);  // Aplica o modo claro aos botões
+		            botaoM.setText("Dark Mode");  // Muda o texto para "Dark Mode"
+		        } else {
+		            botaoM.mode(listaBotoes);  // Aplica o modo escuro aos botões
+		            botaoM.setText("Light Mode");  // Muda o texto para "Light Mode"
+		        }
+		        revalidate();  // Atualiza o layout
+		        repaint();  // Redesenha o painel
+		    }
+		});
+
+
+
+		// Ação para o botão "Enviar"(Criação Terreno)
+		botaoEN.addActionListener(new ActionListener() {
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		        uiaceita = false;
+		        
+		        // Captura o texto inserido
+		        userInput = caixatexto.getText();
+		        
+		        // Verifica se a entrada é vazia
+		        if (userInput.isEmpty() || userInput.isBlank()) {
+		            caixasaidas.setText("Erro: A entrada não pode ser vazia.");
+		            return;
+		        }
+		        
+		        String[] linhas = userInput.split("\n"); // Divide o texto em linhas
+		        
+		        // Processar as linhas
+		        for (int j = 0; j < linhas.length; j++) {
+		            String linha = linhas[j].trim(); // Remove espaços extras
+		            String[] partes = linha.split(" ");
+
+		            // Validação do formato das linhas (primeiras e últimas linhas têm no máximo 2 partes)
+		            if (((j <= 1) || (j >= 9)) && partes.length > 2) {
+		                caixasaidas.setText("Erro: formato da linha " + (j + 1) + " inválido.");
+		                return;
+		            } else if (partes.length == 2) {  // Para linhas com 2 partes (dimensões e pedras)
+		                memoriaEN[j][0] = partes[0];
+		                memoriaEN[j][1] = partes[1];
+		                memoriaEN[j][2] = ""; // Deixa o terceiro campo vazio
+		            } else if (partes.length == 3) {  // Para linhas com 3 partes (frutas)
+		                memoriaEN[j][0] = partes[0];  // Nome da fruta
+		                memoriaEN[j][1] = partes[1];  // Quantidade de árvores
+		                memoriaEN[j][2] = partes[2];  // Quantidade de frutas    
+		            } else {
+		                caixasaidas.setText("Erro: formato da linha " + (j + 1) + " inválido.");
+		                return; // Sai da função se houver erro no formato da linha
+		            }
+		        }
+
+		        // Verifica o terreno após processar as entradas
+		        boolean resultado = verificaTerreno();
+		        if (resultado) {
+		            caixasaidas.setText("Entradas aceitas.");
+		        }
+		    }
 		});
 
 		
-		botaoM.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-					if(botaoM.getText().equals("Light Mode")){
-						botaoM.mode(listaBotoes);
-						botaoM.setText("Dark Mode");
-						revalidate();
-						repaint();
-					}
-					else{
-						botaoM.mode(listaBotoes);
-						botaoM.setText("Light Mode");
-						revalidate();
-						repaint();
-					}
-				}
-			});
 
-		
-		botaoEN.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            	uiaceita = false;
-            	
-                userInput = caixatexto.getText();
-                
-                if(userInput.isEmpty() || userInput.isBlank()) {
-                	caixasaidas.setText("Erro: A entrada não pode ser vazia.");
-                	return;
-                }
-                
-                caixatexto.setText(userInput);
-                String[] linhas = userInput.split("\n"); // Divide o texto em linhas
-                
-             // Processar as linhas
-                for (int j = 0; j < linhas.length; j++) {
-                    String linha = linhas[j].trim(); // Remove espaços extras
-                    String[] partes = linha.split(" ");
-                    
-                    
-                    if(((j <= 1) || (j >= 9)) && partes.length > 2) {
-                    	caixasaidas.setText("Erro: formato da linha " + (j + 1) + " inválido.");
-                        return;
-                    }
-                    else if(partes.length == 2) { // Para "dimensao" e "pedras"
-                        memoriaEN[j][0] = partes[0];
-                        memoriaEN[j][1] = partes[1];
-                        memoriaEN[j][2] = ""; // Deixa o terceiro campo vazio
-                    }
-                    else if(partes.length == 3) { // Para frutas
-                        memoriaEN[j][0] = partes[0]; // Nome da fruta
-                        memoriaEN[j][1] = partes[1]; // Quantidade de árvores
-                        memoriaEN[j][2] = partes[2]; // Quantidade de frutas    
-                    } 
-                    
-                    else{
-                        caixasaidas.setText("Erro: formato da linha " + (j + 1) + " inválido.");
-                        return; // Sai da função se houver erro no formato da linha
-                    }
-                }
-
-                // Chama a função de verificação do terreno após processar as entradas
-                boolean resultado = verificaTerreno();
-                if (resultado) {
-                    caixasaidas.setText("Entradas aceitas.");
-                }
-            }
-        });
-		
-		
+		// Ação para o botão "Enviar"(Importar Terreno)
 		botaoEN2.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
-		        botaoClickado(botaoEN2);
+		        botaoClickado(botaoEN2);  // Marca o botão como clicado
+		        
+		        // Obtém o caminho do arquivo a partir da caixa de texto
 		        File arquivoTerreno = new File(caixatexto2.getText());
 		        userInput = caixatexto2.getText();
-		        if(userInput.isEmpty() || userInput.isBlank()) {
-		        	caixasaidas2.setText("Erro: O caminho não pode ser vazio.");
+		        
+		        // Verifica se o caminho do arquivo foi informado
+		        if (userInput.isEmpty() || userInput.isBlank()) {
+		            caixasaidas2.setText("Erro: O caminho não pode ser vazio.");
 		            return;
 		        }
+
+		        // Verifica se o arquivo existe
 		        if (!arquivoTerreno.exists()) {
-		            caixasaidas2.setText("Path inválido. Tente Novamente");
+		            caixasaidas2.setText("Path inválido. Tente novamente.");
 		            return;
 		        }
-		        final int MAX_LINES = 11;
+
+		        final int MAX_LINES = 11;  // Número máximo de linhas esperadas
 		        String[] linhas = new String[MAX_LINES];
 
+		        // Tenta ler o arquivo
 		        try (BufferedReader BFR = new BufferedReader(new FileReader(arquivoTerreno))) {
 		            for (int i = 0; i < MAX_LINES; i++) {
 		                linhas[i] = BFR.readLine();
-		                if (linhas[i] == null) break; // Stop if there are fewer than MAX_LINES
+		                if (linhas[i] == null) break;  // Para se o arquivo tiver menos linhas que o esperado
 		            }
 
+		            // Processa cada linha lida
 		            for (int j = 0; j < linhas.length; j++) {
-		                if (linhas[j] == null) break; // Handle case where file has fewer lines
-		                String linha = linhas[j].trim(); // Remove spaces
+		                if (linhas[j] == null) break;  // Para se a linha for nula
+		                String linha = linhas[j].trim();  // Remove espaços extras
 		                String[] partes = linha.split(" ");
 
+		                // Validação do formato das linhas (primeiras e últimas linhas têm no máximo 2 partes)
 		                if ((j <= 1 || j >= 9) && partes.length > 2) {
 		                    caixasaidas2.setText("Erro: formato da linha " + (j + 1) + " inválido.");
 		                    return;
-		                } else if (partes.length == 2) {
+		                } else if (partes.length == 2) {  // Para linhas com 2 partes (dimensões e pedras)
 		                    memoriaEN[j][0] = partes[0];
 		                    memoriaEN[j][1] = partes[1];
-		                    memoriaEN[j][2] = ""; // Leave the third field empty
+		                    memoriaEN[j][2] = ""; // Deixa o terceiro campo vazio
+		                    // Exibe os valores no console para verificação
 		                    System.out.println(memoriaEN[j][0]);
 		                    System.out.println(memoriaEN[j][1]);
 		                    System.out.println(memoriaEN[j][2]);
-		                } else if (partes.length == 3) {
-		                    memoriaEN[j][0] = partes[0]; // Name of the fruit
-		                    memoriaEN[j][1] = partes[1]; // Number of trees
-		                    memoriaEN[j][2] = partes[2]; // Number of fruits
+		                } else if (partes.length == 3) {  // Para linhas com 3 partes (frutas)
+		                    memoriaEN[j][0] = partes[0];  // Nome da fruta
+		                    memoriaEN[j][1] = partes[1];  // Quantidade de árvores
+		                    memoriaEN[j][2] = partes[2];  // Quantidade de frutas
+		                    // Exibe os valores no console para verificação
 		                    System.out.println(memoriaEN[j][0]);
 		                    System.out.println(memoriaEN[j][1]);
 		                    System.out.println(memoriaEN[j][2]);
 		                } else {
 		                    caixasaidas2.setText("Erro: formato da linha " + (j + 1) + " inválido.");
-		                    return; // Exit the function if there's an error in line format
+		                    return; // Sai da função se houver erro no formato da linha
 		                }
-		                
-		                
-			            if (verificaTerreno()) {
-			                caixasaidas2.setText("Entradas aceitas.");
-			            }
+		            }
+
+		            // Verifica o terreno após processar as entradas
+		            if (verificaTerreno()) {
+		                caixasaidas2.setText("Entradas aceitas.");
 		            }
 
 		        } catch (IOException e1) {
@@ -735,173 +805,177 @@ public class Frame extends JFrame {
 		        }
 		    }
 		});
+
 		
 		
 		
-		
+		// Ação para o botão "Terreno Exemplo"
 		botaoTE.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				botaoClickado(botaoTE);
-				if(verificaTerreno()) {
-					setExtendedState(MAXIMIZED_BOTH);
-					painelTerrenoExemplo();
-				    Matriz = new int[Dimensao][Dimensao];
-					terrenoExemploSist();
-					criandoTerreno();				
-					}
-			}
+		    public void actionPerformed(ActionEvent e) {
+		        botaoClickado(botaoTE);  // Marca o botão como clicado
+		        if (verificaTerreno()) {  // Verifica se o terreno está configurado corretamente
+		            setExtendedState(MAXIMIZED_BOTH);  // Maximiza a janela
+		            painelTerrenoExemplo();  // Exibe o painel do terreno de exemplo
+		            Matriz = new int[Dimensao][Dimensao];  // Inicializa a matriz para o terreno
+		            terrenoExemploSist();  // Configura o sistema de terreno exemplo
+		            criandoTerreno();  // Chama o método para criar o terreno
+		        }
+		    }
 		});
-		
-		
+
+		// Ação para o botão "Salvar Terreno"
 		botaoST.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				botaoClickado(botaoTE);
-				frameAR.setVisible(true);
-				
-			}
+		    public void actionPerformed(ActionEvent e) {
+		        botaoClickado(botaoST);  // Marca o botão como clicado
+		        frameAR.setVisible(true);  // Abre a janela para salvar o terreno
+		    }
 		});
-		
-		
-		
+
+		// Ação para o botão "Retornar" no menu
 		botaoRT.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				botaoClickado(botaoRT);
-				setSize(600, 400);
-				setLocationRelativeTo(null);
-				setResizable(false);
-				painelIniciarJogo();
-			}
+		    public void actionPerformed(ActionEvent e) {
+		        botaoClickado(botaoRT);  // Marca o botão como clicado
+		        setSize(600, 400);  // Define o tamanho da janela
+		        setLocationRelativeTo(null);  // Centraliza a janela
+		        setResizable(false);  // Impede o redimensionamento
+		        painelIniciarJogo();  // Retorna ao painel inicial do jogo
+		    }
 		});
-		
+
+		// Ação para o botão "Novo Terreno"
 		botaoNT.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				botaoClickado(botaoNT);
-				terrenoExemploSist();
-				criandoTerreno();
-			}
+		    public void actionPerformed(ActionEvent e) {
+		        botaoClickado(botaoNT);  // Marca o botão como clicado
+		        terrenoExemploSist();  // Configura o terreno exemplo
+		        criandoTerreno();  // Chama o método de criação de terreno
+		    }
 		});
-		
+
+		// Ação para o botão "Instruções"
 		botaoIN.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				botaoClickado(botaoIN);
-				painelInstrucoes();
-			}
+		    public void actionPerformed(ActionEvent e) {
+		        botaoClickado(botaoIN);  // Marca o botão como clicado
+		        painelInstrucoes();  // Exibe o painel de instruções
+		    }
 		});
-		
-		
+
+		// Ação para o botão "Retornar" nas instruções (botaoRI2)
 		botaoRI2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				botaoClickado(botaoRI);
-				frameIN.setVisible(false);
-				revalidate();
-				repaint();
-			}
+		    public void actionPerformed(ActionEvent e) {
+		        botaoClickado(botaoRI2);  // Marca o botão como clicado
+		        frameIN.setVisible(false);  // Esconde a janela de instruções
+		        revalidate();  // Revalida a janela para atualizar a interface
+		        repaint();  // Redesenha a janela
+		    }
 		});
 	}
 	
 	public void botaoClickado(Botoes botao) {
-		botao.setBackground(botaoM.getBackground());
-		botao.setForeground(botaoM.getForeground());
-		botao.setBorder(botaoM.getBorder());
-		revalidate();
-		repaint();
+	    botao.setBackground(botaoM.getBackground());  // Define o fundo do botão clicado com o fundo de botaoM
+	    botao.setForeground(botaoM.getForeground());  // Define a cor do texto do botão clicado com a de botaoM
+	    botao.setBorder(botaoM.getBorder());  // Define a borda do botão clicado com a borda de botaoM
+	    revalidate();  // Revalida o layout para refletir as mudanças
+	    repaint();  // Redesenha a interface para garantir que as mudanças sejam exibidas
 	}
-	
+
 	public void painelInicio() {
-		painelini.add(botaoIJ);
-		painelini.add(botaoMJ);
-		painelini.add(botaoIN);
-		painelini.add(botaoM);
-		painel1.removeAll();
-		painel1.add(logo, BorderLayout.NORTH);
-		painel1.add(painelini);
-		revalidate();
-		repaint();
+	    painelini.add(botaoIJ);  // Adiciona o botão "Iniciar Jogo"
+	    painelini.add(botaoMJ);  // Adiciona o botão "Modos de Jogo"
+	    painelini.add(botaoIN);   // Adiciona o botão "Instruções"
+	    painelini.add(botaoM);    // Adiciona o botão de alternar entre modos de tema
+	    painel1.removeAll();      // Remove todos os componentes do painel principal
+	    painel1.add(logo, BorderLayout.NORTH);  // Adiciona o logo ao topo do painel
+	    painel1.add(painelini);   // Adiciona o painel inicial ao centro
+	    revalidate();             // Revalida o layout
+	    repaint();                // Redesenha o painel
 	}
-	
+
 	public void painelIniciarJogo() {
-		painelIJ.add(botaoCT);
-		painelIJ.add(botaoIT);
-		painelIJ.add(botaoRI);
-		painel1.removeAll();
-		painel1.add(logo, BorderLayout.NORTH);
-		painel1.add(painelIJ, BorderLayout.CENTER);
-		revalidate();
-		repaint();
+	    painelIJ.add(botaoCT);   // Adiciona o botão "Criar Terreno"
+	    painelIJ.add(botaoIT);   // Adiciona o botão "Importar Terreno"
+	    painelIJ.add(botaoRI);   // Adiciona o botão "Retornar"
+	    painel1.removeAll();      // Remove todos os componentes do painel principal
+	    painel1.add(logo, BorderLayout.NORTH);  // Adiciona o logo ao topo do painel
+	    painel1.add(painelIJ, BorderLayout.CENTER);  // Adiciona o painel do jogo ao centro
+	    revalidate();             // Revalida o layout
+	    repaint();                // Redesenha o painel
 	}
-	
+
 	public void painelInstrucoes() {
-		frameIN.setVisible(true);
-		revalidate();
-		repaint();
+	    frameIN.setVisible(true);  // Exibe a janela de instruções
+	    revalidate();              // Revalida o layout
+	    repaint();                 // Redesenha a interface
 	}
-	
+
 	public void painelCriacaoTerreno() {
-		painelCT.add(caixasaidas);
-		painelCT.add(scroll);
-		painelCT.add(botaoEN);
-		painelCT.add(botaoTE);
-		painelCT.add(botaoStart);
-		painelCT.add(botaoRC);
-		painel1.removeAll();
-		painel1.add(logo, BorderLayout.NORTH);
-		painel1.add(painelCT, BorderLayout.CENTER);
-		revalidate();
-		repaint();
+	    painelCT.add(caixasaidas);  // Adiciona a caixa de saídas ao painel de criação de terreno
+	    painelCT.add(scroll);        // Adiciona a barra de rolagem ao painel de criação de terreno
+	    painelCT.add(botaoEN);      // Adiciona o botão "Enviar" ao painel de criação de terreno
+	    painelCT.add(botaoTE);      // Adiciona o botão "Terreno Exemplo" ao painel de criação de terreno
+	    painelCT.add(botaoStart);   // Adiciona o botão "Start" ao painel de criação de terreno
+	    painelCT.add(botaoRC);      // Adiciona o botão "Retornar" ao painel de criação de terreno
+	    painel1.removeAll();        // Remove todos os componentes do painel principal
+	    painel1.add(logo, BorderLayout.NORTH);  // Adiciona o logo ao topo do painel
+	    painel1.add(painelCT, BorderLayout.CENTER);  // Adiciona o painel de criação de terreno ao centro
+	    revalidate();               // Revalida o layout
+	    repaint();                  // Redesenha o painel
 	}
+
 	
 	public void painelImportarTerreno() {
-		painelIT.add(caixasaidas2);
-		painelIT.add(caixatexto2);
-		painelIT.add(botaoEN2);
-		painelIT.add(botaoTE);
-		painelIT.add(botaoStart);
-		painelIT.add(botaoRC);
-		painel1.removeAll();
-		painel1.add(logo, BorderLayout.NORTH);
-		painel1.add(painelIT, BorderLayout.CENTER);
-		revalidate();
-		repaint();
+	    painelIT.add(caixasaidas2);  // Adiciona a caixa de saídas ao painel de importação
+	    painelIT.add(scrollIM);       // Adiciona a barra de rolagem ao painel de importação
+	    painelIT.add(botaoEN2);       // Adiciona o botão "Enviar" ao painel de importação
+	    painelIT.add(botaoTE);        // Adiciona o botão "Terreno Exemplo" ao painel de importação
+	    painelIT.add(botaoStart);     // Adiciona o botão "Start" ao painel de importação
+	    painelIT.add(botaoRC);        // Adiciona o botão "Retornar" ao painel de importação
+	    painel1.removeAll();          // Remove todos os componentes do painel principal
+	    painel1.add(logo, BorderLayout.NORTH);  // Adiciona o logo ao topo do painel
+	    painel1.add(painelIT, BorderLayout.CENTER);  // Adiciona o painel de importação ao centro
+	    revalidate();                 // Revalida o layout
+	    repaint();                    // Redesenha o painel
 	}
+
 	
 	public void painelTerrenoExemplo() {
-		painel1.removeAll();
-		painel1.add(botaoRT);
-		painel1.add(botaoST);
-		painel1.add(botaoNT);
-		painel1.add(logo, BorderLayout.NORTH);	
-		gbc = new GridBagConstraints();
-		gbc.weightx = 0;
-		gbc.weighty = 0;
-		gbc.insets = new Insets (0,0,0,0);
-		gbc.anchor = GridBagConstraints.CENTER;
-		painelTE.setBounds(1366/2, 720/2 , 300, 300);
-		scrollTE = new JScrollPane(painelTE); 
-		scrollTE.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-		scrollTE.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		scrollTE.setBorder(borda1);
-		painelTE.setBackground(cor1);
-		painelTE.setBorder(borda1);
-		painel1.add(painelTE, BorderLayout.CENTER);
-		revalidate();
-		repaint();
+	    painel1.removeAll();             // Remove todos os componentes do painel principal
+	    painel1.add(botaoRT);            // Adiciona o botão "Retornar"
+	    painel1.add(botaoST);            // Adiciona o botão "Salvar Terreno"
+	    painel1.add(botaoNT);            // Adiciona o botão "Novo Terreno"
+	    painel1.add(logo, BorderLayout.NORTH);  // Adiciona o logo ao topo do painel
+	    gbc = new GridBagConstraints();  // Cria um novo GridBagConstraints
+	    gbc.weightx = 0;                 
+	    gbc.weighty = 0;
+	    gbc.insets = new Insets(0, 0, 0, 0); // Define as margens do GridBagConstraints
+	    gbc.anchor = GridBagConstraints.CENTER; // Centraliza o painel
+	    painelTE.setBounds(1366/2, 720/2 , 300, 300); // Define as dimensões do painel
+	    scrollTE = new JScrollPane(painelTE); // Cria uma barra de rolagem para o painel
+	    scrollTE.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED); // Define a política da barra de rolagem vertical
+	    scrollTE.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED); // Define a política da barra de rolagem horizontal
+	    scrollTE.setBorder(borda1); // Define a borda da barra de rolagem
+	    painelTE.setBackground(cor1); // Define a cor de fundo do painel
+	    painelTE.setBorder(borda1); // Define a borda do painel
+	    painel1.add(painelTE, BorderLayout.CENTER); // Adiciona o painel de terreno ao centro do painel principal
+	    revalidate(); // Revalida o layout
+	    repaint(); // Redesenha o painel
 	}
+
 	
 
 	 
 	public void SalvarTerreno() throws IOException, InterruptedException {
-	    caixasaidas3.setText("O nome do arquivo");
-	    
+	    caixasaidas3.setText("O nome do arquivo"); // Mensagem pedindo o nome do arquivo
+
 	    // Verifica se o nome do arquivo foi preenchido
 	    if (nomeArquivo == null || nomeArquivo.isEmpty()) {
-	        caixasaidas3.setText("O nome do arquivo não pode estar vazio.");
-	        Thread.sleep(4000); // Pausa de 2 segundos para que o usuário veja a mensagem
-	        return; // Retorna sem chamar o método novamente, evitando recursão
+	        caixasaidas3.setText("O nome do arquivo não pode estar vazio."); // Mensagem de erro
+	        Thread.sleep(4000); // Pausa de 4 segundos para que o usuário veja a mensagem
+	        return; // Retorna sem continuar
 	    }
 
 	    // Define o caminho onde o arquivo será salvo
 	    String caminho = "C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\";
-	    File arquivoTerreno = new File(caminho + nomeArquivo + ".txt"); // Adiciona a extensão ".txt"
+	    File arquivoTerreno = new File(caminho + nomeArquivo + ".txt"); // Cria o arquivo com a extensão ".txt"
 
 	    // Cria o escritor do arquivo
 	    Writer escritor = new FileWriter(arquivoTerreno);
@@ -909,57 +983,58 @@ public class Frame extends JFrame {
 	    // Escreve os dados de memoriaEN no arquivo
 	    for (int i = 0; i < memoriaEN.length; i++) {
 	        for (int j = 0; j < 3; j++) {
-	            escritor.write(memoriaEN[i][j]);
-	            escritor.write(" ");
+	            escritor.write(memoriaEN[i][j]); // Escreve cada elemento
+	            escritor.write(" "); // Adiciona um espaço
 	        }
 	        escritor.write(System.getProperty("line.separator")); // Nova linha
 	    }
 
 	    // Fecha o escritor e confirma a operação
-	    escritor.flush();
-	    escritor.close();
+	    escritor.flush(); // Garante que todos os dados foram escritos
+	    escritor.close(); // Fecha o escritor
 
 	    // Exibe mensagem de sucesso
-	    caixasaidas3.setText("Arquivo salvo com sucesso: " + nomeArquivo);
-	    Thread.sleep(4000); // Pausa de 2 segundos para que o usuário veja a mensagem
+	    caixasaidas3.setText("Arquivo salvo com sucesso: " + nomeArquivo); // Mensagem de sucesso
+	    Thread.sleep(4000); // Pausa de 4 segundos para que o usuário veja a mensagem
 
 	    // Fecha o frame e reseta os campos
-	    frameAR.setVisible(false);
+	    frameAR.setVisible(false); // Fecha o frame
 	    caixatexto3.setText(null); // Limpa o campo de texto
-	    caixasaidas3.setText("O nome do arquivo");
+	    caixasaidas3.setText("O nome do arquivo"); // Reseta a mensagem
 	}
+
 
 	
 	public void receberTexto() {
-		nomeArquivo = caixatexto3.getText();
+	    nomeArquivo = caixatexto3.getText(); // Obtém o texto da caixa de texto do nome do ar
 	}
+
 	
 	public void TerrenoExemplo() {
-	    painel1.removeAll();
-	    painel1.add(botaoRT);
-	    painel1.add(botaoST);
-	    painel1.add(logo, BorderLayout.NORTH);
- 
+	    painel1.removeAll();               // Remove todos os componentes do painel principal
+	    painel1.add(botaoRT);              // Adiciona o botão "Retornar"
+	    painel1.add(botaoST);              // Adiciona o botão "Salvar Terreno"
+	    painel1.add(logo, BorderLayout.NORTH); // Adiciona o logo ao topo do painel
 	    
-	    gbc = new GridBagConstraints();
+	    gbc = new GridBagConstraints(); // Cria um novo GridBagConstraints
 
-	    painelTE.setBackground(cor1);
-	    painelTE.setBorder(borda1);
+	    painelTE.setBackground(cor1);    // Define a cor de fundo do painel
+	    painelTE.setBorder(borda1);       // Define a borda do painel
 
-	    scrollTE = new JScrollPane(painelTE);
-	    scrollTE.setBounds(50, 50, 1366/2 + 300 , 720/2);
-	    scrollTE.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-	    scrollTE.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+	    scrollTE = new JScrollPane(painelTE); // Cria uma barra de rolagem para o painel
+	    scrollTE.setBounds(50, 50, 1366/2 + 300 , 720/2); // Define a posição e tamanho da barra de rolagem
+	    scrollTE.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); // Define a política da barra de rolagem vertical
+	    scrollTE.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS); // Define a política da barra de rolagem horizontal
 
-	    painel1.add(scrollTE);
+	    painel1.add(scrollTE); // Adiciona a barra de rolagem ao painel principal
 
-		
-	    revalidate();
-	    repaint();
+	    revalidate(); // Revalida o layout
+	    repaint(); // Redesenha o painel
 	}
+
 	
 	
-	
+	// Função utilizada para criar uma imagem dentro da escala do tamanho do botão
 	public ImageIcon criandoImagem(int tamanho, String Caminho) {
 		ImageIcon img = new ImageIcon(Caminho);
 	    Image img1 = img.getImage().getScaledInstance(tamanho, tamanho, Image.SCALE_SMOOTH);
@@ -967,7 +1042,7 @@ public class Frame extends JFrame {
 	    return img;
 	}
 	
-
+	// Criando o terreno dentro do painel
 	public void criandoTerreno() {
 		int tamanhoCelula = 480 / Dimensao;
 		painelTE.setLayout(new GridBagLayout());  // Mantém o layout
@@ -992,7 +1067,7 @@ public class Frame extends JFrame {
 	    ImageIcon imggrama = criandoImagem(tamanhoCelula, "C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\grama.jpeg");
 	    ImageIcon imgPedra= criandoImagem(tamanhoCelula, "C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\pedra.png");
 	    
-	    
+	    // Criação das imagens dentro de cada botão, de acordo com as posições da Matriz
 	    for (int i = 0; i < Dimensao; i++) {
 	        for (int j = 0; j < Dimensao; j++) {
 	    	    JButton celula = new JButton();
@@ -1073,18 +1148,15 @@ public class Frame extends JFrame {
 	    repaint();
 	}
 	
-	
+	// Função para gerar valores aleatórios em função de um valor passado, esse que corresponde pela dimensão - 1
 	public int ale(int i) {
 		return (int) Math.round(Math.random()*i);
 	}
 	
-	
+	// Cria o terreno dentro do sistema, e armazena os valores em uma Matriz
 	public void terrenoExemploSist() {
 
-	    Matriz = new int[Dimensao][Dimensao];
-	    System.out.println(arvoresTotais);
-	    System.out.println(frutasTotais);
-	    System.out.println(Pedras);
+	    Matriz = new int[Dimensao][Dimensao];// Inicia a Matriz do terreno com a dimensão de entrada
 
 	    // Inicializa o terreno com zeros
 	    for (int i = 0; i < Dimensao; i++) {
@@ -1092,14 +1164,12 @@ public class Frame extends JFrame {
 	            Matriz[i][j] = 0;
 	        }
 	    }
-	    System.out.println("iniciado");
 
 	    // Colocar Pedras
 	    for (int p = 0; p < Pedras; p++) {
 	        int x = ale(Dimensao - 1);
 	        int y = ale(Dimensao - 1);
-	        Matriz[x][y] = 100;
-	        System.out.println("pedra");// Pedra representada por 100
+	        Matriz[x][y] = 100;// Pedra representada por 100
 	    }
 
 	    // Colocar Árvores
@@ -1110,7 +1180,6 @@ public class Frame extends JFrame {
 		        if (Matriz[x][y] == 0) { // Verifica se a posição está livre
 		            Matriz[x][y] = 200 + i; // Árvore representada por 200 + tipo
 		            a++;
-		            System.out.println("arvore"+i);
 		        }
 		    }
 	    }
@@ -1123,7 +1192,6 @@ public class Frame extends JFrame {
 		        if (Matriz[x][y] == 0) { // Verifica se a posição está livre
 		            Matriz[x][y] = 300 + j; // Fruta representada por 300 + tipo
 		            f++;
-		            System.out.println("fruta"+j);
 		        }
 		    }
 	    }
@@ -1135,7 +1203,6 @@ public class Frame extends JFrame {
 	        if (Matriz[x][y] == 0) { // Verifica se a posição está livre
 	            Matriz[x][y] = j; // Jogador representado por 1 e 2
 	            j++;
-	            System.out.println("jogador");
 	        }
 	    }
 
@@ -1156,26 +1223,27 @@ public class Frame extends JFrame {
 	}
 
 	
-	
+	// Função utilizada para verificar se o terreno gerado pelas entradas passadas é válido, ou seja, captura de erros
 	public boolean verificaTerreno() {
+		// Reinicia as entradas no caso de uma nova verificação
 		arvoresTotais = 0;
 		frutasTotais = 0;
 		Frutas = new int[7];
 		Arvores = new int[7];
 		try {
 			
-			int dimensao = Integer.parseInt(memoriaEN[0][1]);
+			int dimensao = Integer.parseInt(memoriaEN[0][1]);// Alteração do tipo da dimensão de String para int
 			Dimensao = dimensao;
-			int pedra = Integer.parseInt(memoriaEN[1][1]);
+			int pedra = Integer.parseInt(memoriaEN[1][1]);// Alteração do tipo de pedra String para int
 			Pedras = pedra;
-			int espacosDisponiveis = dimensao*dimensao - pedra - 2;
+			int espacosDisponiveis = dimensao*dimensao - pedra - 2; // Variável utilizada para verificar os espaços disponíveis no terreno
 			int[] arvores = new int[7];
 			int[] frutas = new int[7];
-			float bichada = Integer.parseInt(memoriaEN[9][1]);
+			float bichada = Integer.parseInt(memoriaEN[9][1]); // Alteração do tipo de bichada de String para float
 			Bichada = bichada;
-			int mochila = Integer.parseInt(memoriaEN[10][1]);
+			int mochila = Integer.parseInt(memoriaEN[10][1]); // Alteração do tipo de mochila de String para int
 			Mochila = mochila;
-			
+			// Armazena os devidos valores de frutas e arvores com os tipos corretos, ambos de String para int
 			for(int i = 0; i < 7; i++) {
 				arvores[i] = Integer.parseInt(memoriaEN[i+2][1]);
 				frutas[i] = Integer.parseInt(memoriaEN[i+2][2]);
@@ -1236,34 +1304,7 @@ public class Frame extends JFrame {
 		
 		
 	}
-	
-	
-	public class ImageInPanel extends JPanel {
-	    /**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
-		private Image image;
-
-	    // Construtor que carrega a imagem
-	    public ImageInPanel(String imagePath) {
-	        // Carrega a imagem a partir do caminho fornecido
-	        image = new ImageIcon(imagePath).getImage();
-	    }
-
-	    // Sobrescreve o método paintComponent para desenhar a imagem
-	    @Override
-	    protected void paintComponent(Graphics g) {
-	        super.paintComponent(g); // Chama o método da classe pai para garantir o comportamento padrão
-	        // Desenha a imagem no painel
-	        if (image != null) {
-	            g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
-	        }
-	    }
-	}
-
-	
-	
+	// Classe para possibilitar a criação de um painel com uma imagem como o plano de fundo
 	public class CustomPanel extends JPanel {
 	    /**
 		 * 
