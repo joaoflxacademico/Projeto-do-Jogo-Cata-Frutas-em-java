@@ -3,8 +3,6 @@ package cata_frutas;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -35,16 +33,13 @@ public class Frame extends JFrame {
 	private static JPanel painelCT;
 	private static JPanel painelIT;
 	private static CustomPanel painelTE;
-	private static JPanel painelAR;
 	private static JPanel painelIN;
 	
 	private static JFrame frameIN;
-	private static JFrame frameAR;
 	
 	public JLabel logo;
 	public JLabel caixasaidas;
 	public JLabel caixasaidas2;
-	public JLabel caixasaidas3;
 	
 	public JScrollPane scroll;
 	public JScrollPane scrollIN;
@@ -72,7 +67,7 @@ public class Frame extends JFrame {
 	public Botoes botaoEN;
 	public Botoes botaoTE;
 	public Botoes botaoRC;
-	public Botoes botaoEN2;
+	public Botoes botaoC;
 	public Botoes botaoStart;
 	public Botoes botaoRT;
 	public Botoes botaoST;
@@ -86,6 +81,26 @@ public class Frame extends JFrame {
 	public static LineBorder borda2 = new LineBorder(cor1);
 	
 	public static ImageIcon imglogo = new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\Logo.png");
+	
+	
+	// Inicialização das imagens principais, que serão redimensionadas na geração do terreno
+	ImageIcon imgPjogador1 = new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\UpView guy-1.png");
+    ImageIcon imgPjogador2 = new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\UpView guy-2.png");
+    ImageIcon imgPArvoreAbacate = new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\ArvoreAbacate.png");
+    ImageIcon imgPArvoreAmora = new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\ArvoreAmora.png");
+    ImageIcon imgPArvoreLaranja = new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\ArvoreLaranja.png");
+    ImageIcon imgPArvoreAcerola= new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\arvoreAcerola.png");
+    ImageIcon imgPArvoreGoiaba= new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\ArvoreGoiaba.png");
+    ImageIcon imgPArvoreCoco = new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\ArvoreCoco.png");
+    ImageIcon imgPFrutaMaracuja = new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\maracuja.png");
+    ImageIcon imgPFrutaLaranja = new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\laranja.png"); 
+    ImageIcon imgPFrutaAbacate = new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\abacate.png");
+    ImageIcon imgPFrutaGoiaba = new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\goiaba.png");
+    ImageIcon imgPFrutaAmora = new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\amora.png");
+    ImageIcon imgPFrutaCoco = new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\coco.png");
+    ImageIcon imgPFrutaAcerola = new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\acerola.png");
+    ImageIcon imgPgrama = new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\grama.jpeg");
+    ImageIcon imgPPedra= new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\pedra.png");
     
 	
 	/*Inicialização dos objetos que serão utilizados na construção do terreno, na 
@@ -194,10 +209,8 @@ public class Frame extends JFrame {
 			painelCT.setBackground(cor1);
 			painelIT.setBackground(cor1);
 			painelTE.setBackground(cor1);
-			painelAR.setBackground(cor1);
 			caixasaidas.setForeground(cor2);
 			caixasaidas2.setForeground(cor2);
-			caixasaidas3.setForeground(cor2);
 			caixainstru.setForeground(cor2);
 			scrollIN.setBorder(borda1);
 			if(corGrama == 1) {
@@ -412,30 +425,18 @@ public class Frame extends JFrame {
 		botaoRC = new Botoes("Retornar", cor1, cor2, borda1, borda2, xbtn, ybtn + 170);
 		listaBotoes.add(botaoRC);
 
-		// Label que indica a entrada de caminho
-		caixasaidas2 = new JLabel("Caminho");
+		// Label que indica as saidas do painel de importar terreno
+		caixasaidas2 = new JLabel("Por favor, selecione um caminho do arquivo txt.");
 		caixasaidas2.setHorizontalAlignment(SwingConstants.CENTER); // Centraliza o texto no label
-		caixasaidas2.setFont(new Font("Georgia", Font.ITALIC, 14)); // Define a fonte
+		caixasaidas2.setFont(new Font("Georgia", Font.ITALIC, 18	)); // Define a fonte
 		caixasaidas2.setForeground(cor2); // Define a cor do texto
 		caixasaidas2.setIcon(null); // Não há ícone associado ao rótulo
-		caixasaidas2.setBounds(xbtn - 190, ybtn - 32, 500, 40); // Define a posição e tamanho do rótulo
+		caixasaidas2.setBounds(xbtn - 190, ybtn - 12, 500, 40); // Define a posição e tamanho do rótulo
 
-		// Área de texto para entrada de caminho, sem quebra de linha
-		caixatexto2 = new JTextArea();
-		caixatexto2.setBorder(borda1); // Define a borda
-		caixatexto2.setFont(caixasaidas2.getFont()); // Define a mesma fonte do rótulo
-		caixatexto2.setLineWrap(false); // Desabilita a quebra de linha
-
-		// Componente de rolagem para a área de texto, com barra de rolagem horizontal conforme necessário
-		scrollIM = new JScrollPane(caixatexto2);
-		scrollIM.setBounds(xbtn - 140, ybtn + 10, 400, 20); // Define a posição e tamanho do componente de rolagem
-		scrollIM.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED); // Barra de rolagem horizontal
-		scrollIM.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER); // Desabilita a rolagem vertical
-		scrollIM.setHorizontalScrollBar(null); // Remove a barra de rolagem horizontal inicialmente
 
 		// Inicializa outro botão "Enviar" e adiciona à lista de botões
-		botaoEN2 = new Botoes("Enviar", cor1, cor2, borda1, borda2, xbtn, ybtn + 44);
-		listaBotoes.add(botaoEN2);
+		botaoC = new Botoes("Caminho", cor1, cor2, borda1, borda2, xbtn, ybtn + 44);
+		listaBotoes.add(botaoC);
 
 		// Inicializa o botão "Retornar" com uma posição diferente
 		botaoRT = new Botoes("Retornar", cor1, cor2, borda1, borda2, 1366 / 2 - 75, 720 / 2 + 325);
@@ -449,52 +450,6 @@ public class Frame extends JFrame {
 		botaoNT = new Botoes("Novo Terreno", cor1, cor2, borda1, borda2, 1366 / 2 - 75, 100);
 		listaBotoes.add(botaoNT);
 
-		// Inicializa uma nova janela para o nome do terreno
-		frameAR = new JFrame();
-		frameAR.setTitle("Nome Terreno"); // Define o título da janela
-		frameAR.setIconImage(imglogo.getImage()); // Define o ícone da janela
-		frameAR.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Fecha a janela ao ser fechada sem finalizar o programa
-		frameAR.setSize(300, 150); // Define o tamanho da janela
-		frameAR.setLocationRelativeTo(null); // Centraliza a janela na tela
-		frameAR.setResizable(false); // Impede que a janela seja redimensionada
-		frameAR.setVisible(false); // Define a janela como invisível inicialmente
-
-		// Painel para a janela de nome do terreno
-		painelAR = new JPanel();
-		painelAR.setLayout(null); // Layout nulo para posicionamento manual
-		painelAR.setBackground(painel1.getBackground()); // Define o fundo do painel
-		frameAR.add(painelAR); // Adiciona o painel à janela
-
-		// Label para indicar o nome do arquivo
-		caixasaidas3 = new JLabel("Nome do Arquivo");
-		caixasaidas3.setHorizontalAlignment(SwingConstants.CENTER); // Centraliza o texto
-		caixasaidas3.setFont(new Font("Georgia", Font.ITALIC, 14)); // Define a fonte
-		caixasaidas3.setForeground(cor2); // Define a cor do texto
-		caixasaidas3.setBounds(0, 10, 300, 50); // Define a posição e tamanho do rótulo
-		painelAR.add(caixasaidas3); // Adiciona o rótulo ao painel
-
-		// Campo de texto para inserir o nome do arquivo
-		caixatexto3 = new JTextField();
-		caixatexto3.setHorizontalAlignment(SwingConstants.CENTER); // Centraliza o texto
-		caixatexto3.setBorder(borda1); // Define a borda
-		caixatexto3.setFont(caixasaidas3.getFont()); // Usa a mesma fonte do rótulo
-		caixatexto3.setBounds(50, 50, 200, 30); // Define a posição e tamanho do campo de texto
-
-		// Adiciona um evento para o campo de texto que salva o terreno ao pressionar Enter
-		caixatexto3.addKeyListener(new KeyAdapter() {
-		    @Override
-		    public void keyPressed(KeyEvent e) {
-		        if (e.getKeyCode() == KeyEvent.VK_ENTER) { // Verifica se a tecla Enter foi pressionada
-		            receberTexto(); // Função para processar o texto inserido
-		            try {
-		                SalvarTerreno(); // Chama o método para salvar o terreno
-		            } catch (IOException | InterruptedException e1) { // Captura possíveis exceções
-		                e1.printStackTrace(); // Imprime o erro no console
-		            }
-		        }
-		    }
-		});
-		painelAR.add(caixatexto3); // Adiciona o campo de texto ao painel
 
 		// Inicializa uma janela para exibir instruções
 		frameIN = new JFrame();
@@ -731,76 +686,81 @@ public class Frame extends JFrame {
 		
 
 		// Ação para o botão "Enviar"(Importar Terreno)
-		botaoEN2.addActionListener(new ActionListener() {
+		botaoC.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
-		        botaoClickado(botaoEN2);  // Marca o botão como clicado
+		        botaoClickado(botaoC);  // Marca o botão como clicado
 		        
-		        // Obtém o caminho do arquivo a partir da caixa de texto
-		        File arquivoTerreno = new File(caixatexto2.getText());
-		        userInput = caixatexto2.getText();
-		        
-		        // Verifica se o caminho do arquivo foi informado
-		        if (userInput.isEmpty() || userInput.isBlank()) {
-		            caixasaidas2.setText("Erro: O caminho não pode ser vazio.");
-		            return;
-		        }
+		     // Abre o JFileChooser para o usuário selecionar o arquivo
+		        JFileChooser fileChooser = new JFileChooser();
+		        fileChooser.setDialogTitle("Selecione o arquivo de terreno");
 
-		        // Verifica se o arquivo existe
-		        if (!arquivoTerreno.exists()) {
-		            caixasaidas2.setText("Path inválido. Tente novamente.");
-		            return;
-		        }
+		        // Configura o JFileChooser para abrir um arquivo
+		        int userSelection = fileChooser.showOpenDialog(null);
 
-		        final int MAX_LINES = 11;  // Número máximo de linhas esperadas
-		        String[] linhas = new String[MAX_LINES];
+		        // Verifica se o usuário selecionou um arquivo
+		        if (userSelection == JFileChooser.APPROVE_OPTION) {
+		            File arquivoTerreno = fileChooser.getSelectedFile();
+		            System.out.println("Arquivo selecionado: " + arquivoTerreno.getAbsolutePath());
 
-		        // Tenta ler o arquivo
-		        try (BufferedReader BFR = new BufferedReader(new FileReader(arquivoTerreno))) {
-		            for (int i = 0; i < MAX_LINES; i++) {
-		                linhas[i] = BFR.readLine();
-		                if (linhas[i] == null) break;  // Para se o arquivo tiver menos linhas que o esperado
+		            // Verifica se o arquivo existe
+		            if (!arquivoTerreno.exists()) {
+		                caixasaidas2.setText("Path inválido. Tente novamente.");
+		                return;
 		            }
 
-		            // Processa cada linha lida
-		            for (int j = 0; j < linhas.length; j++) {
-		                if (linhas[j] == null) break;  // Para se a linha for nula
-		                String linha = linhas[j].trim();  // Remove espaços extras
-		                String[] partes = linha.split(" ");
+		            final int MAX_LINES = 11;  // Número máximo de linhas esperadas
+		            String[] linhas = new String[MAX_LINES];
 
-		                // Validação do formato das linhas (primeiras e últimas linhas têm no máximo 2 partes)
-		                if ((j <= 1 || j >= 9) && partes.length > 2) {
-		                    caixasaidas2.setText("Erro: formato da linha " + (j + 1) + " inválido.");
-		                    return;
-		                } else if (partes.length == 2) {  // Para linhas com 2 partes (dimensões e pedras)
-		                    memoriaEN[j][0] = partes[0];
-		                    memoriaEN[j][1] = partes[1];
-		                    memoriaEN[j][2] = ""; // Deixa o terceiro campo vazio
-		                    // Exibe os valores no console para verificação
-		                    System.out.println(memoriaEN[j][0]);
-		                    System.out.println(memoriaEN[j][1]);
-		                    System.out.println(memoriaEN[j][2]);
-		                } else if (partes.length == 3) {  // Para linhas com 3 partes (frutas)
-		                    memoriaEN[j][0] = partes[0];  // Nome da fruta
-		                    memoriaEN[j][1] = partes[1];  // Quantidade de árvores
-		                    memoriaEN[j][2] = partes[2];  // Quantidade de frutas
-		                    // Exibe os valores no console para verificação
-		                    System.out.println(memoriaEN[j][0]);
-		                    System.out.println(memoriaEN[j][1]);
-		                    System.out.println(memoriaEN[j][2]);
-		                } else {
-		                    caixasaidas2.setText("Erro: formato da linha " + (j + 1) + " inválido.");
-		                    return; // Sai da função se houver erro no formato da linha
+		            // Tenta ler o arquivo
+		            try (BufferedReader BFR = new BufferedReader(new FileReader(arquivoTerreno))) {
+		                for (int i = 0; i < MAX_LINES; i++) {
+		                    linhas[i] = BFR.readLine();
+		                    if (linhas[i] == null) break;  // Para se o arquivo tiver menos linhas que o esperado
 		                }
-		            }
 
-		            // Verifica o terreno após processar as entradas
-		            if (verificaTerreno()) {
-		                caixasaidas2.setText("Entradas aceitas.");
-		            }
+		                // Processa cada linha lida
+		                for (int j = 0; j < linhas.length; j++) {
+		                    if (linhas[j] == null) break;  // Para se a linha for nula
+		                    String linha = linhas[j].trim();  // Remove espaços extras
+		                    String[] partes = linha.split(" ");
 
-		        } catch (IOException e1) {
-		            caixasaidas2.setText("Erro ao ler o arquivo: " + e1.getMessage());
-		        }
+		                    // Validação do formato das linhas (primeiras e últimas linhas têm no máximo 2 partes)
+		                    if ((j <= 1 || j >= 9) && partes.length > 2) {
+		                        caixasaidas2.setText("Erro: formato da linha " + (j + 1) + " inválido.");
+		                        return;
+		                    } else if (partes.length == 2) {  // Para linhas com 2 partes (dimensões e pedras)
+		                        memoriaEN[j][0] = partes[0];
+		                        memoriaEN[j][1] = partes[1];
+		                        memoriaEN[j][2] = ""; // Deixa o terceiro campo vazio
+		                        // Exibe os valores no console para verificação
+		                        System.out.println(memoriaEN[j][0]);
+		                        System.out.println(memoriaEN[j][1]);
+		                        System.out.println(memoriaEN[j][2]);
+		                    } else if (partes.length == 3) {  // Para linhas com 3 partes (frutas)
+		                        memoriaEN[j][0] = partes[0];  // Nome da fruta
+		                        memoriaEN[j][1] = partes[1];  // Quantidade de árvores
+		                        memoriaEN[j][2] = partes[2];  // Quantidade de frutas
+		                        // Exibe os valores no console para verificação
+		                        System.out.println(memoriaEN[j][0]);
+		                        System.out.println(memoriaEN[j][1]);
+		                        System.out.println(memoriaEN[j][2]);
+		                    } else {
+		                    	caixasaidas2.setText("Erro: formato da linha " + (j + 1) + " inválido.");
+		                        return; // Sai da função se houver erro no formato da linha
+		                    }
+		                }
+
+		                // Verifica o terreno após processar as entradas
+		                if (verificaTerreno()) {
+		                    caixasaidas2.setText("Caminho aceito.");
+		                }
+
+		            } catch (IOException e1) {
+		            	caixasaidas2.setText("Erro ao ler o arquivo: " + e1.getMessage());
+		            }
+		        } else {
+		            caixasaidas2.setText("Operação de seleção de arquivo cancelada pelo usuário.");
+		          }
 		    }
 		});
 
@@ -825,7 +785,12 @@ public class Frame extends JFrame {
 		botaoST.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
 		        botaoClickado(botaoST);  // Marca o botão como clicado
-		        frameAR.setVisible(true);  // Abre a janela para salvar o terreno
+		        try {
+					SalvarTerreno();
+				} catch (IOException | InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 		    }
 		});
 
@@ -921,9 +886,8 @@ public class Frame extends JFrame {
 
 	
 	public void painelImportarTerreno() {
-	    painelIT.add(caixasaidas2);  // Adiciona a caixa de saídas ao painel de importação
-	    painelIT.add(scrollIM);       // Adiciona a barra de rolagem ao painel de importação
-	    painelIT.add(botaoEN2);       // Adiciona o botão "Enviar" ao painel de importação
+	    painelIT.add(caixasaidas2);	  // Adiciona a caixa de saidas2
+		painelIT.add(botaoC);         // Adiciona o botão "Caminho" ao painel de importação
 	    painelIT.add(botaoTE);        // Adiciona o botão "Terreno Exemplo" ao painel de importação
 	    painelIT.add(botaoStart);     // Adiciona o botão "Start" ao painel de importação
 	    painelIT.add(botaoRC);        // Adiciona o botão "Retornar" ao painel de importação
@@ -962,43 +926,41 @@ public class Frame extends JFrame {
 
 	 
 	public void SalvarTerreno() throws IOException, InterruptedException {
-	    caixasaidas3.setText("O nome do arquivo"); // Mensagem pedindo o nome do arquivo
+        // Permite o usuário selecionar o local e o nome do arquivo usando JFileChooser
+        JFileChooser escolhaArq = new JFileChooser();
+        escolhaArq.setBackground(cor1);
+        escolhaArq.setBorder(borda1);
+        escolhaArq.setDialogTitle("Escolha o local para salvar o arquivo");
 
-	    // Verifica se o nome do arquivo foi preenchido
-	    if (nomeArquivo == null || nomeArquivo.isEmpty()) {
-	        caixasaidas3.setText("O nome do arquivo não pode estar vazio."); // Mensagem de erro
-	        Thread.sleep(4000); // Pausa de 4 segundos para que o usuário veja a mensagem
-	        return; // Retorna sem continuar
-	    }
+        // Configurando para salvar um arquivo
+        int escolhaUser = escolhaArq.showSaveDialog(null);
 
-	    // Define o caminho onde o arquivo será salvo
-	    String caminho = "C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\";
-	    File arquivoTerreno = new File(caminho + nomeArquivo + ".txt"); // Cria o arquivo com a extensão ".txt"
+        // Verificando se o usuário selecionou um local
+        if (escolhaUser == JFileChooser.APPROVE_OPTION) {
+            // Pegando o arquivo escolhido pelo usuário
+            File arqSalvar = new File(escolhaArq.getSelectedFile() + ".txt");
+            System.out.println("Salvando no arquivo: " + arqSalvar.getAbsolutePath());
 
-	    // Cria o escritor do arquivo
-	    Writer escritor = new FileWriter(arquivoTerreno);
+            // Escrevendo os dados de memoriaEN no arquivo escolhido
+            try (Writer escritor = new FileWriter(arqSalvar)) {
+                // Escreve os dados de memoriaEN no arquivo
+                for (int i = 0; i < memoriaEN.length; i++) {
+                    for (int j = 0; j < 3; j++) {
+                        escritor.write(memoriaEN[i][j]); // Escreve cada elemento
+                        escritor.write(" "); // Adiciona um espaço entre os dados
+                    }
+                    escritor.write(System.getProperty("line.separator")); // Nova linha
+                }
+                escritor.flush(); // Garante que todos os dados foram escritos
+            } 
+            catch (IOException e) {
+                caixasaidas.setText("Erro ao salvar o arquivo.");
+            }
+        } 
+        else {
+            caixasaidas.setText("Operação de salvamento cancelada.");
+        }
 
-	    // Escreve os dados de memoriaEN no arquivo
-	    for (int i = 0; i < memoriaEN.length; i++) {
-	        for (int j = 0; j < 3; j++) {
-	            escritor.write(memoriaEN[i][j]); // Escreve cada elemento
-	            escritor.write(" "); // Adiciona um espaço
-	        }
-	        escritor.write(System.getProperty("line.separator")); // Nova linha
-	    }
-
-	    // Fecha o escritor e confirma a operação
-	    escritor.flush(); // Garante que todos os dados foram escritos
-	    escritor.close(); // Fecha o escritor
-
-	    // Exibe mensagem de sucesso
-	    caixasaidas3.setText("Arquivo salvo com sucesso: " + nomeArquivo); // Mensagem de sucesso
-	    Thread.sleep(4000); // Pausa de 4 segundos para que o usuário veja a mensagem
-
-	    // Fecha o frame e reseta os campos
-	    frameAR.setVisible(false); // Fecha o frame
-	    caixatexto3.setText(null); // Limpa o campo de texto
-	    caixasaidas3.setText("O nome do arquivo"); // Reseta a mensagem
 	}
 
 
@@ -1033,11 +995,11 @@ public class Frame extends JFrame {
 	
 	
 	// Função utilizada para criar uma imagem dentro da escala do tamanho do botão
-	public ImageIcon criandoImagem(int tamanho, String Caminho) {
-		ImageIcon img = new ImageIcon(Caminho);
-	    Image img1 = img.getImage().getScaledInstance(tamanho, tamanho, Image.SCALE_SMOOTH);
-	    img = new ImageIcon(img1);
-	    return img;
+	public ImageIcon criandoImagem(int tamanho, ImageIcon img) {
+		ImageIcon imagem = img;
+	    Image img1 = imagem.getImage().getScaledInstance(tamanho, tamanho, Image.SCALE_SMOOTH);
+	    imagem = new ImageIcon(img1);
+	    return imagem;
 	}
 	
 	// Criando o terreno dentro do painel
@@ -1047,23 +1009,23 @@ public class Frame extends JFrame {
 	    painelTE.removeAll();
 	    painelTE.removeAll();  // Limpa o painel antes de recriar as células
 	    
-	    ImageIcon imgjogador1 = criandoImagem(tamanhoCelula, "C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\UpView guy-1.png");
-	    ImageIcon imgjogador2 = criandoImagem(tamanhoCelula, "C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\UpView guy-2.png");
-	    ImageIcon imgArvoreAbacate = criandoImagem(tamanhoCelula, "C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\ArvoreAbacate.png");
-	    ImageIcon imgArvoreAmora = criandoImagem(tamanhoCelula, "C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\ArvoreAmora.png");
-	    ImageIcon imgArvoreLaranja = criandoImagem(tamanhoCelula, "C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\ArvoreLaranja.png");
-	    ImageIcon imgArvoreAcerola= criandoImagem(tamanhoCelula, "C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\arvoreAcerola.png");
-	    ImageIcon imgArvoreGoiaba= criandoImagem(tamanhoCelula, "C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\ArvoreGoiaba.png");
-	    ImageIcon imgArvoreCoco = criandoImagem(tamanhoCelula, "C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\ArvoreCoco.png");
-	    ImageIcon imgFrutaMaracuja = criandoImagem(tamanhoCelula, "C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\maracuja.png");
-	    ImageIcon imgFrutaLaranja = criandoImagem(tamanhoCelula, "C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\laranja.png"); 
-	    ImageIcon imgFrutaAbacate = criandoImagem(tamanhoCelula, "C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\abacate.png");
-	    ImageIcon imgFrutaGoiaba = criandoImagem(tamanhoCelula, "C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\goiaba.png");
-	    ImageIcon imgFrutaAmora = criandoImagem(tamanhoCelula, "C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\amora.png");
-	    ImageIcon imgFrutaCoco = criandoImagem(tamanhoCelula, "C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\coco.png");
-	    ImageIcon imgFrutaAcerola = criandoImagem(tamanhoCelula, "C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\acerola.png");
-	    ImageIcon imggrama = criandoImagem(tamanhoCelula, "C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\grama.jpeg");
-	    ImageIcon imgPedra= criandoImagem(tamanhoCelula, "C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\pedra.png");
+	    ImageIcon imgjogador1 = criandoImagem(tamanhoCelula, imgPjogador1);
+	    ImageIcon imgjogador2 = criandoImagem(tamanhoCelula, imgPjogador2);
+	    ImageIcon imgArvoreAbacate = criandoImagem(tamanhoCelula, imgPArvoreAbacate);
+	    ImageIcon imgArvoreAmora = criandoImagem(tamanhoCelula, imgPArvoreAmora);
+	    ImageIcon imgArvoreLaranja = criandoImagem(tamanhoCelula, imgPArvoreLaranja);
+	    ImageIcon imgArvoreAcerola= criandoImagem(tamanhoCelula, imgPArvoreAcerola);
+	    ImageIcon imgArvoreGoiaba= criandoImagem(tamanhoCelula, imgPArvoreGoiaba);
+	    ImageIcon imgArvoreCoco = criandoImagem(tamanhoCelula, imgPArvoreCoco);
+	    ImageIcon imgFrutaMaracuja = criandoImagem(tamanhoCelula, imgPFrutaMaracuja);
+	    ImageIcon imgFrutaLaranja = criandoImagem(tamanhoCelula, imgPFrutaLaranja); 
+	    ImageIcon imgFrutaAbacate = criandoImagem(tamanhoCelula, imgPFrutaAbacate);
+	    ImageIcon imgFrutaGoiaba = criandoImagem(tamanhoCelula, imgPFrutaGoiaba);
+	    ImageIcon imgFrutaAmora = criandoImagem(tamanhoCelula, imgPFrutaAmora);
+	    ImageIcon imgFrutaCoco = criandoImagem(tamanhoCelula, imgPFrutaCoco);
+	    ImageIcon imgFrutaAcerola = criandoImagem(tamanhoCelula, imgPFrutaAcerola);
+	    ImageIcon imggrama = criandoImagem(tamanhoCelula, imgPgrama);
+	    ImageIcon imgPedra= criandoImagem(tamanhoCelula, imgPPedra);
 	    
 	    // Criação das imagens dentro de cada botão, de acordo com as posições da Matriz
 	    for (int i = 0; i < Dimensao; i++) {
