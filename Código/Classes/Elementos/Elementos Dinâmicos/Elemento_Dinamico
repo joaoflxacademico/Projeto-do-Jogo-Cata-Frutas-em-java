@@ -1,0 +1,16 @@
+package cata_frutas.Elementos.Elementos_Dinâmicos;
+
+import cata_frutas.Elementos.Elemento;
+
+public class Elemento_Dinamico extends Elemento{
+
+	public Elemento_Dinamico(int x, int y) {
+		super(x, y);
+	}
+	
+	public void setPosicao(int x, int y) {
+		this.posicao.x = x;
+		this.posicao.y = y;
+	}
+
+}
