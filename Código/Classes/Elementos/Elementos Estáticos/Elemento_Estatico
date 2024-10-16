@@ -1,0 +1,11 @@
+package cata_frutas.Elementos.Elementos_Estáticos;
+
+import cata_frutas.Elementos.Elemento;
+
+public class Elemento_Estatico extends Elemento{
+
+	public Elemento_Estatico(int x, int y) {
+		super(x, y);
+	}
+
+}
