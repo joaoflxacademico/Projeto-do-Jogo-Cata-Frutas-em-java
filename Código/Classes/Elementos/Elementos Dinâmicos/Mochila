@@ -1,0 +1,52 @@
+package cata_frutas.Elementos.Elementos_Dinâmicos;
+
+
+public class Mochila{
+	public Fruta[] mochila;
+	
+	public Mochila(int tamanho) {
+		this.mochila = new Fruta[tamanho];
+	}
+	
+	public Fruta retornaFruta(int posicao) {
+		Fruta retorno = null;
+		if(posicao > 0 && posicao < this.mochila.length) {
+			if(this.mochila[posicao] != null) {
+				retorno = this.mochila[posicao];
+				}
+			else {
+				System.out.printf("\nPosição %d inválida para o tamanho %d da mochila.", posicao, this.mochila.length);
+			}
+		}
+		else {
+			System.out.printf("\nPosição %d inválida para o tamanho %d da mochila.", posicao, this.mochila.length);
+		}
+		return retorno;
+	}
+	
+	public void armazenaFruta(Fruta fruta) {
+		if(this.mochilaCheia() != true) {
+			for(int i = 0; i < this.mochila.length; i++) {
+				if(this.mochila[i] == null) {
+					this.mochila[i] = fruta;
+					System.out.printf("Fruta %s armazenada com sucesso.",fruta);
+					break;
+				}
+			}
+		}
+	}
+	
+	public boolean mochilaCheia() {
+		boolean resp = false;
+		for(int i = 0; i < this.mochila.length; i++) {
+			if(this.mochila[i] == null) {
+				resp = false;
+				break;
+			}
+			else {
+				resp = true;
+			}
+		}
+		return resp;
+	}
+}
