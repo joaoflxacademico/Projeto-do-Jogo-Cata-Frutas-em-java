@@ -1,0 +1,44 @@
+package cata_frutas.Elementos.Elementos_Dinâmicos;
+
+import cata_frutas.Elementos.Elemento;
+
+public class Jogador extends Elemento_Dinamico {
+	public String nome;
+	public int movimentos;
+	public int movimentosRestantes;
+	public int tamanhoMochila;
+	public Mochila mochilaJogador;
+	
+	public Jogador(int x, int y, String nome,int tamanhoMochila) {
+		super(x,y);
+		this.nome = nome;
+		this.mochilaJogador = new Mochila(tamanhoMochila);
+	}
+	
+	
+	public void empurrar(Jogador pA, Jogador pB) {
+		int forcaAtaque = pA.mochilaJogador.mochila.length;
+		int forcaDefesa = pB.mochilaJogador.mochila.length;
+		
+		double log2Atq = Math.log10(forcaAtaque + 1) / Math.log10(2);
+		double log2Def = Math.log10(forcaDefesa + 1) / Math.log(2);
+		int empurrao = (int) Math.round(log2Atq - log2Def);
+		
+		System.out.println(empurrao);
+		
+	}
+	
+	public void saltar(Elemento objeto, int direcao) {
+		int x = objeto.getPosicao().getX();
+		int y = objeto.getPosicao().getY();
+		
+		
+	}
+	
+	public void movimentar(int direcao, int[][] Matriz) {
+	    int x = this.getPosicao().getX();
+	    int y = this.getPosicao().getY();
+	    int novox = x, novoy = y;
+
+	}
+}
