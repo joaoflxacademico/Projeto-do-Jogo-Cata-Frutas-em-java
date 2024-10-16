@@ -1,0 +1,365 @@
+package cata_frutas;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.*;
+
+import javax.swing.JFileChooser;
+
+import cata_frutas.Elementos.*;
+import cata_frutas.Elementos.Elementos_Dinâmicos.*;
+import cata_frutas.Elementos.Elementos_Estáticos.*;
+
+public class Terreno {
+	public int Dimensao;
+	public Elemento[][] terreno;
+	public String[][] memoriaEN;
+	public int[][] matrizSist;
+	public int espacosDisponiveis;
+	public int pedra;
+	public int[] frutas = new int[7];
+	public int[] arvores = new int[7];
+	public float Bichada;
+	
+	public Terreno() {}
+	
+	public void setPedra(int pedras) {
+		if(pedras < this.espacosDisponiveis) {
+			this.pedra = pedras;
+			this.espacosDisponiveis -= pedras;
+		}
+		else {
+			System.out.printf("\nO número %d de pedras é inválida para a dimensão %d.",pedras, this.Dimensao);
+		}
+	}
+	
+	public void setFrutas(int[] frutas) {
+		int numfrutas = frutas[0] + frutas[1] + frutas[2] + frutas[3] + frutas[4] + frutas[5] + frutas[6];
+		if(numfrutas < this.espacosDisponiveis) {
+			this.frutas = frutas;
+			this.espacosDisponiveis -= numfrutas;
+		}
+		else {
+			System.out.printf("\nO número %d de frutas é inválida para a dimensão %d.",numfrutas, this.Dimensao);
+		}
+	}
+	
+	public void setArvores(int[] arvores) {
+		int numarvores = arvores[1] + arvores[2] + arvores[3] + arvores[4] + arvores[5] + arvores[6];
+		if(numarvores < this.espacosDisponiveis) {
+			this.arvores = arvores;
+			this.espacosDisponiveis -= numarvores;
+		}
+		else {
+			System.out.printf("\nO número %d de árvores é inválida para a dimensão %d.",numarvores, this.Dimensao);
+		}
+	}
+	
+	
+	public int getPedras() {
+		return this.pedra;
+	}
+	
+	public int[] getFrutas() {
+		return this.frutas;
+	}
+	
+	public int[] getArvores() {
+		return this.arvores;
+	}
+	
+	
+	
+	 // ADICIONAR O METODO PARA A CRIACAO DO TERRENO DE EXEMPLO
+	public void getExemplo() {
+		
+	}
+	
+	
+	 // ADICIONAR OS METODOS PARA IMPORTAR E EXPORTAR AS ENTRADAS DA CRIACAO DO TERRENO
+	public void importarEntradas() {
+		// Abre o JFileChooser para o usuário selecionar o arquivo
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Selecione o arquivo de terreno");
+
+        // Configura o JFileChooser para abrir um arquivo
+        int userSelection = fileChooser.showOpenDialog(null);
+
+        // Verifica se o usuário selecionou um arquivo
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            File arquivoTerreno = fileChooser.getSelectedFile();
+            System.out.println("Arquivo selecionado: " + arquivoTerreno.getAbsolutePath());
+
+            // Verifica se o arquivo existe
+            if (!arquivoTerreno.exists()) {
+                System.out.println("Path inválido. Tente novamente.");
+                return;
+            }
+
+            final int MAX_LINES = 11;  // Número máximo de linhas esperadas
+            String[] linhas = new String[MAX_LINES];
+
+            // Tenta ler o arquivo
+            try (BufferedReader BFR = new BufferedReader(new FileReader(arquivoTerreno))) {
+                for (int i = 0; i < MAX_LINES; i++) {
+                    linhas[i] = BFR.readLine();
+                    if (linhas[i] == null) break;  // Para se o arquivo tiver menos linhas que o esperado
+                }
+
+                // Processa cada linha lida
+                for (int j = 0; j < linhas.length; j++) {
+                    if (linhas[j] == null) break;  // Para se a linha for nula
+                    String linha = linhas[j].trim();  // Remove espaços extras
+                    String[] partes = linha.split(" ");
+
+                    // Validação do formato das linhas (primeiras e últimas linhas têm no máximo 2 partes)
+                    if ((j <= 1 || j >= 9) && partes.length > 2) {
+                    	System.out.println("Erro: formato da linha " + (j + 1) + " inválido.");
+                        return;
+                    } else if (partes.length == 2) {  // Para linhas com 2 partes (dimensões e pedras)
+                        this.memoriaEN[j][0] = partes[0];
+                        this.memoriaEN[j][1] = partes[1];
+                        this.memoriaEN[j][2] = ""; // Deixa o terceiro campo vazio
+                        // Exibe os valores no console para verificação
+                        System.out.println(this.memoriaEN[j][0]);
+                        System.out.println(this.memoriaEN[j][1]);
+                        System.out.println(this.memoriaEN[j][2]);
+                    } else if (partes.length == 3) {  // Para linhas com 3 partes (frutas)
+                    	this.memoriaEN[j][0] = partes[0];  // Nome da fruta
+                    	this.memoriaEN[j][1] = partes[1];  // Quantidade de árvores
+                    	this.memoriaEN[j][2] = partes[2];  // Quantidade de frutas
+                        // Exibe os valores no console para verificação
+                        System.out.println(this.memoriaEN[j][0]);
+                        System.out.println(this.memoriaEN[j][1]);
+                        System.out.println(this.memoriaEN[j][2]);
+                    } else {
+                    	System.out.println("Erro: formato da linha " + (j + 1) + " inválido.");
+                        return; // Sai da função se houver erro no formato da linha
+                    }
+                }
+
+                // Verifica o terreno após processar as entradas
+                if (this.verificaTerreno()) {
+                	System.out.println("Caminho aceito.");
+                    terrenoExemploSist();
+                }
+
+            } catch (IOException e1) {
+            	System.out.println("Erro ao ler o arquivo: " + e1.getMessage());
+            }
+        } else {
+        	System.out.println("Operação de seleção de arquivo cancelada pelo usuário.");
+          }
+	}
+	
+	public void exportarEntradas() {
+		
+	}
+	
+	// Cria o terreno dentro do sistema, e armazena os valores em uma Matriz
+		public void terrenoExemploSist() {
+
+			matrizSist = new int[Dimensao][Dimensao];// Inicia a Matriz do terreno com a dimensão de entrada
+		    terreno = new Elemento[Dimensao][Dimensao];
+		    
+		    // Inicializa o terreno com zeros
+		    for (int i = 0; i < Dimensao; i++) {
+		        for (int j = 0; j < Dimensao; j++) {
+		        	matrizSist[i][j] = 0;
+		        }
+		    }
+
+		    // Colocar Pedras
+		    for (int p = 0; p < this.pedra; p++) {
+		        int x = ale(Dimensao - 1);
+		        int y = ale(Dimensao - 1);
+		        matrizSist[x][y] = 100;// Pedra representada por 100
+	            terreno[x][y] = new Pedra(x,y,Dimensao);
+		    }
+
+		    // Colocar Árvores
+		    for(int i = 1; i < 7; i++) {
+			    for (int a = 0; a < this.arvores[i];) {
+			        int x = ale(Dimensao - 1);
+			        int y = ale(Dimensao - 1);
+			        if (matrizSist[x][y] == 0) { // Verifica se a posição está livre
+			        	matrizSist[x][y] = 200 + i; // Árvore representada por 200 + tipo
+			            switch(i) {
+			            case 1:
+			                terreno[x][y] = new Arvore(x,y,Laranja);
+			                break;
+			            case 2:
+			                terreno[x][y] = new Arvore(x,y,abacate);
+			                break;
+			            case 3:
+			                terreno[x][y] = new Arvore(x,y,coco);
+			                break;
+			            case 4:
+			                terreno[x][y] = new Arvore(x,y,acerola);
+			                break;
+			            case 5:
+			                terreno[x][y] = new Arvore(x,y,amora);
+			                break;
+			            case 6:
+			                terreno[x][y] = new Arvore(x,y,goiaba);
+			                break;
+			            }
+			            a++;
+			        }
+			    }
+		    }
+
+		    // Colocar Frutas
+		    for(int j = 0; j < 7; j++) {
+			    for (int f = 0; f < this.frutas[j];) {
+			        int x = ale(Dimensao - 1);
+			        int y = ale(Dimensao - 1);
+			        if (matrizSist[x][y] == 0) { // Verifica se a posição está livre
+			        	matrizSist[x][y] = 300 + j; // Fruta representada por 300 + tipo
+			            switch(j) {
+			            case 0:
+			                terreno[x][y] = new Maracuja(x,y,Bichada);
+			                break;
+			            case 1:
+			                terreno[x][y] = new Laranja(x,y,Bichada);
+			                break;
+			            case 2:
+			                terreno[x][y] = new Abacate(x,y,Bichada);
+			                break;
+			            case 3:
+			                terreno[x][y] = new Coco(x,y,Bichada);
+			                break;
+			            case 4:
+			                terreno[x][y] = new Acerola(x,y,Bichada);
+			                break;
+			            case 5:
+			                terreno[x][y] = new Amora(x,y,Bichada);
+			                break;
+			            case 6:
+			                terreno[x][y] = new Goiaba(x,y,Bichada);
+			                break;
+			            }
+			            f++;
+			        }
+			    }
+		    }
+
+		    // Colocar Jogadores
+		    for (int j = 1; j < 3;) {
+		        int x = ale(Dimensao - 1);
+		        int y = ale(Dimensao - 1);
+		        if (matrizSist[x][y] == 0) { // Verifica se a posição está livre
+		        	matrizSist[x][y] = j; // Jogador representado por 1 e 2
+		            switch(j) {
+		            case 1:
+		                terreno[x][y] = new Jogador(x, y, "P1", Mochila);
+		                break;
+		            case 2:
+		                terreno[x][y] = new Jogador(x, y, "P2", Mochila);
+		                break;
+		            }
+		            j++;
+		        }
+		    }
+
+		    // Imprimir o terreno
+		    imprimirMatriz(matrizSist);
+
+		}
+		
+		// Função para imprimir a matriz
+		
+		private void imprimirMatriz(int[][] matriz) {
+		    for (int k = 0; k < Dimensao; k++) {
+		        for (int l = 0; l < Dimensao; l++) {
+		            System.out.print(matriz[k][l] + " | ");
+		        }
+		        System.out.println();
+		    }
+		}
+		
+		public boolean verificaTerreno() {
+			// Reinicia as entradas no caso de uma nova verificação
+			boolean uiaceita = false;
+			int arvoresTotais = 0;
+			int frutasTotais = 0;
+			int[] Frutas = new int[7];
+			int[] Arvores = new int[7];
+			try {
+				
+				int dimensao = Integer.parseInt(memoriaEN[0][1]);// Alteração do tipo da dimensão de String para int
+				Dimensao = dimensao;
+				int pedra = Integer.parseInt(memoriaEN[1][1]);// Alteração do tipo de pedra String para int
+				int Pedras = pedra;
+				int espacosDisponiveis = dimensao*dimensao - pedra - 2; // Variável utilizada para verificar os espaços disponíveis no terreno
+				int[] arvores = new int[7];
+				int[] frutas = new int[7];
+				float bichada = Integer.parseInt(memoriaEN[9][1]); // Alteração do tipo de bichada de String para float
+				Bichada = bichada;
+				int mochila = Integer.parseInt(memoriaEN[10][1]); // Alteração do tipo de mochila de String para int
+				int Mochila = mochila;
+				// Armazena os devidos valores de frutas e arvores com os tipos corretos, ambos de String para int
+				for(int i = 0; i < 7; i++) {
+					arvores[i] = Integer.parseInt(memoriaEN[i+2][1]);
+					frutas[i] = Integer.parseInt(memoriaEN[i+2][2]);
+					
+					if (arvores[i] < 0 || frutas[i] < 0) {
+		                System.out.println("Erro: A quantidade de árvores e frutas não pode ser negativa.");
+		                uiaceita =  false;
+		                break;
+		            }
+					frutasTotais += frutas[i];
+					Frutas[i] = frutas[i];
+					Arvores[i] = arvores[i];
+				}
+				
+				for(int j = 1; j < 7; j++) {
+					arvoresTotais += arvores[j];
+				}
+				
+				espacosDisponiveis -= frutasTotais - arvoresTotais;
+				
+				
+				if(dimensao <= 2) {
+					System.out.println("Erro: A dimensão do terreno deve ser pelo menos três.");
+		            uiaceita = false;
+		        }
+				else if(pedra < 0) {
+					System.out.println("Erro: A quantidade de pedras não pode ser negativa.");
+		            uiaceita = false;
+		        }
+				else if(arvores[0]%2 == 0) {
+					System.out.println("Erro: O número de maracujás deve ser um valor impar.");
+					uiaceita = false;
+				}
+				else if(bichada < 0 || bichada > 100) {
+					System.out.println("Erro: A porcentagem de frutas bichadas deve estar entre 0 e 100.");
+		            uiaceita = false;
+		        }
+				else if(mochila <= 0) {
+					System.out.println("Erro: O tamanho da mochila deve ser maior que zero.");
+		            uiaceita = false;
+		        }
+				else if(mochila < (1 + Math.floor((arvores[0])/2))) {
+					System.out.println("Erro: o tamanho da mochila deve ser maior que metade +1 do nº de maracujás.");
+				}
+				else if(espacosDisponiveis < 0) {
+					System.out.println("Erro: A quantidade dos elementos supera o tamanho livre no terreno.");
+					uiaceita = false;
+				}
+				else if(espacosDisponiveis >= 0) {
+					uiaceita = true;
+				}
+			} catch (NumberFormatException e) {
+		        // Captura erros de formato nos números
+				System.out.println("Erro: Verifique se todas as entradas são números válidos.");
+		        uiaceita = false;
+			}
+			return uiaceita;
+			
+			
+		}
+	}
+	
+
