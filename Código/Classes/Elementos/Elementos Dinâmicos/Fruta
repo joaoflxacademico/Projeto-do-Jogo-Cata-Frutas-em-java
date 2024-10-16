@@ -1,0 +1,13 @@
+package cata_frutas.Elementos.Elementos_Dinâmicos;
+
+public abstract class Fruta extends Elemento_Dinamico{
+	public float bichada;
+	
+	public Fruta(int x, int y, float bichada) {
+		super(x,y);
+		this.bichada = bichada;
+	}
+	
+	public abstract void efeito();
+	
+}
