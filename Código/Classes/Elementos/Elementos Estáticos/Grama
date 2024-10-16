@@ -1,0 +1,7 @@
+package cata_frutas.Elementos.Elementos_Estáticos;
+
+public class Grama extends Elemento_Estatico {	
+	public Grama(int x, int y) {
+		super(x,y);
+	}
+}
