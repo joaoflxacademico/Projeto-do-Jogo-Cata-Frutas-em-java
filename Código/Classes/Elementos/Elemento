@@ -1,0 +1,18 @@
+package cata_frutas.Elementos;
+
+public abstract class Elemento {
+	protected Ponto posicao;
+	
+	public Elemento(int x, int y) {
+		this.posicao = new Ponto(x,y);
+	}
+	
+	public Ponto getPosicao() {
+		return this.posicao;
+	}
+	
+	// Função para gerar valores aleatórios em função de um valor passado, esse que corresponde pela dimensão - 1
+		public int ale(int i) {
+			return (int) Math.round(Math.random()*i);
+		}
+}
