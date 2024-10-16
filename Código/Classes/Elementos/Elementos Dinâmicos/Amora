@@ -1,0 +1,13 @@
+package cata_frutas.Elementos.Elementos_Dinâmicos;
+
+public class Amora extends Fruta{
+	
+	public Amora(int x, int y, float bichada) {
+		super(x,y,bichada);
+	}
+	
+	@Override
+ 	public void efeito() {
+		
+	};
+}
