@@ -1,0 +1,13 @@
+package cata_frutas.Elementos.Elementos_Dinâmicos;
+
+public class Goiaba extends Fruta{
+	
+	public Goiaba(int x, int y, float bichada) {
+		super(x,y,bichada);
+	}
+	
+	@Override
+ 	public void efeito() {
+		
+	};
+}
