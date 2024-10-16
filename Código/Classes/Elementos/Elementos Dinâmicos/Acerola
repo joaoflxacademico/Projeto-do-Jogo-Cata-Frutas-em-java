@@ -1,0 +1,13 @@
+package cata_frutas.Elementos.Elementos_Dinâmicos;
+
+public class Acerola extends Fruta{
+	
+	public Acerola(int x, int y, float bichada) {
+		super(x,y,bichada);
+	}
+	
+	@Override
+ 	public void efeito() {
+		
+	};
+}
