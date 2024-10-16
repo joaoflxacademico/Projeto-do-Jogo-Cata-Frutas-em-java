@@ -1,0 +1,9 @@
+package cata_frutas.Elementos.Elementos_Estáticos;
+
+public class Pedra extends Elemento_Estatico {
+
+	public Pedra(int x, int y) {
+		super(x, y);
+	}
+
+}
