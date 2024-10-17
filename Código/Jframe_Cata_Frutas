@@ -823,6 +823,7 @@ public class Frame extends JFrame {
 		            painelTerrenoExemplo();  // Exibe o painel do terreno de exemplo
 		            terreno.criaTerrenoSistema();  // Configura o sistema de terreno exemplo
 		            criacaoVisualTerreno();  // Chama o método para criar o terreno
+		            configurarKeyListener();
 		        }
 		    }
 		});
@@ -1038,106 +1039,61 @@ public class Frame extends JFrame {
 	    	    celulas[i][j] = celula;
 	    	    celula.setBorder(borda1);
 	            celula.setBackground(null);
-	            celula.setOpaque(false);
-	            celula.setFocusable(true); // Importante para KeyListener
-	            celula.setRequestFocusEnabled(true);
-	            celula.addKeyListener(new KeyAdapter() {
-             		@Override
-             		public void keyPressed(KeyEvent e) {
-             			if(e.getKeyCode() == KeyEvent.VK_UP) {
-             				celulas[0][0].setIcon(imgPedra);
-             			}
-             		}
-             	});
-            	
-            	celula.addKeyListener(new KeyAdapter() {
-	             		@Override
-	             		public void keyPressed(KeyEvent e) {
-	             			if(e.getKeyCode() == KeyEvent.VK_DOWN) {
-	             				celulas[0][0].setIcon(imggrama);
-	             			}
-	             		}
-	            });
-            	
-            	celula.addKeyListener(new KeyAdapter() {
-             		@Override
-             		public void keyPressed(KeyEvent e) {
-             			if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
-             				System.out.println();
-             				terreno.terreno = jogador1.movimentar(3,terreno.terreno);
-             				System.out.println("Tecla pressionada.");
-             				terreno.imprimirMatriz(terreno.terreno);
-             				updateTerreno();
-             			}
-             		}
-             	});
-            	 
-            	celula.addKeyListener(new KeyAdapter() {
-             		@Override
-             		public void keyPressed(KeyEvent e) {
-             			if(e.getKeyCode() == KeyEvent.VK_LEFT) {
-             				System.out.println();
-             				terreno.terreno = jogador1.movimentar(4,terreno.terreno);
-             				System.out.println("Tecla pressionada.");
-             				terreno.imprimirMatriz(terreno.terreno);
-             				updateTerreno();
-             			}
-             		}
-             	});
+	            celula.setOpaque(false);	            
 	            
-	            if(terreno.terreno[i][j] instanceof Jogador) {
-	            	Jogador jogador = (Jogador) terreno.terreno[i][j];
+	            if(terreno.floresta[i][j] instanceof Jogador) {
+	            	Jogador jogador = (Jogador) terreno.floresta[i][j];
             		if(jogador.id == 1) {
 	            		celula.setIcon(imgjogador1);
-	            		jogador1 = (Jogador) terreno.terreno[i][j];
+	            		jogador1 = (Jogador) terreno.floresta[i][j];
             		}
             		else if(jogador.id == 2) {
             			celula.setIcon(imgjogador2);
             		}
 	            }
-	            else if(terreno.terreno[i][j] instanceof Pedra) {
+	            else if(terreno.floresta[i][j] instanceof Pedra) {
 	            	celula.setIcon(imgPedra);
 	            }
-	            else if(terreno.terreno[i][j] instanceof Arvore) {
-	            	if(terreno.terreno[i][j] instanceof Arvore_Laranja) {
+	            else if(terreno.floresta[i][j] instanceof Arvore) {
+	            	if(terreno.floresta[i][j] instanceof Arvore_Laranja) {
 	            		celula.setIcon(imgArvoreLaranja);
 	            	}
-	            	if(terreno.terreno[i][j] instanceof Arvore_Abacate) {
+	            	if(terreno.floresta[i][j] instanceof Arvore_Abacate) {
 	            		celula.setIcon(imgArvoreAbacate);
 	            	}
-	            	if(terreno.terreno[i][j] instanceof Arvore_Coco) {
+	            	if(terreno.floresta[i][j] instanceof Arvore_Coco) {
 	            		celula.setIcon(imgArvoreCoco);
 	            	}
-	            	if(terreno.terreno[i][j] instanceof Arvore_Acerola) {
+	            	if(terreno.floresta[i][j] instanceof Arvore_Acerola) {
 	            		celula.setIcon(imgArvoreAcerola);
 	            	}
-	            	if(terreno.terreno[i][j] instanceof Arvore_Amora) {
+	            	if(terreno.floresta[i][j] instanceof Arvore_Amora) {
 	            		celula.setIcon(imgArvoreAmora);
 	            	}
-	            	if(terreno.terreno[i][j] instanceof Arvore_Goiaba) {
+	            	if(terreno.floresta[i][j] instanceof Arvore_Goiaba) {
 	            		celula.setIcon(imgArvoreGoiaba);
 	            	}
 	            }
-	            else if(terreno.terreno[i][j] instanceof Fruta) {
-	            	if(terreno.terreno[i][j] instanceof Maracuja) {
+	            else if(terreno.floresta[i][j] instanceof Fruta) {
+	            	if(terreno.floresta[i][j] instanceof Maracuja) {
 	            		celula.setIcon(imgFrutaMaracuja);
 	            	}
-	            	if(terreno.terreno[i][j] instanceof Laranja) {
+	            	if(terreno.floresta[i][j] instanceof Laranja) {
 	            		celula.setIcon(imgFrutaLaranja);
 	            	}
-	            	if(terreno.terreno[i][j] instanceof Abacate) {
+	            	if(terreno.floresta[i][j] instanceof Abacate) {
 	            		celula.setIcon(imgFrutaAbacate);
 	            	}
-	            	if(terreno.terreno[i][j] instanceof Coco) {
+	            	if(terreno.floresta[i][j] instanceof Coco) {
 	            		celula.setIcon(imgFrutaCoco);
 	            	}
-	            	if(terreno.terreno[i][j] instanceof Acerola) {
+	            	if(terreno.floresta[i][j] instanceof Acerola) {
 	            		celula.setIcon(imgFrutaAcerola);
 	            	}
-	            	if(terreno.terreno[i][j] instanceof Amora) {
+	            	if(terreno.floresta[i][j] instanceof Amora) {
 	            		celula.setIcon(imgFrutaAmora);
 	            	}
-	            	if(terreno.terreno[i][j] instanceof Goiaba) {
+	            	if(terreno.floresta[i][j] instanceof Goiaba) {
 	            		celula.setIcon(imgFrutaGoiaba);
 	            	}
 	            }
@@ -1156,167 +1112,36 @@ public class Frame extends JFrame {
 	}
 	
 	
-	public void updateTerreno() {
-		int tamanhoCelula = 480 / terreno.Dimensao;
-		painelTE.setLayout(new GridBagLayout());  // Mantém o layout
-	    painelTE.removeAll();
-	    painelTE.removeAll();  // Limpa o painel antes de recriar as células
-	    
-	    ImageIcon imgjogador1 = criandoImagem(tamanhoCelula, imgPjogador1);
-	    ImageIcon imgjogador2 = criandoImagem(tamanhoCelula, imgPjogador2);
-	    ImageIcon imgArvoreAbacate = criandoImagem(tamanhoCelula, imgPArvoreAbacate);
-	    ImageIcon imgArvoreAmora = criandoImagem(tamanhoCelula, imgPArvoreAmora);
-	    ImageIcon imgArvoreLaranja = criandoImagem(tamanhoCelula, imgPArvoreLaranja);
-	    ImageIcon imgArvoreAcerola= criandoImagem(tamanhoCelula, imgPArvoreAcerola);
-	    ImageIcon imgArvoreGoiaba= criandoImagem(tamanhoCelula, imgPArvoreGoiaba);
-	    ImageIcon imgArvoreCoco = criandoImagem(tamanhoCelula, imgPArvoreCoco);
-	    ImageIcon imgFrutaMaracuja = criandoImagem(tamanhoCelula, imgPFrutaMaracuja);
-	    ImageIcon imgFrutaLaranja = criandoImagem(tamanhoCelula, imgPFrutaLaranja); 
-	    ImageIcon imgFrutaAbacate = criandoImagem(tamanhoCelula, imgPFrutaAbacate);
-	    ImageIcon imgFrutaGoiaba = criandoImagem(tamanhoCelula, imgPFrutaGoiaba);
-	    ImageIcon imgFrutaAmora = criandoImagem(tamanhoCelula, imgPFrutaAmora);
-	    ImageIcon imgFrutaCoco = criandoImagem(tamanhoCelula, imgPFrutaCoco);
-	    ImageIcon imgFrutaAcerola = criandoImagem(tamanhoCelula, imgPFrutaAcerola);
-	    ImageIcon imggrama = criandoImagem(tamanhoCelula, imgPgrama);
-	    ImageIcon imgPedra= criandoImagem(tamanhoCelula, imgPPedra);
-	    
-	    celulas = new JLabel[terreno.Dimensao][terreno.Dimensao];
-	    
-	    // Criação das imagens dentro de cada botão, de acordo com as posições da Matriz
-	    for (int i = 0; i < terreno.Dimensao; i++) {
-	        for (int j = 0; j < terreno.Dimensao; j++) {
-	    	    JLabel celula = new JLabel();
-	    	    celulas[i][j] = celula;
-	    	    celula.setBorder(borda1);
-	            celula.setBackground(null);
-	            celula.setOpaque(false);
-	            celula.setFocusable(true); // Importante para KeyListener
-	            celula.setRequestFocusEnabled(true);
-	            
-	            
-	            celula.addKeyListener(new KeyAdapter() {
-             		@Override
-             		public void keyPressed(KeyEvent e) {
-             			if(e.getKeyCode() == KeyEvent.VK_UP) {
-             				System.out.println();
-             				terreno.terreno = jogador1.movimentar(1,terreno.terreno);
-             				System.out.println("Tecla pressionada.");
-             				terreno.imprimirMatriz(terreno.terreno);
-             				updateTerreno();
-             			}
-             		}
-             	});
-            	
-            	celula.addKeyListener(new KeyAdapter() {
-	             		@Override
-	             		public void keyPressed(KeyEvent e) {
-	             			if(e.getKeyCode() == KeyEvent.VK_DOWN) {
-	             				System.out.println();
-	             				terreno.terreno = jogador1.movimentar(2,terreno.terreno);
-	             				System.out.println("Tecla pressionada.");
-	             				terreno.imprimirMatriz(terreno.terreno);
-	             				updateTerreno();
-	             			}
-	             		}
-	            });
-            	
-            	celula.addKeyListener(new KeyAdapter() {
-             		@Override
-             		public void keyPressed(KeyEvent e) {
-             			if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
-             				System.out.println();
-             				terreno.terreno = jogador1.movimentar(3,terreno.terreno);
-             				System.out.println("Tecla pressionada.");
-             				terreno.imprimirMatriz(terreno.terreno);
-             				updateTerreno();
-             			}
-             		}
-             	});
-            	 
-            	celula.addKeyListener(new KeyAdapter() {
-             		@Override
-             		public void keyPressed(KeyEvent e) {
-             			if(e.getKeyCode() == KeyEvent.VK_LEFT) {
-             				System.out.println();
-             				terreno.terreno = jogador1.movimentar(4,terreno.terreno);
-             				System.out.println("Tecla pressionada.");
-             				terreno.imprimirMatriz(terreno.terreno);
-             				updateTerreno();
-             			}
-             		}
-             	});
-	            
-	            if(terreno.terreno[i][j] instanceof Jogador) {
-	            	Jogador jogador = (Jogador) terreno.terreno[i][j];
-            		if(jogador.id == 1) {
-	            		celula.setIcon(imgjogador1);
-	            		jogador1 = (Jogador) terreno.terreno[i][j];
-            		}
-            		else if(jogador.id == 2) {
-            			celula.setIcon(imgjogador2);
-            		}
-	            }
-	            else if(terreno.terreno[i][j] instanceof Pedra) {
-	            	celula.setIcon(imgPedra);
-	            }
-	            else if(terreno.terreno[i][j] instanceof Arvore) {
-	            	if(terreno.terreno[i][j] instanceof Arvore_Laranja) {
-	            		celula.setIcon(imgArvoreLaranja);
-	            	}
-	            	if(terreno.terreno[i][j] instanceof Arvore_Abacate) {
-	            		celula.setIcon(imgArvoreAbacate);
-	            	}
-	            	if(terreno.terreno[i][j] instanceof Arvore_Coco) {
-	            		celula.setIcon(imgArvoreCoco);
-	            	}
-	            	if(terreno.terreno[i][j] instanceof Arvore_Acerola) {
-	            		celula.setIcon(imgArvoreAcerola);
-	            	}
-	            	if(terreno.terreno[i][j] instanceof Arvore_Amora) {
-	            		celula.setIcon(imgArvoreAmora);
-	            	}
-	            	if(terreno.terreno[i][j] instanceof Arvore_Goiaba) {
-	            		celula.setIcon(imgArvoreGoiaba);
-	            	}
-	            }
-	            else if(terreno.terreno[i][j] instanceof Fruta) {
-	            	if(terreno.terreno[i][j] instanceof Maracuja) {
-	            		celula.setIcon(imgFrutaMaracuja);
-	            	}
-	            	if(terreno.terreno[i][j] instanceof Laranja) {
-	            		celula.setIcon(imgFrutaLaranja);
-	            	}
-	            	if(terreno.terreno[i][j] instanceof Abacate) {
-	            		celula.setIcon(imgFrutaAbacate);
-	            	}
-	            	if(terreno.terreno[i][j] instanceof Coco) {
-	            		celula.setIcon(imgFrutaCoco);
-	            	}
-	            	if(terreno.terreno[i][j] instanceof Acerola) {
-	            		celula.setIcon(imgFrutaAcerola);
-	            	}
-	            	if(terreno.terreno[i][j] instanceof Amora) {
-	            		celula.setIcon(imgFrutaAmora);
-	            	}
-	            	if(terreno.terreno[i][j] instanceof Goiaba) {
-	            		celula.setIcon(imgFrutaGoiaba);
-	            	}
-	            }
-	            else{
-	            	celula.setIcon(imggrama);
-	            }
-	            celula.setPreferredSize(new Dimension(tamanhoCelula, tamanhoCelula));
+	// Função para configurar o KeyListener apenas uma vez
+	public void configurarKeyListener() {
+	    painelTE.setFocusable(true);
+	    painelTE.requestFocusInWindow(); // Garante que o painel receba o foco
 
-	            gbc.gridx = j;
-	            gbc.gridy = i;
-	            painelTE.add(celula, gbc);
+	    painelTE.addKeyListener(new KeyAdapter() {
+	        @Override
+	        public void keyPressed(KeyEvent e) {
+	            switch (e.getKeyCode()) {
+	                case KeyEvent.VK_UP:
+	                    terreno.floresta = jogador1.movimentar(1, terreno);
+	                    break;
+	                case KeyEvent.VK_DOWN:
+	                    terreno.floresta = jogador1.movimentar(2, terreno);
+	                    break;
+	                case KeyEvent.VK_RIGHT:
+	                    terreno.floresta = jogador1.movimentar(3, terreno);
+	                    break;
+	                case KeyEvent.VK_LEFT:
+	                    terreno.floresta = jogador1.movimentar(4, terreno);
+	                    break;
+	                default:
+	                    return; // Ignora outras teclas
+	            }
+	            System.out.println("Tecla pressionada.");
+	            terreno.imprimirMatriz(terreno.floresta);
+	            criacaoVisualTerreno(); // Atualiza o terreno após o movimento
 	        }
-	    }
-	    revalidate();
-	    repaint();
+	    });
 	}
-
-
 		
 	// Classe para possibilitar a criação de um painel com uma imagem como o plano de fundo
 	public class CustomPanel extends JPanel {
