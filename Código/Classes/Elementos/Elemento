@@ -2,6 +2,7 @@ package cata_frutas.Elementos;
 
 public abstract class Elemento {
 	protected Ponto posicao;
+	public int id;
 	
 	public Elemento(int x, int y) {
 		this.posicao = new Ponto(x,y);
@@ -12,7 +13,12 @@ public abstract class Elemento {
 	}
 	
 	// Função para gerar valores aleatórios em função de um valor passado, esse que corresponde pela dimensão - 1
-		public int ale(int i) {
-			return (int) Math.round(Math.random()*i);
-		}
+	public int ale(int i) {
+		return (int) Math.round(Math.random()*i);
+	}
+	
+	public int setId(int id){
+		this.id = id;
+		return id;
+	}
 }
