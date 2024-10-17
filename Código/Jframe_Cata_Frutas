@@ -111,23 +111,23 @@ public class Frame extends JFrame {
     ImageIcon imgPgrama = new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\grama.jpeg");
     ImageIcon imgPPedra= new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\pedra.png");
     
-    ImageIcon imgjogador1;
-    ImageIcon imgjogador2;
-    ImageIcon imgArvoreAbacate;
-    ImageIcon imgArvoreAmora;
-    ImageIcon imgArvoreLaranja;
-    ImageIcon imgArvoreAcerola;
-    ImageIcon imgArvoreGoiaba;
-    ImageIcon imgArvoreCoco;
-    ImageIcon imgFrutaMaracuja;
-    ImageIcon imgFrutaLaranja; 
-    ImageIcon imgFrutaAbacate;
-    ImageIcon imgFrutaGoiaba;
-    ImageIcon imgFrutaAmora;
-    ImageIcon imgFrutaCoco;
-    ImageIcon imgFrutaAcerola;
-    ImageIcon imggrama;
-    ImageIcon imgPedra;
+    public static ImageIcon imgjogador1;
+    public static ImageIcon imgjogador2;
+    public static ImageIcon imgArvoreAbacate;
+    public static ImageIcon imgArvoreAmora;
+    public static ImageIcon imgArvoreLaranja;
+    public static ImageIcon imgArvoreAcerola;
+    public static ImageIcon imgArvoreGoiaba;
+    public static ImageIcon imgArvoreCoco;
+    public static ImageIcon imgFrutaMaracuja;
+    public static ImageIcon imgFrutaLaranja; 
+    public static ImageIcon imgFrutaAbacate;
+    public static ImageIcon imgFrutaGoiaba;
+    public static ImageIcon imgFrutaAmora;
+    public static ImageIcon imgFrutaCoco;
+    public static ImageIcon imgFrutaAcerola;
+    public static ImageIcon imggrama;
+    public static ImageIcon imgPedra;
     
 	
 	/*Inicialização dos objetos que serão utilizados na construção do terreno, na 
@@ -823,7 +823,6 @@ public class Frame extends JFrame {
 		            painelTerrenoExemplo();  // Exibe o painel do terreno de exemplo
 		            terreno.criaTerrenoSistema();  // Configura o sistema de terreno exemplo
 		            criacaoVisualTerreno();  // Chama o método para criar o terreno
-		            terreno.imprimirMatriz(terreno.terreno);
 		        }
 		    }
 		});
@@ -1040,7 +1039,161 @@ public class Frame extends JFrame {
 	    	    celula.setBorder(borda1);
 	            celula.setBackground(null);
 	            celula.setOpaque(false);
-	           
+	            celula.setFocusable(true); // Importante para KeyListener
+	            celula.setRequestFocusEnabled(true);
+	            celula.addKeyListener(new KeyAdapter() {
+             		@Override
+             		public void keyPressed(KeyEvent e) {
+             			if(e.getKeyCode() == KeyEvent.VK_UP) {
+             				celulas[0][0].setIcon(imgPedra);
+             			}
+             		}
+             	});
+            	
+            	celula.addKeyListener(new KeyAdapter() {
+	             		@Override
+	             		public void keyPressed(KeyEvent e) {
+	             			if(e.getKeyCode() == KeyEvent.VK_DOWN) {
+	             				celulas[0][0].setIcon(imggrama);
+	             			}
+	             		}
+	            });
+            	
+            	celula.addKeyListener(new KeyAdapter() {
+             		@Override
+             		public void keyPressed(KeyEvent e) {
+             			if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
+             				System.out.println();
+             				terreno.terreno = jogador1.movimentar(3,terreno.terreno);
+             				System.out.println("Tecla pressionada.");
+             				terreno.imprimirMatriz(terreno.terreno);
+             				updateTerreno();
+             			}
+             		}
+             	});
+            	 
+            	celula.addKeyListener(new KeyAdapter() {
+             		@Override
+             		public void keyPressed(KeyEvent e) {
+             			if(e.getKeyCode() == KeyEvent.VK_LEFT) {
+             				System.out.println();
+             				terreno.terreno = jogador1.movimentar(4,terreno.terreno);
+             				System.out.println("Tecla pressionada.");
+             				terreno.imprimirMatriz(terreno.terreno);
+             				updateTerreno();
+             			}
+             		}
+             	});
+	            
+	            if(terreno.terreno[i][j] instanceof Jogador) {
+	            	Jogador jogador = (Jogador) terreno.terreno[i][j];
+            		if(jogador.id == 1) {
+	            		celula.setIcon(imgjogador1);
+	            		jogador1 = (Jogador) terreno.terreno[i][j];
+            		}
+            		else if(jogador.id == 2) {
+            			celula.setIcon(imgjogador2);
+            		}
+	            }
+	            else if(terreno.terreno[i][j] instanceof Pedra) {
+	            	celula.setIcon(imgPedra);
+	            }
+	            else if(terreno.terreno[i][j] instanceof Arvore) {
+	            	if(terreno.terreno[i][j] instanceof Arvore_Laranja) {
+	            		celula.setIcon(imgArvoreLaranja);
+	            	}
+	            	if(terreno.terreno[i][j] instanceof Arvore_Abacate) {
+	            		celula.setIcon(imgArvoreAbacate);
+	            	}
+	            	if(terreno.terreno[i][j] instanceof Arvore_Coco) {
+	            		celula.setIcon(imgArvoreCoco);
+	            	}
+	            	if(terreno.terreno[i][j] instanceof Arvore_Acerola) {
+	            		celula.setIcon(imgArvoreAcerola);
+	            	}
+	            	if(terreno.terreno[i][j] instanceof Arvore_Amora) {
+	            		celula.setIcon(imgArvoreAmora);
+	            	}
+	            	if(terreno.terreno[i][j] instanceof Arvore_Goiaba) {
+	            		celula.setIcon(imgArvoreGoiaba);
+	            	}
+	            }
+	            else if(terreno.terreno[i][j] instanceof Fruta) {
+	            	if(terreno.terreno[i][j] instanceof Maracuja) {
+	            		celula.setIcon(imgFrutaMaracuja);
+	            	}
+	            	if(terreno.terreno[i][j] instanceof Laranja) {
+	            		celula.setIcon(imgFrutaLaranja);
+	            	}
+	            	if(terreno.terreno[i][j] instanceof Abacate) {
+	            		celula.setIcon(imgFrutaAbacate);
+	            	}
+	            	if(terreno.terreno[i][j] instanceof Coco) {
+	            		celula.setIcon(imgFrutaCoco);
+	            	}
+	            	if(terreno.terreno[i][j] instanceof Acerola) {
+	            		celula.setIcon(imgFrutaAcerola);
+	            	}
+	            	if(terreno.terreno[i][j] instanceof Amora) {
+	            		celula.setIcon(imgFrutaAmora);
+	            	}
+	            	if(terreno.terreno[i][j] instanceof Goiaba) {
+	            		celula.setIcon(imgFrutaGoiaba);
+	            	}
+	            }
+	            else{
+	            	celula.setIcon(imggrama);
+	            }
+	            celula.setPreferredSize(new Dimension(tamanhoCelula, tamanhoCelula));
+
+	            gbc.gridx = j;
+	            gbc.gridy = i;
+	            painelTE.add(celula, gbc);
+	        }
+	    }
+	    revalidate();
+	    repaint();
+	}
+	
+	
+	public void updateTerreno() {
+		int tamanhoCelula = 480 / terreno.Dimensao;
+		painelTE.setLayout(new GridBagLayout());  // Mantém o layout
+	    painelTE.removeAll();
+	    painelTE.removeAll();  // Limpa o painel antes de recriar as células
+	    
+	    ImageIcon imgjogador1 = criandoImagem(tamanhoCelula, imgPjogador1);
+	    ImageIcon imgjogador2 = criandoImagem(tamanhoCelula, imgPjogador2);
+	    ImageIcon imgArvoreAbacate = criandoImagem(tamanhoCelula, imgPArvoreAbacate);
+	    ImageIcon imgArvoreAmora = criandoImagem(tamanhoCelula, imgPArvoreAmora);
+	    ImageIcon imgArvoreLaranja = criandoImagem(tamanhoCelula, imgPArvoreLaranja);
+	    ImageIcon imgArvoreAcerola= criandoImagem(tamanhoCelula, imgPArvoreAcerola);
+	    ImageIcon imgArvoreGoiaba= criandoImagem(tamanhoCelula, imgPArvoreGoiaba);
+	    ImageIcon imgArvoreCoco = criandoImagem(tamanhoCelula, imgPArvoreCoco);
+	    ImageIcon imgFrutaMaracuja = criandoImagem(tamanhoCelula, imgPFrutaMaracuja);
+	    ImageIcon imgFrutaLaranja = criandoImagem(tamanhoCelula, imgPFrutaLaranja); 
+	    ImageIcon imgFrutaAbacate = criandoImagem(tamanhoCelula, imgPFrutaAbacate);
+	    ImageIcon imgFrutaGoiaba = criandoImagem(tamanhoCelula, imgPFrutaGoiaba);
+	    ImageIcon imgFrutaAmora = criandoImagem(tamanhoCelula, imgPFrutaAmora);
+	    ImageIcon imgFrutaCoco = criandoImagem(tamanhoCelula, imgPFrutaCoco);
+	    ImageIcon imgFrutaAcerola = criandoImagem(tamanhoCelula, imgPFrutaAcerola);
+	    ImageIcon imggrama = criandoImagem(tamanhoCelula, imgPgrama);
+	    ImageIcon imgPedra= criandoImagem(tamanhoCelula, imgPPedra);
+	    
+	    celulas = new JLabel[terreno.Dimensao][terreno.Dimensao];
+	    
+	    // Criação das imagens dentro de cada botão, de acordo com as posições da Matriz
+	    for (int i = 0; i < terreno.Dimensao; i++) {
+	        for (int j = 0; j < terreno.Dimensao; j++) {
+	    	    JLabel celula = new JLabel();
+	    	    celulas[i][j] = celula;
+	    	    celula.setBorder(borda1);
+	            celula.setBackground(null);
+	            celula.setOpaque(false);
+	            celula.setFocusable(true); // Importante para KeyListener
+	            celula.setRequestFocusEnabled(true);
+	            
+	            
 	            celula.addKeyListener(new KeyAdapter() {
              		@Override
              		public void keyPressed(KeyEvent e) {
@@ -1094,173 +1247,65 @@ public class Frame extends JFrame {
              	});
 	            
 	            if(terreno.terreno[i][j] instanceof Jogador) {
-            		if(((Jogador) terreno.terreno[i][j]).id == 1) {
+	            	Jogador jogador = (Jogador) terreno.terreno[i][j];
+            		if(jogador.id == 1) {
 	            		celula.setIcon(imgjogador1);
-	            		jogador1 = new Jogador(i,j,Mochila,1);
-	            		terreno.terreno[i][j] = jogador1;
+	            		jogador1 = (Jogador) terreno.terreno[i][j];
             		}
-            		else if(((Jogador) terreno.terreno[i][j]).id == 2) {
-            		celula.setIcon(imgjogador2);
-            		terreno.terreno[i][j] = new Jogador(i,j,Mochila,2);
+            		else if(jogador.id == 2) {
+            			celula.setIcon(imgjogador2);
             		}
 	            }
 	            else if(terreno.terreno[i][j] instanceof Pedra) {
 	            	celula.setIcon(imgPedra);
-	            	Pedra pedra = new Pedra(i,j);
-	            	terreno.terreno[i][j] = pedra;
 	            }
 	            else if(terreno.terreno[i][j] instanceof Arvore) {
 	            	if(terreno.terreno[i][j] instanceof Arvore_Laranja) {
 	            		celula.setIcon(imgArvoreLaranja);
-	            		Arvore arvoreLaranja = new Arvore_Laranja(i,j);
-	            		terreno.terreno[i][j] = arvoreLaranja;
 	            	}
 	            	if(terreno.terreno[i][j] instanceof Arvore_Abacate) {
 	            		celula.setIcon(imgArvoreAbacate);
-	            		Arvore arvoreAbacate = new Arvore_Abacate(i,j);
-	            		terreno.terreno[i][j] = arvoreAbacate;
 	            	}
 	            	if(terreno.terreno[i][j] instanceof Arvore_Coco) {
 	            		celula.setIcon(imgArvoreCoco);
-	            		Arvore arvoreCoco = new Arvore_Coco(i,j);
-	            		terreno.terreno[i][j] = arvoreCoco;
 	            	}
 	            	if(terreno.terreno[i][j] instanceof Arvore_Acerola) {
 	            		celula.setIcon(imgArvoreAcerola);
-	            		Arvore arvoreAcerola = new Arvore_Acerola(i,j);
-	            		terreno.terreno[i][j] = arvoreAcerola;
 	            	}
 	            	if(terreno.terreno[i][j] instanceof Arvore_Amora) {
 	            		celula.setIcon(imgArvoreAmora);
-	            		Arvore arvoreAmora = new Arvore_Amora(i,j);
-	            		terreno.terreno[i][j] = arvoreAmora;
 	            	}
 	            	if(terreno.terreno[i][j] instanceof Arvore_Goiaba) {
 	            		celula.setIcon(imgArvoreGoiaba);
-	            		Arvore arvoreGoiaba = new Arvore_Goiaba(i,j);
-	            		terreno.terreno[i][j] = arvoreGoiaba;
 	            	}
 	            }
 	            else if(terreno.terreno[i][j] instanceof Fruta) {
 	            	if(terreno.terreno[i][j] instanceof Maracuja) {
 	            		celula.setIcon(imgFrutaMaracuja);
-	            		maracuja = new Maracuja(i,j,Bichada);
-	            		terreno.terreno[i][j] = maracuja;
 	            	}
 	            	if(terreno.terreno[i][j] instanceof Laranja) {
 	            		celula.setIcon(imgFrutaLaranja);
-	            		laranja = new Laranja(i,j,Bichada);
-	            		terreno.terreno[i][j] = laranja;
 	            	}
 	            	if(terreno.terreno[i][j] instanceof Abacate) {
 	            		celula.setIcon(imgFrutaAbacate);
-	            		abacate = new Abacate(i,j,Bichada);
-	            		terreno.terreno[i][j] = abacate;
 	            	}
 	            	if(terreno.terreno[i][j] instanceof Coco) {
 	            		celula.setIcon(imgFrutaCoco);
-	            		coco = new Coco(i,j,Bichada);
-	            		terreno.terreno[i][j] = coco;
 	            	}
 	            	if(terreno.terreno[i][j] instanceof Acerola) {
 	            		celula.setIcon(imgFrutaAcerola);
-	            		acerola = new Acerola(i,j,Bichada);
-	            		terreno.terreno[i][j] = acerola;
 	            	}
 	            	if(terreno.terreno[i][j] instanceof Amora) {
 	            		celula.setIcon(imgFrutaAmora);
-	            		amora = new Amora(i,j,Bichada);
-	            		terreno.terreno[i][j] = amora;
 	            	}
 	            	if(terreno.terreno[i][j] instanceof Goiaba) {
 	            		celula.setIcon(imgFrutaGoiaba);
-	            		goiaba = new Goiaba(i,j,Bichada);
-	            		terreno.terreno[i][j] = goiaba;
 	            	}
 	            }
 	            else{
 	            	celula.setIcon(imggrama);
 	            }
 	            celula.setPreferredSize(new Dimension(tamanhoCelula, tamanhoCelula));
-
-	            gbc.gridx = j;
-	            gbc.gridy = i;
-	            painelTE.add(celula, gbc);
-	        }
-	    }
-	    revalidate();
-	    repaint();
-	}
-	
-	
-	public void updateTerreno() {
-		for (int i = 0; i < terreno.Dimensao; i++) {
-	        for (int j = 0; j < terreno.Dimensao; j++) {
-	        	JLabel celula = celulas[i][j];
-	    	    celula.setBorder(borda1);
-	            celula.setBackground(null);
-	            celula.setOpaque(false);
-	           
-	            if(terreno.terreno[i][j] instanceof Jogador) {
-            		if(((Jogador) terreno.terreno[i][j]).id == 1) {
-	            		celula.setIcon(imgjogador1);
-            		}
-            		else if(((Jogador) terreno.terreno[i][j]).id == 2) {
-            			celula.setIcon(imgjogador2);
-            		}
-	            }
-	            
-	            else if(terreno.terreno[i][j] instanceof Pedra) {
-	            	celula.setIcon(imgPedra);
-	            	Pedra pedra = new Pedra(i,j);
-	            	terreno.terreno[i][j] = pedra;
-	            }
-	            else if(terreno.terreno[i][j] instanceof Arvore) {
-	            	if(terreno.terreno[i][j] instanceof Arvore_Laranja) {
-	            		celula.setIcon(imgArvoreLaranja);
-	            	}
-	            	if(terreno.terreno[i][j] instanceof Arvore_Abacate) {
-	            		celula.setIcon(imgArvoreAbacate);
-	            	}
-	            	if(terreno.terreno[i][j] instanceof Arvore_Coco) {
-	            		celula.setIcon(imgArvoreCoco);
-	            	}
-	            	if(terreno.terreno[i][j] instanceof Arvore_Acerola) {
-	            		celula.setIcon(imgArvoreAcerola);
-	            	}
-	            	if(terreno.terreno[i][j] instanceof Arvore_Amora) {
-	            		celula.setIcon(imgArvoreAmora);
-	            	}
-	            	if(terreno.terreno[i][j] instanceof Arvore_Goiaba) {
-	            		celula.setIcon(imgArvoreGoiaba);
-	            	}
-	            }
-	            else if(terreno.terreno[i][j] instanceof Fruta) {
-	            	if(terreno.terreno[i][j] instanceof Maracuja) {
-	            		celula.setIcon(imgFrutaMaracuja);
-	            	}
-	            	if(terreno.terreno[i][j] instanceof Laranja) {
-	            		celula.setIcon(imgFrutaLaranja);
-	            	}
-	            	if(terreno.terreno[i][j] instanceof Abacate) {
-	            		celula.setIcon(imgFrutaAbacate);
-	            	}
-	            	if(terreno.terreno[i][j] instanceof Coco) {
-	            		celula.setIcon(imgFrutaCoco);
-	            	}
-	            	if(terreno.terreno[i][j] instanceof Acerola) {
-	            		celula.setIcon(imgFrutaAcerola);
-	            	}
-	            	if(terreno.terreno[i][j] instanceof Amora) {
-	            		celula.setIcon(imgFrutaAmora);
-	            	}
-	            	if(terreno.terreno[i][j] instanceof Goiaba) {
-	            		celula.setIcon(imgFrutaGoiaba);
-	            	}
-	            }
-	            else{
-	            	celula.setIcon(imggrama);
-	            }
 
 	            gbc.gridx = j;
 	            gbc.gridy = i;
