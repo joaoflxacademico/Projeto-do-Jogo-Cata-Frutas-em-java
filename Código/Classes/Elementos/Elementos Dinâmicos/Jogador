@@ -1,22 +1,29 @@
 package cata_frutas.Elementos.Elementos_Dinâmicos;
 
+import cata_frutas.Terreno;
 import cata_frutas.Elementos.Elemento;
+import cata_frutas.Elementos.Ponto;
+import cata_frutas.Elementos.Elementos_Estáticos.*;
 
 public class Jogador extends Elemento_Dinamico {
+	public int id;
 	public String nome;
 	public int movimentos;
 	public int movimentosRestantes;
 	public int tamanhoMochila;
 	public Mochila mochilaJogador;
+	public int Dimensao;
+	public boolean debaixoDeArvore;
 	
-	public Jogador(int x, int y, String nome,int tamanhoMochila) {
+	public Jogador(int x, int y,int tamanhoMochila, int id,int dimensao) {
 		super(x,y);
-		this.nome = nome;
 		this.mochilaJogador = new Mochila(tamanhoMochila);
+		this.id = id;
+		this.Dimensao = dimensao;
 	}
 	
 	
-	public void empurrar(Jogador pA, Jogador pB) {
+	public void calculoEmpurrao(Jogador pA, Jogador pB) {
 		int forcaAtaque = pA.mochilaJogador.mochila.length;
 		int forcaDefesa = pB.mochilaJogador.mochila.length;
 		
@@ -28,6 +35,14 @@ public class Jogador extends Elemento_Dinamico {
 		
 	}
 	
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+	
+	public String getNome() {
+		return this.nome;
+	}
+	
 	public void saltar(Elemento objeto, int direcao) {
 		int x = objeto.getPosicao().getX();
 		int y = objeto.getPosicao().getY();
@@ -35,10 +50,100 @@ public class Jogador extends Elemento_Dinamico {
 		
 	}
 	
-	public void movimentar(int direcao, int[][] Matriz) {
-	    int x = this.getPosicao().getX();
+	public Elemento[][] movimentar(int direcao, Terreno terreno) {
+	    
+		int x = this.getPosicao().getX();
 	    int y = this.getPosicao().getY();
 	    int novox = x, novoy = y;
-
+	    
+	    switch(direcao) {
+	    case 1:
+	    	novox = x - 1;
+	    	break;
+	    case 2:
+	    	novox = x + 1;
+	    	break;
+	    case 3:
+	    	novoy = y + 1;
+	    	break;
+	    case 4:
+	    	novoy = y - 1;
+	    	break;
+	    }
+	    
+	    if(!verificaPosicao(novox, novoy)) {
+	    	return terreno.floresta;
+	    }
+	    
+	    if(debaixoDeArvore) {
+	    	if(terreno.floresta[novox][novoy] instanceof Pedra) {
+		    	this.setPosicao(x, y);
+		    	return terreno.floresta;
+		    }
+	    	
+		    else if(terreno.floresta[novox][novoy] instanceof Jogador) {
+		    	this.setPosicao(x, y);
+		    	return terreno.floresta;
+		    }
+	    	
+	    	else if(terreno.floresta[novox][novoy] instanceof Arvore) {
+	    		for(int i = 0; i < terreno.listaArvores.size(); i++) {
+		    		if(terreno.listaArvores.get(i).getJogador() == this) {
+		    			terreno.listaArvores.get(i).setJogador(null);
+		    		}
+	    		}
+		    	this.setPosicao(novox, novoy);
+		    	Arvore arvore = (Arvore) terreno.floresta[novox][novoy];
+		    	arvore.setJogador(this);
+		    	terreno.floresta[novox][novoy] = arvore;
+		    	return terreno.floresta;
+		    }
+	    	
+	    	for(int i = 0; i < terreno.listaArvores.size(); i++) {
+	    		if(terreno.listaArvores.get(i).getJogador() == this) {
+	    			this.debaixoDeArvore = false;
+	    			terreno.floresta[novox][novoy] = this;
+	    			this.setPosicao(novox, novoy);
+	    			return terreno.floresta;
+	    		}
+	    	}
+	    }
+	    
+	    if(terreno.floresta[novox][novoy] instanceof Pedra) {
+	    	this.setPosicao(x, y);
+	    	return terreno.floresta;
+	    }
+	    
+	    else if(terreno.floresta[novox][novoy] instanceof Fruta) {
+	    	this.mochilaJogador.armazenaFruta((Fruta) terreno.floresta[novox][novoy]);
+	    	terreno.floresta[novox][novoy] = this;
+	    }
+	    
+	    else if(terreno.floresta[novox][novoy] instanceof Jogador) {
+	    	this.setPosicao(x, y);
+	    	return terreno.floresta;
+	    }
+	    
+	    else if(terreno.floresta[novox][novoy] instanceof Arvore) {
+	    	this.debaixoDeArvore = true;
+	    	this.setPosicao(novox, novoy);
+	    	Arvore arvore = (Arvore) terreno.floresta[novox][novoy];
+	    	arvore.setJogador(this);
+	    	terreno.floresta[novox][novoy] = arvore;
+	    	terreno.floresta[x][y] = new Grama(x,y);
+	    	return terreno.floresta;
+	    }
+	    terreno.floresta[x][y] = new Grama(x,y);
+	    terreno.floresta[novox][novoy] = this;
+	    
+	    this.setPosicao(novox, novoy);
+	    
+	    return terreno.floresta;
+	    		
 	}
+	
+	public boolean verificaPosicao(int x, int y) {
+		return x >= 0 && x < this.Dimensao && y >= 0 && y < this.Dimensao;
+	}
+	
 }
