@@ -152,7 +152,7 @@ public class Terreno {
 	    // Inicializa o terreno com zeros
 	    for (int i = 0; i < Dimensao; i++) {
 	        for (int j = 0; j < Dimensao; j++) {
-	        	matrizSist[i][j] = 0;
+	        	this.terreno[i][j] = new Grama(i,j);
 	        }
 	    }
 
@@ -162,7 +162,6 @@ public class Terreno {
 	        int y = ale(Dimensao - 1);
             Pedra pedra = new Pedra(x,y);
             terreno[x][y] = pedra;
-            matrizSist[x][y] = pedra.setId(100);
             
 	    }
 
@@ -171,42 +170,36 @@ public class Terreno {
 		    for (int a = 0; a < this.arvores[i];) {
 		        int x = ale(Dimensao - 1);
 		        int y = ale(Dimensao - 1);
-		        if (matrizSist[x][y] == 0) { // Verifica se a posição está livre
+		        if (terreno[x][y] instanceof Grama) { // Verifica se a posição está livre
 		            switch(i) {
 		            case 1:
 		            	Arvore_Laranja arvoreLaranja = new Arvore_Laranja(x,y);
 		                terreno[x][y] = arvoreLaranja;
-		                matrizSist[x][y] = arvoreLaranja.setId(201);
 		                listaArvores.add(arvoreLaranja);
 		                break;
 		            case 2:
 		            	Arvore_Abacate arvoreAbacate = new Arvore_Abacate(x,y);
 		                terreno[x][y] = arvoreAbacate;
-		                matrizSist[x][y] = arvoreAbacate.setId(202);
 		                listaArvores.add(arvoreAbacate);
 		                break;
 		            case 3:
 		            	Arvore_Coco arvoreCoco = new Arvore_Coco(x,y);
 		                terreno[x][y] = arvoreCoco;
-		                matrizSist[x][y] = arvoreCoco.setId(203);
 		                listaArvores.add(arvoreCoco);
 		                break;
 		            case 4:
 		            	Arvore_Acerola arvoreAcerola = new Arvore_Acerola(x,y);
 		                terreno[x][y] = arvoreAcerola;
-		                matrizSist[x][y] = arvoreAcerola.setId(204);
 		                listaArvores.add(arvoreAcerola);
 		                break;
 		            case 5:
 		            	Arvore_Amora arvoreAmora = new Arvore_Amora(x,y);
 		                terreno[x][y] = arvoreAmora;
-		                matrizSist[x][y] = arvoreAmora.setId(205);
 		                listaArvores.add(arvoreAmora);
 		                break;
 		            case 6:
 		            	Arvore_Goiaba arvoreGoiaba = new Arvore_Goiaba(x,y);
 		                terreno[x][y] = arvoreGoiaba;
-		                matrizSist[x][y] = arvoreGoiaba.setId(206);
 		                listaArvores.add(arvoreGoiaba);
 		                break;
 		            }
@@ -220,42 +213,35 @@ public class Terreno {
 		    for (int f = 0; f < this.frutas[j];) {
 		        int x = ale(Dimensao - 1);
 		        int y = ale(Dimensao - 1);
-		        if (matrizSist[x][y] == 0) { // Verifica se a posição está livre
+		        if (terreno[x][y] instanceof Grama) { // Verifica se a posição está livre
 		            switch(j) {
 		            case 0:
 		                Maracuja maracuja = new Maracuja(x,y,Bichada);
 		                terreno[x][y] = maracuja;
-		                matrizSist[x][y] = maracuja.setId(300);
 		                break;
 		            case 1:
 		            	Laranja laranja = new Laranja(x,y,Bichada);
 		                terreno[x][y] = laranja;
-		                matrizSist[x][y] = laranja.setId(301);
 		                break;
 		            case 2:
 		            	Abacate abacate = new Abacate(x,y,Bichada);
 		                terreno[x][y] = abacate;
-		                matrizSist[x][y] = abacate.setId(302);
 		                break;
 		            case 3:
 		            	Coco coco = new Coco(x,y,Bichada);
 		                terreno[x][y] = coco;
-		                matrizSist[x][y] = coco.setId(303);
 		                break;
 		            case 4:
 		            	Acerola acerola = new Acerola(x,y,Bichada);
 		                terreno[x][y] = acerola;
-		                matrizSist[x][y] = acerola.setId(304);
 		                break;
 		            case 5:
 		            	Amora amora = new Amora(x,y,Bichada);
 		                terreno[x][y] = amora;
-		                matrizSist[x][y] = amora.setId(305);
 		                break;
 		            case 6:
 		            	Goiaba goiaba = new Goiaba(x,y,Bichada);
 		                terreno[x][y] = goiaba;
-		                matrizSist[x][y] = goiaba.setId(306);
 		                break;
 		            }
 		            f++;
@@ -267,18 +253,16 @@ public class Terreno {
 	    for (int j = 1; j < 3;) {
 	        int x = ale(Dimensao - 1);
 	        int y = ale(Dimensao - 1);
-	        if (matrizSist[x][y] == 0) { // Verifica se a posição está livre
+	        if (terreno[x][y] instanceof Grama) { // Verifica se a posição está livre
 	        	matrizSist[x][y] = j; // Jogador representado por 1 e 2
 	            switch(j) {
 	            case 1:
-	            	Jogador jogador1 = new Jogador(x,y,"P1",Mochila,j);
-	                terreno[x][y] = jogador1;
-	                this.matrizSist[x][y] = 1;
+	            	Jogador jogador1 = new Jogador(x,y,Mochila,j);
+	            	terreno[x][y] = jogador1;
 	                break;
 	            case 2:
-	            	Jogador jogador2 = new Jogador(x,y,"P2",Mochila,j);
+	            	Jogador jogador2 = new Jogador(x,y,Mochila,j);
 	                terreno[x][y] = jogador2;
-	                this.matrizSist[x][y] = 2;
 	                break;
 	            }
 	            j++;
@@ -286,13 +270,13 @@ public class Terreno {
 	    }
 
 	    // Imprimir o terreno
-	    imprimirMatriz(matrizSist);
+	    imprimirMatriz(terreno);
 
 	}
 	
 	// Função para imprimir a matriz
 	
-	public void imprimirMatriz(int[][] matriz) {
+	public void imprimirMatriz(Elemento[][] matriz) {
 	    for (int k = 0; k < Dimensao; k++) {
 	        for (int l = 0; l < Dimensao; l++) {
 	            System.out.print(matriz[k][l] + " | ");
@@ -385,14 +369,7 @@ public class Terreno {
 		return (int) Math.round(Math.random()*i);
 	}
 
-	public void imprimirMatriz2(Elemento[][] matriz) {
-	    for (int k = 0; k < Dimensao; k++) {
-	        for (int l = 0; l < Dimensao; l++) {
-	            System.out.print(matriz[k][l] + " | ");
-	        }
-	        System.out.println();
-	    }
-	}
+	
 }
 	
 
