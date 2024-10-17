@@ -2,7 +2,9 @@ package cata_frutas;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 import java.util.*;
 
 import javax.swing.JFileChooser;
@@ -21,59 +23,11 @@ public class Terreno {
 	public int[] frutas = new int[7];
 	public int[] arvores = new int[7];
 	public float Bichada;
+	public int Mochila;
+	public ArrayList<Arvore> listaArvores = new ArrayList<Arvore>();
 	
-	public Terreno() {}
-	
-	public void setPedra(int pedras) {
-		if(pedras < this.espacosDisponiveis) {
-			this.pedra = pedras;
-			this.espacosDisponiveis -= pedras;
-		}
-		else {
-			System.out.printf("\nO número %d de pedras é inválida para a dimensão %d.",pedras, this.Dimensao);
-		}
-	}
-	
-	public void setFrutas(int[] frutas) {
-		int numfrutas = frutas[0] + frutas[1] + frutas[2] + frutas[3] + frutas[4] + frutas[5] + frutas[6];
-		if(numfrutas < this.espacosDisponiveis) {
-			this.frutas = frutas;
-			this.espacosDisponiveis -= numfrutas;
-		}
-		else {
-			System.out.printf("\nO número %d de frutas é inválida para a dimensão %d.",numfrutas, this.Dimensao);
-		}
-	}
-	
-	public void setArvores(int[] arvores) {
-		int numarvores = arvores[1] + arvores[2] + arvores[3] + arvores[4] + arvores[5] + arvores[6];
-		if(numarvores < this.espacosDisponiveis) {
-			this.arvores = arvores;
-			this.espacosDisponiveis -= numarvores;
-		}
-		else {
-			System.out.printf("\nO número %d de árvores é inválida para a dimensão %d.",numarvores, this.Dimensao);
-		}
-	}
-	
-	
-	public int getPedras() {
-		return this.pedra;
-	}
-	
-	public int[] getFrutas() {
-		return this.frutas;
-	}
-	
-	public int[] getArvores() {
-		return this.arvores;
-	}
-	
-	
-	
-	 // ADICIONAR O METODO PARA A CRIACAO DO TERRENO DE EXEMPLO
-	public void getExemplo() {
-		
+	public Terreno(String[][] MemoriraEN) {
+		this.memoriaEN = MemoriraEN;
 	}
 	
 	
@@ -142,7 +96,7 @@ public class Terreno {
                 // Verifica o terreno após processar as entradas
                 if (this.verificaTerreno()) {
                 	System.out.println("Caminho aceito.");
-                    terrenoExemploSist();
+                    criaTerrenoSistema();
                 }
 
             } catch (IOException e1) {
@@ -153,213 +107,292 @@ public class Terreno {
           }
 	}
 	
-	public void exportarEntradas() {
-		
+	public void exportarEntradas() throws IOException, InterruptedException {
+        // Permite o usuário selecionar o local e o nome do arquivo usando JFileChooser
+        JFileChooser escolhaArq = new JFileChooser();
+        escolhaArq.setDialogTitle("Escolha o local para salvar o arquivo");
+
+        // Configurando para salvar um arquivo
+        int escolhaUser = escolhaArq.showSaveDialog(null);
+
+        // Verificando se o usuário selecionou um local
+        if (escolhaUser == JFileChooser.APPROVE_OPTION) {
+            // Pegando o arquivo escolhido pelo usuário
+            File arqSalvar = new File(escolhaArq.getSelectedFile() + ".txt");
+            System.out.println("Salvando no arquivo: " + arqSalvar.getAbsolutePath());
+
+            // Escrevendo os dados de memoriaEN no arquivo escolhido
+            try (Writer escritor = new FileWriter(arqSalvar)) {
+                // Escreve os dados de memoriaEN no arquivo
+                for (int i = 0; i < memoriaEN.length; i++) {
+                    for (int j = 0; j < 3; j++) {
+                        escritor.write(memoriaEN[i][j]); // Escreve cada elemento
+                        escritor.write(" "); // Adiciona um espaço entre os dados
+                    }
+                    escritor.write(System.getProperty("line.separator")); // Nova linha
+                }
+                escritor.flush(); // Garante que todos os dados foram escritos
+            } 
+            catch (IOException e) {
+                System.out.println("Erro ao salvar o arquivo.");
+            }
+        } 
+        else {
+            System.out.println("Operação de salvamento cancelada.");
+        }
+
 	}
 	
 	// Cria o terreno dentro do sistema, e armazena os valores em uma Matriz
-		public void terrenoExemploSist() {
+	public void criaTerrenoSistema() {
 
-			matrizSist = new int[Dimensao][Dimensao];// Inicia a Matriz do terreno com a dimensão de entrada
-		    terreno = new Elemento[Dimensao][Dimensao];
-		    
-		    // Inicializa o terreno com zeros
-		    for (int i = 0; i < Dimensao; i++) {
-		        for (int j = 0; j < Dimensao; j++) {
-		        	matrizSist[i][j] = 0;
-		        }
-		    }
+		matrizSist = new int[Dimensao][Dimensao];// Inicia a Matriz do terreno com a dimensão de entrada
+	    terreno = new Elemento[Dimensao][Dimensao];
+	    
+	    // Inicializa o terreno com zeros
+	    for (int i = 0; i < Dimensao; i++) {
+	        for (int j = 0; j < Dimensao; j++) {
+	        	matrizSist[i][j] = 0;
+	        }
+	    }
 
-		    // Colocar Pedras
-		    for (int p = 0; p < this.pedra; p++) {
-		        int x = ale(Dimensao - 1);
-		        int y = ale(Dimensao - 1);
-		        matrizSist[x][y] = 100;// Pedra representada por 100
-	            terreno[x][y] = new Pedra(x,y,Dimensao);
-		    }
+	    // Colocar Pedras
+	    for (int p = 0; p < this.pedra; p++) {
+	        int x = ale(Dimensao - 1);
+	        int y = ale(Dimensao - 1);
+            Pedra pedra = new Pedra(x,y);
+            terreno[x][y] = pedra;
+            matrizSist[x][y] = pedra.setId(100);
+            
+	    }
 
-		    // Colocar Árvores
-		    for(int i = 1; i < 7; i++) {
-			    for (int a = 0; a < this.arvores[i];) {
-			        int x = ale(Dimensao - 1);
-			        int y = ale(Dimensao - 1);
-			        if (matrizSist[x][y] == 0) { // Verifica se a posição está livre
-			        	matrizSist[x][y] = 200 + i; // Árvore representada por 200 + tipo
-			            switch(i) {
-			            case 1:
-			                terreno[x][y] = new Arvore(x,y,Laranja);
-			                break;
-			            case 2:
-			                terreno[x][y] = new Arvore(x,y,abacate);
-			                break;
-			            case 3:
-			                terreno[x][y] = new Arvore(x,y,coco);
-			                break;
-			            case 4:
-			                terreno[x][y] = new Arvore(x,y,acerola);
-			                break;
-			            case 5:
-			                terreno[x][y] = new Arvore(x,y,amora);
-			                break;
-			            case 6:
-			                terreno[x][y] = new Arvore(x,y,goiaba);
-			                break;
-			            }
-			            a++;
-			        }
-			    }
-		    }
-
-		    // Colocar Frutas
-		    for(int j = 0; j < 7; j++) {
-			    for (int f = 0; f < this.frutas[j];) {
-			        int x = ale(Dimensao - 1);
-			        int y = ale(Dimensao - 1);
-			        if (matrizSist[x][y] == 0) { // Verifica se a posição está livre
-			        	matrizSist[x][y] = 300 + j; // Fruta representada por 300 + tipo
-			            switch(j) {
-			            case 0:
-			                terreno[x][y] = new Maracuja(x,y,Bichada);
-			                break;
-			            case 1:
-			                terreno[x][y] = new Laranja(x,y,Bichada);
-			                break;
-			            case 2:
-			                terreno[x][y] = new Abacate(x,y,Bichada);
-			                break;
-			            case 3:
-			                terreno[x][y] = new Coco(x,y,Bichada);
-			                break;
-			            case 4:
-			                terreno[x][y] = new Acerola(x,y,Bichada);
-			                break;
-			            case 5:
-			                terreno[x][y] = new Amora(x,y,Bichada);
-			                break;
-			            case 6:
-			                terreno[x][y] = new Goiaba(x,y,Bichada);
-			                break;
-			            }
-			            f++;
-			        }
-			    }
-		    }
-
-		    // Colocar Jogadores
-		    for (int j = 1; j < 3;) {
+	    // Colocar Árvores
+	    for(int i = 1; i < 7; i++) {
+		    for (int a = 0; a < this.arvores[i];) {
 		        int x = ale(Dimensao - 1);
 		        int y = ale(Dimensao - 1);
 		        if (matrizSist[x][y] == 0) { // Verifica se a posição está livre
-		        	matrizSist[x][y] = j; // Jogador representado por 1 e 2
-		            switch(j) {
+		            switch(i) {
 		            case 1:
-		                terreno[x][y] = new Jogador(x, y, "P1", Mochila);
+		            	Arvore_Laranja arvoreLaranja = new Arvore_Laranja(x,y);
+		                terreno[x][y] = arvoreLaranja;
+		                matrizSist[x][y] = arvoreLaranja.setId(201);
+		                listaArvores.add(arvoreLaranja);
 		                break;
 		            case 2:
-		                terreno[x][y] = new Jogador(x, y, "P2", Mochila);
+		            	Arvore_Abacate arvoreAbacate = new Arvore_Abacate(x,y);
+		                terreno[x][y] = arvoreAbacate;
+		                matrizSist[x][y] = arvoreAbacate.setId(202);
+		                listaArvores.add(arvoreAbacate);
+		                break;
+		            case 3:
+		            	Arvore_Coco arvoreCoco = new Arvore_Coco(x,y);
+		                terreno[x][y] = arvoreCoco;
+		                matrizSist[x][y] = arvoreCoco.setId(203);
+		                listaArvores.add(arvoreCoco);
+		                break;
+		            case 4:
+		            	Arvore_Acerola arvoreAcerola = new Arvore_Acerola(x,y);
+		                terreno[x][y] = arvoreAcerola;
+		                matrizSist[x][y] = arvoreAcerola.setId(204);
+		                listaArvores.add(arvoreAcerola);
+		                break;
+		            case 5:
+		            	Arvore_Amora arvoreAmora = new Arvore_Amora(x,y);
+		                terreno[x][y] = arvoreAmora;
+		                matrizSist[x][y] = arvoreAmora.setId(205);
+		                listaArvores.add(arvoreAmora);
+		                break;
+		            case 6:
+		            	Arvore_Goiaba arvoreGoiaba = new Arvore_Goiaba(x,y);
+		                terreno[x][y] = arvoreGoiaba;
+		                matrizSist[x][y] = arvoreGoiaba.setId(206);
+		                listaArvores.add(arvoreGoiaba);
 		                break;
 		            }
-		            j++;
+		            a++;
 		        }
 		    }
+	    }
 
-		    // Imprimir o terreno
-		    imprimirMatriz(matrizSist);
-
-		}
-		
-		// Função para imprimir a matriz
-		
-		private void imprimirMatriz(int[][] matriz) {
-		    for (int k = 0; k < Dimensao; k++) {
-		        for (int l = 0; l < Dimensao; l++) {
-		            System.out.print(matriz[k][l] + " | ");
-		        }
-		        System.out.println();
-		    }
-		}
-		
-		public boolean verificaTerreno() {
-			// Reinicia as entradas no caso de uma nova verificação
-			boolean uiaceita = false;
-			int arvoresTotais = 0;
-			int frutasTotais = 0;
-			int[] Frutas = new int[7];
-			int[] Arvores = new int[7];
-			try {
-				
-				int dimensao = Integer.parseInt(memoriaEN[0][1]);// Alteração do tipo da dimensão de String para int
-				Dimensao = dimensao;
-				int pedra = Integer.parseInt(memoriaEN[1][1]);// Alteração do tipo de pedra String para int
-				int Pedras = pedra;
-				int espacosDisponiveis = dimensao*dimensao - pedra - 2; // Variável utilizada para verificar os espaços disponíveis no terreno
-				int[] arvores = new int[7];
-				int[] frutas = new int[7];
-				float bichada = Integer.parseInt(memoriaEN[9][1]); // Alteração do tipo de bichada de String para float
-				Bichada = bichada;
-				int mochila = Integer.parseInt(memoriaEN[10][1]); // Alteração do tipo de mochila de String para int
-				int Mochila = mochila;
-				// Armazena os devidos valores de frutas e arvores com os tipos corretos, ambos de String para int
-				for(int i = 0; i < 7; i++) {
-					arvores[i] = Integer.parseInt(memoriaEN[i+2][1]);
-					frutas[i] = Integer.parseInt(memoriaEN[i+2][2]);
-					
-					if (arvores[i] < 0 || frutas[i] < 0) {
-		                System.out.println("Erro: A quantidade de árvores e frutas não pode ser negativa.");
-		                uiaceita =  false;
+	    // Colocar Frutas
+	    for(int j = 0; j < 7; j++) {
+		    for (int f = 0; f < this.frutas[j];) {
+		        int x = ale(Dimensao - 1);
+		        int y = ale(Dimensao - 1);
+		        if (matrizSist[x][y] == 0) { // Verifica se a posição está livre
+		            switch(j) {
+		            case 0:
+		                Maracuja maracuja = new Maracuja(x,y,Bichada);
+		                terreno[x][y] = maracuja;
+		                matrizSist[x][y] = maracuja.setId(300);
+		                break;
+		            case 1:
+		            	Laranja laranja = new Laranja(x,y,Bichada);
+		                terreno[x][y] = laranja;
+		                matrizSist[x][y] = laranja.setId(301);
+		                break;
+		            case 2:
+		            	Abacate abacate = new Abacate(x,y,Bichada);
+		                terreno[x][y] = abacate;
+		                matrizSist[x][y] = abacate.setId(302);
+		                break;
+		            case 3:
+		            	Coco coco = new Coco(x,y,Bichada);
+		                terreno[x][y] = coco;
+		                matrizSist[x][y] = coco.setId(303);
+		                break;
+		            case 4:
+		            	Acerola acerola = new Acerola(x,y,Bichada);
+		                terreno[x][y] = acerola;
+		                matrizSist[x][y] = acerola.setId(304);
+		                break;
+		            case 5:
+		            	Amora amora = new Amora(x,y,Bichada);
+		                terreno[x][y] = amora;
+		                matrizSist[x][y] = amora.setId(305);
+		                break;
+		            case 6:
+		            	Goiaba goiaba = new Goiaba(x,y,Bichada);
+		                terreno[x][y] = goiaba;
+		                matrizSist[x][y] = goiaba.setId(306);
 		                break;
 		            }
-					frutasTotais += frutas[i];
-					Frutas[i] = frutas[i];
-					Arvores[i] = arvores[i];
-				}
-				
-				for(int j = 1; j < 7; j++) {
-					arvoresTotais += arvores[j];
-				}
-				
-				espacosDisponiveis -= frutasTotais - arvoresTotais;
-				
-				
-				if(dimensao <= 2) {
-					System.out.println("Erro: A dimensão do terreno deve ser pelo menos três.");
-		            uiaceita = false;
+		            f++;
 		        }
-				else if(pedra < 0) {
-					System.out.println("Erro: A quantidade de pedras não pode ser negativa.");
-		            uiaceita = false;
-		        }
-				else if(arvores[0]%2 == 0) {
-					System.out.println("Erro: O número de maracujás deve ser um valor impar.");
-					uiaceita = false;
-				}
-				else if(bichada < 0 || bichada > 100) {
-					System.out.println("Erro: A porcentagem de frutas bichadas deve estar entre 0 e 100.");
-		            uiaceita = false;
-		        }
-				else if(mochila <= 0) {
-					System.out.println("Erro: O tamanho da mochila deve ser maior que zero.");
-		            uiaceita = false;
-		        }
-				else if(mochila < (1 + Math.floor((arvores[0])/2))) {
-					System.out.println("Erro: o tamanho da mochila deve ser maior que metade +1 do nº de maracujás.");
-				}
-				else if(espacosDisponiveis < 0) {
-					System.out.println("Erro: A quantidade dos elementos supera o tamanho livre no terreno.");
-					uiaceita = false;
-				}
-				else if(espacosDisponiveis >= 0) {
-					uiaceita = true;
-				}
-			} catch (NumberFormatException e) {
-		        // Captura erros de formato nos números
-				System.out.println("Erro: Verifique se todas as entradas são números válidos.");
-		        uiaceita = false;
-			}
-			return uiaceita;
-			
-			
-		}
+		    }
+	    }
+
+	    // Colocar Jogadores
+	    for (int j = 1; j < 3;) {
+	        int x = ale(Dimensao - 1);
+	        int y = ale(Dimensao - 1);
+	        if (matrizSist[x][y] == 0) { // Verifica se a posição está livre
+	        	matrizSist[x][y] = j; // Jogador representado por 1 e 2
+	            switch(j) {
+	            case 1:
+	            	Jogador jogador1 = new Jogador(x,y,"P1",Mochila,j);
+	                terreno[x][y] = jogador1;
+	                this.matrizSist[x][y] = 1;
+	                break;
+	            case 2:
+	            	Jogador jogador2 = new Jogador(x,y,"P2",Mochila,j);
+	                terreno[x][y] = jogador2;
+	                this.matrizSist[x][y] = 2;
+	                break;
+	            }
+	            j++;
+	        }
+	    }
+
+	    // Imprimir o terreno
+	    imprimirMatriz(matrizSist);
+
 	}
+	
+	// Função para imprimir a matriz
+	
+	public void imprimirMatriz(int[][] matriz) {
+	    for (int k = 0; k < Dimensao; k++) {
+	        for (int l = 0; l < Dimensao; l++) {
+	            System.out.print(matriz[k][l] + " | ");
+	        }
+	        System.out.println();
+	    }
+	}
+	
+	public boolean verificaTerreno() {
+		// Reinicia as entradas no caso de uma nova verificação
+		boolean uiaceita = false;
+		int arvoresTotais = 0;
+		int frutasTotais = 0;
+		try {
+			
+			int dimensao = Integer.parseInt(memoriaEN[0][1]);// Alteração do tipo da dimensão de String para int
+			this.Dimensao= dimensao;
+			int pedra = Integer.parseInt(memoriaEN[1][1]);// Alteração do tipo de pedra String para int
+			this.pedra = pedra;
+			int espacosDisponiveis = dimensao*dimensao - pedra - 2; // Variável utilizada para verificar os espaços disponíveis no terreno
+			int[] arvores = new int[7];
+			int[] frutas = new int[7];
+			float bichada = Integer.parseInt(memoriaEN[9][1]); // Alteração do tipo de bichada de String para float
+			this.Bichada = bichada;
+			int mochila = Integer.parseInt(memoriaEN[10][1]); // Alteração do tipo de mochila de String para int
+			this.Mochila = mochila;
+			// Armazena os devidos valores de frutas e arvores com os tipos corretos, ambos de String para int
+			for(int i = 0; i < 7; i++) {
+				arvores[i] = Integer.parseInt(memoriaEN[i+2][1]);
+				frutas[i] = Integer.parseInt(memoriaEN[i+2][2]);
+				
+				if (arvores[i] < 0 || frutas[i] < 0) {
+	                System.out.println("Erro: A quantidade de árvores e frutas não pode ser negativa.");
+	                uiaceita =  false;
+	                break;
+	            }
+				frutasTotais += frutas[i];
+				this.frutas[i] = frutas[i];
+				this.arvores[i] = arvores[i];
+			}
+			
+			for(int j = 1; j < 7; j++) {
+				arvoresTotais += arvores[j];
+			}
+			
+			espacosDisponiveis -= frutasTotais - arvoresTotais;
+			
+			
+			if(dimensao <= 2) {
+				System.out.println("Erro: A dimensão do terreno deve ser pelo menos três.");
+	            uiaceita = false;
+	        }
+			else if(pedra < 0) {
+				System.out.println("Erro: A quantidade de pedras não pode ser negativa.");
+	            uiaceita = false;
+	        }
+			else if(arvores[0]%2 == 0) {
+				System.out.println("Erro: O número de maracujás deve ser um valor impar.");
+				uiaceita = false;
+			}
+			else if(bichada < 0 || bichada > 100) {
+				System.out.println("Erro: A porcentagem de frutas bichadas deve estar entre 0 e 100.");
+	            uiaceita = false;
+	        }
+			else if(mochila <= 0) {
+				System.out.println("Erro: O tamanho da mochila deve ser maior que zero.");
+	            uiaceita = false;
+	        }
+			else if(mochila < (1 + Math.floor((arvores[0])/2))) {
+				System.out.println("Erro: o tamanho da mochila deve ser maior que metade +1 do nº de maracujás.");
+			}
+			else if(espacosDisponiveis < 0) {
+				System.out.println("Erro: A quantidade dos elementos supera o tamanho livre no terreno.");
+				uiaceita = false;
+			}
+			else if(espacosDisponiveis >= 0) {
+				uiaceita = true;
+			}
+		} catch (NumberFormatException e) {
+	        // Captura erros de formato nos números
+			System.out.println("Erro: Verifique se todas as entradas são números válidos.");
+	        uiaceita = false;
+		}
+		return uiaceita;
+		
+		
+	}
+	
+	public int ale(int i) {
+		return (int) Math.round(Math.random()*i);
+	}
+
+	public void imprimirMatriz2(Elemento[][] matriz) {
+	    for (int k = 0; k < Dimensao; k++) {
+	        for (int l = 0; l < Dimensao; l++) {
+	            System.out.print(matriz[k][l] + " | ");
+	        }
+	        System.out.println();
+	    }
+	}
+}
 	
 
