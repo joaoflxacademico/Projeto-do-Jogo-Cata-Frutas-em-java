@@ -12,6 +12,8 @@ import java.io.BufferedReader;
 import java.io.Writer;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -49,14 +51,17 @@ public class Frame extends JFrame {
 	public JLabel logo;
 	public JLabel caixaSaidas;
 	public JLabel caixaSaidas2;
+	public JLabel caixaNoticias;
 	
 	public JScrollPane scroll;
 	public JScrollPane scrollIN;
 	public JScrollPane scrollIM;
 	public JScrollPane scrollTE;
 	public JScrollPane scrollTE2;
+	public JScrollPane scrollNoticias;
 
-
+	public StringBuilder consoleBuffer;
+	
 	JTextArea caixaTexto;
 	JTextArea caixatexto2;
 	JTextArea caixaInstru;
@@ -617,7 +622,22 @@ public class Frame extends JFrame {
 		painelIN.add(botaoRI2);
 
 		
-		
+
+		caixaNoticias = new JLabel("<html></html>");
+		caixaNoticias.setHorizontalAlignment(SwingConstants.CENTER); // Centraliza o texto no label
+		caixaNoticias.setFont(new Font("Georgia", Font.ITALIC, 18	)); // Define a fonte
+		caixaNoticias.setForeground(cor2); // Define a cor do texto
+		caixaNoticias.setIcon(null); // Não há ícone associado ao rótulo
+		caixaNoticias.setBounds(xbtn - 190, ybtn - 12, 500, 40); // Define a posição e tamanho do rótulo
+
+		scrollNoticias = new JScrollPane();
+		scrollNoticias.setBounds(16, 30, 750, 360);  // Define as dimensões e posição do JScrollPane
+		scrollNoticias.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);  // Adiciona uma barra de rolagem vertical
+		scrollNoticias.setBorder(borda1);  // Define a borda do JScrollPane
+		scrollNoticias.setOpaque(false);  // Torna o JScrollPane transparente
+		scrollNoticias.getViewport().setOpaque(false);  // Torna a área visível transparente
+	    
+		redirecionarSaidaConsole();
 		
 		painelInicio();
 		
@@ -951,6 +971,7 @@ public class Frame extends JFrame {
 	    painel1.add(botaoRT); // Adiciona o botão "Retornar"
 	    painel1.add(botaoST); // Adiciona o botão "Salvar Terreno"
 	    painel1.add(botaoNT); // Adiciona o botão "Novo Terreno"
+	    painel1.add(caixaNoticias);
 	    painel1.add(logo, BorderLayout.NORTH);  // Adiciona o logo ao topo do painel
 	    gbc = new GridBagConstraints();  // Cria um novo GridBagConstraints
 	    gbc.weightx = 0;                 
@@ -1116,7 +1137,7 @@ public class Frame extends JFrame {
 	public void configurarKeyListener() {
 	    painelTE.setFocusable(true);
 	    painelTE.requestFocusInWindow(); // Garante que o painel receba o foco
-
+	    jogador1.setMovimentos();
 	    painelTE.addKeyListener(new KeyAdapter() {
 	        @Override
 	        public void keyPressed(KeyEvent e) {
@@ -1136,8 +1157,6 @@ public class Frame extends JFrame {
 	                default:
 	                    return; // Ignora outras teclas
 	            }
-	            System.out.println("Tecla pressionada.");
-	            terreno.imprimirMatriz(terreno.floresta);
 	            criacaoVisualTerreno(); // Atualiza o terreno após o movimento
 	        }
 	    });
@@ -1167,6 +1186,56 @@ public class Frame extends JFrame {
 	    	this.backgroundImage = new ImageIcon(imagePath).getImage();
 	    }
 	}
+	
+	
+	public void ConsoleParaJLabel() {
+        consoleBuffer = new StringBuilder(); // Armazena o texto do console
 
+        // Configuração do JLabel para mostrar o texto
+        caixaNoticias = new JLabel("<html></html>");
+        caixaNoticias.setVerticalAlignment(SwingConstants.TOP);  // Alinhamento no topo
+        JScrollPane scrollPane = new JScrollPane(caixaNoticias);
+        scrollPane.setBounds(10, 20, 600, 400);
+        // Configuração da janela
+        setLayout(new BorderLayout());
+        add(scrollPane, BorderLayout.CENTER);
+        setBounds(10, 30, 600, 400);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Redirecionando a saída do console para o JLabel
+        redirecionarSaidaConsole();
+
+        setVisible(true);
+    }
+	
+	private void redirecionarSaidaConsole() {
+		consoleBuffer = new StringBuilder();
+        // OutputStream personalizado que envia dados para o JLabel
+        OutputStream outputStream = new OutputStream() {
+            @Override
+            public void write(int b) {
+                // Adiciona o caractere ao buffer
+                consoleBuffer.append((char) b);
+                atualizarLabel();
+            }
+
+            @Override
+            public void write(byte[] b, int off, int len) {
+                // Adiciona uma string ao buffer
+                consoleBuffer.append(new String(b, off, len));
+                atualizarLabel();
+            }
+        };
+
+        // Substituindo System.out e System.err pelo nosso OutputStream
+        PrintStream printStream = new PrintStream(outputStream, true);
+        System.setOut(printStream);
+        System.setErr(printStream);
+    }
+
+    private void atualizarLabel() {
+        // Atualiza o JLabel com o texto acumulado
+        caixaNoticias.setText("<html>" + consoleBuffer.toString().replaceAll("\n", "<br>") + "</html>");
+    }
 
 }
