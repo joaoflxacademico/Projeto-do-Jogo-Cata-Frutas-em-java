@@ -43,6 +43,11 @@ public class Jogador extends Elemento_Dinamico {
 		return this.nome;
 	}
 	
+	public void setMovimentos() {
+		this.movimentosRestantes = ale(12);
+		System.out.println(this.movimentosRestantes);
+	}
+	
 	public void saltar(Elemento objeto, int direcao) {
 		int x = objeto.getPosicao().getX();
 		int y = objeto.getPosicao().getY();
@@ -51,7 +56,10 @@ public class Jogador extends Elemento_Dinamico {
 	}
 	
 	public Elemento[][] movimentar(int direcao, Terreno terreno) {
-	    
+		System.out.println(this.movimentosRestantes);
+		if(this.movimentosRestantes == 0) {
+	    	return terreno.floresta;
+	    }
 		int x = this.getPosicao().getX();
 	    int y = this.getPosicao().getY();
 	    int novox = x, novoy = y;
@@ -86,6 +94,13 @@ public class Jogador extends Elemento_Dinamico {
 		    	return terreno.floresta;
 		    }
 	    	
+		    else if(terreno.floresta[novox][novoy] instanceof Fruta) {
+		    	this.mochilaJogador.armazenaFruta((Fruta) terreno.floresta[novox][novoy]);
+		    	terreno.floresta[novox][novoy] = this;
+				this.movimentosRestantes--;
+				return terreno.floresta;
+		    }
+
 	    	else if(terreno.floresta[novox][novoy] instanceof Arvore) {
 	    		for(int i = 0; i < terreno.listaArvores.size(); i++) {
 		    		if(terreno.listaArvores.get(i).getJogador() == this) {
@@ -96,16 +111,20 @@ public class Jogador extends Elemento_Dinamico {
 		    	Arvore arvore = (Arvore) terreno.floresta[novox][novoy];
 		    	arvore.setJogador(this);
 		    	terreno.floresta[novox][novoy] = arvore;
+		    	this.movimentosRestantes--;
 		    	return terreno.floresta;
 		    }
-	    	
-	    	for(int i = 0; i < terreno.listaArvores.size(); i++) {
-	    		if(terreno.listaArvores.get(i).getJogador() == this) {
-	    			this.debaixoDeArvore = false;
-	    			terreno.floresta[novox][novoy] = this;
-	    			this.setPosicao(novox, novoy);
-	    			return terreno.floresta;
-	    		}
+	    	else {
+		    	for(int i = 0; i < terreno.listaArvores.size(); i++) {
+		    		if(terreno.listaArvores.get(i).getJogador() == this) {
+		    			terreno.listaArvores.get(i).setJogador(null);
+		    			this.debaixoDeArvore = false;
+		    			terreno.floresta[novox][novoy] = this;
+		    			this.setPosicao(novox, novoy);
+		    			this.movimentosRestantes--;
+		    			return terreno.floresta;
+		    		}
+		    	}
 	    	}
 	    }
 	    
@@ -117,6 +136,7 @@ public class Jogador extends Elemento_Dinamico {
 	    else if(terreno.floresta[novox][novoy] instanceof Fruta) {
 	    	this.mochilaJogador.armazenaFruta((Fruta) terreno.floresta[novox][novoy]);
 	    	terreno.floresta[novox][novoy] = this;
+			this.movimentosRestantes--;
 	    }
 	    
 	    else if(terreno.floresta[novox][novoy] instanceof Jogador) {
@@ -131,10 +151,13 @@ public class Jogador extends Elemento_Dinamico {
 	    	arvore.setJogador(this);
 	    	terreno.floresta[novox][novoy] = arvore;
 	    	terreno.floresta[x][y] = new Grama(x,y);
+			this.movimentosRestantes--;
 	    	return terreno.floresta;
 	    }
 	    terreno.floresta[x][y] = new Grama(x,y);
 	    terreno.floresta[novox][novoy] = this;
+	    
+	    this.movimentosRestantes--;
 	    
 	    this.setPosicao(novox, novoy);
 	    
