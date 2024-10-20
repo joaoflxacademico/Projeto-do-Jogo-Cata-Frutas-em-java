@@ -752,72 +752,7 @@ public class Frame extends JFrame {
 		botaoC.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
 		        botaoClickado(botaoC);  // Marca o botão como clicado
-		        
-		     // Abre o JFileChooser para o usuário selecionar o arquivo
-		        JFileChooser fileChooser = new JFileChooser();
-		        fileChooser.setDialogTitle("Selecione o arquivo de terreno");
-
-		        // Configura o JFileChooser para abrir um arquivo
-		        int userSelection = fileChooser.showOpenDialog(null);
-
-		        // Verifica se o usuário selecionou um arquivo
-		        if (userSelection == JFileChooser.APPROVE_OPTION) {
-		            File arquivoTerreno = fileChooser.getSelectedFile();
-		            System.out.println("Arquivo selecionado: " + arquivoTerreno.getAbsolutePath());
-
-		            // Verifica se o arquivo existe
-		            if (!arquivoTerreno.exists()) {
-		                caixaSaidas2.setText("Path inválido. Tente novamente.");
-		                return;
-		            }
-
-		            final int MAX_LINES = 11;  // Número máximo de linhas esperadas
-		            String[] linhas = new String[MAX_LINES];
-
-		            // Tenta ler o arquivo
-		            try (BufferedReader BFR = new BufferedReader(new FileReader(arquivoTerreno))) {
-		                for (int i = 0; i < MAX_LINES; i++) {
-		                    linhas[i] = BFR.readLine();
-		                    if (linhas[i] == null) break;  // Para se o arquivo tiver menos linhas que o esperado
-		                }
-
-		                // Processa cada linha lida
-		                for (int j = 0; j < linhas.length; j++) {
-		                    if (linhas[j] == null) break;  // Para se a linha for nula
-		                    String linha = linhas[j].trim();  // Remove espaços extras
-		                    String[] partes = linha.split(" ");
-
-		                    // Validação do formato das linhas (primeiras e últimas linhas têm no máximo 2 partes)
-		                    if ((j <= 1 || j >= 9) && partes.length > 2) {
-		                        caixaSaidas2.setText("Erro: formato da linha " + (j + 1) + " inválido.");
-		                        return;
-		                    } else if (partes.length == 2) {  // Para linhas com 2 partes (dimensões e pedras)
-		                        memoriaEN[j][0] = partes[0];
-		                        memoriaEN[j][1] = partes[1];
-		                        memoriaEN[j][2] = ""; // Deixa o terceiro campo vazio
-		                    } else if (partes.length == 3) {  // Para linhas com 3 partes (frutas)
-		                        memoriaEN[j][0] = partes[0];  // Nome da fruta
-		                        memoriaEN[j][1] = partes[1];  // Quantidade de árvores
-		                        memoriaEN[j][2] = partes[2];  // Quantidade de frutas
-		                    } else {
-		                    	caixaSaidas2.setText("Erro: formato da linha " + (j + 1) + " inválido.");
-		                        return; // Sai da função se houver erro no formato da linha
-		                    }
-		                }
-		                terreno = new Terreno(memoriaEN);
-		                // Verifica o terreno após processar as entradas
-		                if (terreno.verificaTerreno()) {
-		                    caixaSaidas2.setText("Caminho aceito.");
-		                    System.out.println();
-		                    terreno.criaTerrenoSistema();
-		                }
-
-		            } catch (IOException e1) {
-		            	caixaSaidas2.setText("Erro ao ler o arquivo: " + e1.getMessage());
-		            }
-		        } else {
-		            caixaSaidas2.setText("Operação de seleção de arquivo cancelada pelo usuário.");
-		          }
+		        abrirCaminho();
 		    }
 		});
 
@@ -892,6 +827,7 @@ public class Frame extends JFrame {
 		botaoStart.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
 		        botaoClickado(botaoStart);
+		        abrirCaminho();
 		    	if(terreno.floresta != null) {
 			        setExtendedState(MAXIMIZED_BOTH);
 			        painelJogo();
@@ -905,7 +841,6 @@ public class Frame extends JFrame {
 			        terreno.criaTerrenoSistema();
 			        painel = 0; //Define a criação do tereno no painel de jogo
 			        criacaoVisualTerrenoJogo();
-		    	
 		    	}
 	            configurarKeyListener();
 		    }
@@ -1264,4 +1199,74 @@ public class Frame extends JFrame {
         caixaNoticias.setText("<html>" + consoleBuffer.toString().replaceAll("\n", "<br>") + "</html>");
     }
 
+    public void abrirCaminho() {
+
+	     // Abre o JFileChooser para o usuário selecionar o arquivo
+	        JFileChooser fileChooser = new JFileChooser();
+	        fileChooser.setDialogTitle("Selecione o arquivo de terreno");
+
+	        // Configura o JFileChooser para abrir um arquivo
+	        int userSelection = fileChooser.showOpenDialog(null);
+
+	        // Verifica se o usuário selecionou um arquivo
+	        if (userSelection == JFileChooser.APPROVE_OPTION) {
+	            File arquivoTerreno = fileChooser.getSelectedFile();
+	            System.out.println("Arquivo selecionado: " + arquivoTerreno.getAbsolutePath());
+
+	            // Verifica se o arquivo existe
+	            if (!arquivoTerreno.exists()) {
+	                caixaSaidas2.setText("Path inválido. Tente novamente.");
+	                return;
+	            }
+
+	            final int MAX_LINES = 11;  // Número máximo de linhas esperadas
+	            String[] linhas = new String[MAX_LINES];
+
+	            // Tenta ler o arquivo
+	            try (BufferedReader BFR = new BufferedReader(new FileReader(arquivoTerreno))) {
+	                for (int i = 0; i < MAX_LINES; i++) {
+	                    linhas[i] = BFR.readLine();
+	                    if (linhas[i] == null) break;  // Para se o arquivo tiver menos linhas que o esperado
+	                }
+
+	                // Processa cada linha lida
+	                for (int j = 0; j < linhas.length; j++) {
+	                    if (linhas[j] == null) break;  // Para se a linha for nula
+	                    String linha = linhas[j].trim();  // Remove espaços extras
+	                    String[] partes = linha.split(" ");
+
+	                    // Validação do formato das linhas (primeiras e últimas linhas têm no máximo 2 partes)
+	                    if ((j <= 1 || j >= 9) && partes.length > 2) {
+	                        caixaSaidas2.setText("Erro: formato da linha " + (j + 1) + " inválido.");
+	                        return;
+	                    } else if (partes.length == 2) {  // Para linhas com 2 partes (dimensões e pedras)
+	                        memoriaEN[j][0] = partes[0];
+	                        memoriaEN[j][1] = partes[1];
+	                        memoriaEN[j][2] = ""; // Deixa o terceiro campo vazio
+	                    } else if (partes.length == 3) {  // Para linhas com 3 partes (frutas)
+	                        memoriaEN[j][0] = partes[0];  // Nome da fruta
+	                        memoriaEN[j][1] = partes[1];  // Quantidade de árvores
+	                        memoriaEN[j][2] = partes[2];  // Quantidade de frutas
+	                    } else {
+	                    	caixaSaidas2.setText("Erro: formato da linha " + (j + 1) + " inválido.");
+	                        return; // Sai da função se houver erro no formato da linha
+	                    }
+	                }
+	                terreno = new Terreno(memoriaEN);
+	                // Verifica o terreno após processar as entradas
+	                if (terreno.verificaTerreno()) {
+	                    caixaSaidas2.setText("Caminho aceito.");
+	                    System.out.println();
+	                    terreno.criaTerrenoSistema();
+	                }
+
+	            } catch (IOException e1) {
+	            	caixaSaidas2.setText("Erro ao ler o arquivo: " + e1.getMessage());
+	            }
+	        } else {
+	            caixaSaidas2.setText("Operação de seleção de arquivo cancelada pelo usuário.");
+	          }
+	    
+    }
+    
 }
