@@ -175,9 +175,9 @@ public class Frame extends JFrame {
 	
 	public static Elemento[][] MatrizJogo;
 	
-	public static Jogador jogador1;
-	public static Jogador jogador2;
+	public static Jogador[] jogadores = new Jogador[2];
 	
+	public static int contadorTurno = 0;
 	
 	//Criação de uma classe chamada Botoes com o intuito de facilitar a criação dos botões.
 	//Também é utilizada para chamar o método que atualiza a cor dos botões, plano de fundos e textos.
@@ -1066,10 +1066,11 @@ public class Frame extends JFrame {
 		            	Jogador jogador = (Jogador) terreno.floresta[i][j];
 	            		if(jogador.id == 1) {
 		            		celula.setIcon(imgjogador1);
-		            		jogador1 = (Jogador) terreno.floresta[i][j];
+		            		jogadores[0] = (Jogador) terreno.floresta[i][j];
 	            		}
 	            		else if(jogador.id == 2) {
 	            			celula.setIcon(imgjogador2);
+	            			jogadores[1] = (Jogador) terreno.floresta[i][j];
 	            		}
 		            }
 		            else if(terreno.floresta[i][j] instanceof Pedra) {
@@ -1147,24 +1148,35 @@ public class Frame extends JFrame {
 	public void configurarKeyListener() {
 	    painelJogo.setFocusable(true);
 	    painelJogo.requestFocusInWindow(); // Garante que o painel receba o foco
-	    jogador1.setMovimentos();
 	    if(botoesAtivados == 0) {
+    		Jogador jogadorDaVez = jogadores[contadorTurno % 2];
+    	    jogadorDaVez.setMovimentos();
 	    	painelJogo.addKeyListener(new KeyAdapter() {
 		        @Override
 		        public void keyPressed(KeyEvent e) {
 		            switch (e.getKeyCode()) {
 		                case KeyEvent.VK_UP:
-		                    terreno.floresta = jogador1.movimentar(1, terreno);
+		                    terreno.floresta = jogadorDaVez.movimentar(1, terreno);
+		                    System.out.println("Movimentando para cima.");
 		                    break;
 		                case KeyEvent.VK_DOWN:
-		                    terreno.floresta = jogador1.movimentar(2, terreno);
+		                    terreno.floresta = jogadorDaVez.movimentar(2, terreno);
+		                    System.out.println("Movimentando para baixo.");
 		                    break;
 		                case KeyEvent.VK_RIGHT:
-		                    terreno.floresta = jogador1.movimentar(3, terreno);
+		                    terreno.floresta = jogadorDaVez.movimentar(3, terreno);
+		                    System.out.println("Movimentando para direita.");
 		                    break;
 		                case KeyEvent.VK_LEFT:
-		                    terreno.floresta = jogador1.movimentar(4, terreno);
+		                    terreno.floresta = jogadorDaVez.movimentar(4, terreno);
+		                    System.out.println("Movimentando para esquerda.");
 		                    break;
+		                case KeyEvent.VK_E:
+		                	terreno.floresta = jogadorDaVez.saltar(terreno.floresta,1);
+		                    System.out.println("Realizando salto.");
+		                case KeyEvent.VK_F:
+		                	jogadorDaVez.encerrarTurno();
+		                	break;
 		                default:
 		                    return; // Ignora outras teclas
 		            }
