@@ -81,7 +81,7 @@ public class Jogador extends Elemento_Dinamico {
 	    }
 	    
 	    this.setPosicao(novox, novoy);
-	    this.movimentosRestantes -= 3;
+	    this.movimentosRestantes = this.movimentosRestantes - 3;
 	    floresta[novox][novoy] = this;
 	    floresta[x][y] = new Grama(x,y);
 	    
