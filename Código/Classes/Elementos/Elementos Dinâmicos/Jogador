@@ -2,7 +2,6 @@ package cata_frutas.Elementos.Elementos_Dinâmicos;
 
 import cata_frutas.Terreno;
 import cata_frutas.Elementos.Elemento;
-import cata_frutas.Elementos.Ponto;
 import cata_frutas.Elementos.Elementos_Estáticos.*;
 
 public class Jogador extends Elemento_Dinamico {
@@ -44,7 +43,7 @@ public class Jogador extends Elemento_Dinamico {
 	}
 	
 	public void setMovimentos() {
-		this.movimentosRestantes = ale(12);
+		this.movimentosRestantes = ale(120);
 		System.out.println(this.movimentosRestantes);
 	}
 	
@@ -95,9 +94,16 @@ public class Jogador extends Elemento_Dinamico {
 		    }
 	    	
 		    else if(terreno.floresta[novox][novoy] instanceof Fruta) {
+		    	for(int i = 0; i < terreno.listaArvores.size(); i++) {
+		    		if(terreno.listaArvores.get(i).getJogador() == this) {
+		    			terreno.listaArvores.get(i).setJogador(null);
+		    			this.debaixoDeArvore = false;
+		    			}
+		    	}
 		    	this.mochilaJogador.armazenaFruta((Fruta) terreno.floresta[novox][novoy]);
-		    	terreno.floresta[novox][novoy] = this;
 				this.movimentosRestantes--;
+				this.setPosicao(novox, novoy);
+				terreno.floresta[novox][novoy] = this;
 				return terreno.floresta;
 		    }
 
@@ -107,24 +113,25 @@ public class Jogador extends Elemento_Dinamico {
 		    			terreno.listaArvores.get(i).setJogador(null);
 		    		}
 	    		}
-		    	this.setPosicao(novox, novoy);
 		    	Arvore arvore = (Arvore) terreno.floresta[novox][novoy];
 		    	arvore.setJogador(this);
-		    	terreno.floresta[novox][novoy] = arvore;
 		    	this.movimentosRestantes--;
+		    	this.setPosicao(novox, novoy);
+		    	terreno.floresta[novox][novoy] = arvore;
 		    	return terreno.floresta;
 		    }
+	    	
 	    	else {
-		    	for(int i = 0; i < terreno.listaArvores.size(); i++) {
+	    		for(int i = 0; i < terreno.listaArvores.size(); i++) {
 		    		if(terreno.listaArvores.get(i).getJogador() == this) {
 		    			terreno.listaArvores.get(i).setJogador(null);
 		    			this.debaixoDeArvore = false;
-		    			terreno.floresta[novox][novoy] = this;
-		    			this.setPosicao(novox, novoy);
-		    			this.movimentosRestantes--;
-		    			return terreno.floresta;
-		    		}
+		    			}
 		    	}
+	    		this.movimentosRestantes--;
+	    		this.setPosicao(novox, novoy);
+	    		terreno.floresta[novox][novoy] = this;
+	    		return terreno.floresta;
 	    	}
 	    }
 	    
@@ -133,36 +140,39 @@ public class Jogador extends Elemento_Dinamico {
 	    	return terreno.floresta;
 	    }
 	    
-	    else if(terreno.floresta[novox][novoy] instanceof Fruta) {
-	    	this.mochilaJogador.armazenaFruta((Fruta) terreno.floresta[novox][novoy]);
-	    	terreno.floresta[novox][novoy] = this;
-			this.movimentosRestantes--;
-	    }
-	    
 	    else if(terreno.floresta[novox][novoy] instanceof Jogador) {
 	    	this.setPosicao(x, y);
 	    	return terreno.floresta;
 	    }
 	    
+	    else if(terreno.floresta[novox][novoy] instanceof Fruta) {
+	    	this.mochilaJogador.armazenaFruta((Fruta) terreno.floresta[novox][novoy]);
+	    	terreno.floresta[novox][novoy] = this;
+		    terreno.floresta[x][y] = new Grama(x,y);
+		    this.setPosicao(novox, novoy);
+			this.movimentosRestantes--;
+			return terreno.floresta;
+	    }
+	    
 	    else if(terreno.floresta[novox][novoy] instanceof Arvore) {
 	    	this.debaixoDeArvore = true;
-	    	this.setPosicao(novox, novoy);
 	    	Arvore arvore = (Arvore) terreno.floresta[novox][novoy];
 	    	arvore.setJogador(this);
 	    	terreno.floresta[novox][novoy] = arvore;
 	    	terreno.floresta[x][y] = new Grama(x,y);
+	    	this.setPosicao(novox, novoy);
 			this.movimentosRestantes--;
 	    	return terreno.floresta;
 	    }
-	    terreno.floresta[x][y] = new Grama(x,y);
-	    terreno.floresta[novox][novoy] = this;
 	    
-	    this.movimentosRestantes--;
-	    
-	    this.setPosicao(novox, novoy);
+	    else {
+	    	this.setPosicao(novox, novoy);
+	    	this.movimentosRestantes--;
+	    	terreno.floresta[novox][novoy] = this;
+	    	terreno.floresta[x][y] = new Grama(x,y);
+	    }
 	    
 	    return terreno.floresta;
-	    		
 	}
 	
 	public boolean verificaPosicao(int x, int y) {
