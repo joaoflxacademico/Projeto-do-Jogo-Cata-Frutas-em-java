@@ -1,0 +1,11 @@
+package cata_frutas.Elementos.Elementos_Estáticos;
+
+import cata_frutas.Elementos.Elementos_Dinâmicos.Goiaba;
+
+public class Arvore_Goiaba extends Arvore{
+	
+	public Arvore_Goiaba(int x, int y, Goiaba goiaba) {
+		super(x, y, goiaba);
+	}
+
+}
