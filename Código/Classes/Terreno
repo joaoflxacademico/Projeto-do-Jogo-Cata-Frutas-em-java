@@ -17,7 +17,6 @@ public class Terreno {
 	public int Dimensao;
 	public Elemento[][] floresta;
 	public String[][] memoriaEN;
-	public int[][] matrizSist;
 	public int espacosDisponiveis;
 	public int pedra;
 	public int[] frutas = new int[7];
@@ -76,17 +75,10 @@ public class Terreno {
                         this.memoriaEN[j][1] = partes[1];
                         this.memoriaEN[j][2] = ""; // Deixa o terceiro campo vazio
                         // Exibe os valores no console para verificação
-                        System.out.println(this.memoriaEN[j][0]);
-                        System.out.println(this.memoriaEN[j][1]);
-                        System.out.println(this.memoriaEN[j][2]);
                     } else if (partes.length == 3) {  // Para linhas com 3 partes (frutas)
                     	this.memoriaEN[j][0] = partes[0];  // Nome da fruta
                     	this.memoriaEN[j][1] = partes[1];  // Quantidade de árvores
                     	this.memoriaEN[j][2] = partes[2];  // Quantidade de frutas
-                        // Exibe os valores no console para verificação
-                        System.out.println(this.memoriaEN[j][0]);
-                        System.out.println(this.memoriaEN[j][1]);
-                        System.out.println(this.memoriaEN[j][2]);
                     } else {
                     	System.out.println("Erro: formato da linha " + (j + 1) + " inválido.");
                         return; // Sai da função se houver erro no formato da linha
@@ -146,7 +138,6 @@ public class Terreno {
 	// Cria o terreno dentro do sistema, e armazena os valores em uma Matriz
 	public void criaTerrenoSistema() {
 
-		matrizSist = new int[Dimensao][Dimensao];// Inicia a Matriz do terreno com a dimensão de entrada
 	    floresta = new Elemento[Dimensao][Dimensao];
 	    
 	    // Inicializa o terreno com zeros
@@ -173,32 +164,32 @@ public class Terreno {
 		        if (floresta[x][y] instanceof Grama) { // Verifica se a posição está livre
 		            switch(i) {
 		            case 1:
-		            	Arvore_Laranja arvoreLaranja = new Arvore_Laranja(x,y);
+		            	Arvore_Laranja arvoreLaranja = new Arvore_Laranja(x,y,new Laranja(x, y, Bichada));
 		                floresta[x][y] = arvoreLaranja;
 		                listaArvores.add(arvoreLaranja);
 		                break;
 		            case 2:
-		            	Arvore_Abacate arvoreAbacate = new Arvore_Abacate(x,y);
+		            	Arvore_Abacate arvoreAbacate = new Arvore_Abacate(x,y, new Abacate(x, y, Bichada));
 		                floresta[x][y] = arvoreAbacate;
 		                listaArvores.add(arvoreAbacate);
 		                break;
 		            case 3:
-		            	Arvore_Coco arvoreCoco = new Arvore_Coco(x,y);
+		            	Arvore_Coco arvoreCoco = new Arvore_Coco(x,y, new Coco(x, y, Bichada));
 		                floresta[x][y] = arvoreCoco;
 		                listaArvores.add(arvoreCoco);
 		                break;
 		            case 4:
-		            	Arvore_Acerola arvoreAcerola = new Arvore_Acerola(x,y);
+		            	Arvore_Acerola arvoreAcerola = new Arvore_Acerola(x,y, new Acerola(x, y, Bichada));
 		                floresta[x][y] = arvoreAcerola;
 		                listaArvores.add(arvoreAcerola);
 		                break;
 		            case 5:
-		            	Arvore_Amora arvoreAmora = new Arvore_Amora(x,y);
+		            	Arvore_Amora arvoreAmora = new Arvore_Amora(x,y, new Amora(x, y, Bichada));
 		                floresta[x][y] = arvoreAmora;
 		                listaArvores.add(arvoreAmora);
 		                break;
 		            case 6:
-		            	Arvore_Goiaba arvoreGoiaba = new Arvore_Goiaba(x,y);
+		            	Arvore_Goiaba arvoreGoiaba = new Arvore_Goiaba(x,y, new Goiaba(x, y, Bichada));
 		                floresta[x][y] = arvoreGoiaba;
 		                listaArvores.add(arvoreGoiaba);
 		                break;
@@ -254,7 +245,6 @@ public class Terreno {
 	        int x = ale(Dimensao - 1);
 	        int y = ale(Dimensao - 1);
 	        if (floresta[x][y] instanceof Grama) { // Verifica se a posição está livre
-	        	matrizSist[x][y] = j; // Jogador representado por 1 e 2
 	            switch(j) {
 	            case 1:
 	            	Jogador jogador1 = new Jogador(x,y,Mochila,j,this.Dimensao);
@@ -269,9 +259,6 @@ public class Terreno {
 	        }
 	    }
 
-	    // Imprimir o terreno
-	    imprimirMatriz(floresta);
-
 	}
 	
 	// Função para imprimir a matriz
@@ -285,6 +272,7 @@ public class Terreno {
 	    }
 	}
 	
+	//Método para verificar o terreno passado como parâmetro
 	public boolean verificaTerreno() {
 		// Reinicia as entradas no caso de uma nova verificação
 		boolean uiaceita = false;
@@ -369,7 +357,14 @@ public class Terreno {
 		return (int) Math.round(Math.random()*i);
 	}
 	
-	
+	public void turno(Jogador jogador) {
+		for(int i = 0; i < listaArvores.size(); i++) {
+			listaArvores.get(i).soltarFruta();
+			listaArvores.get(i).atualizarArvore();
+		}
+		jogador.malEstar();
+		
+	}
 	
 }
 	
