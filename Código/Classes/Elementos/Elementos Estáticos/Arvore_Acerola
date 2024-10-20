@@ -1,0 +1,11 @@
+package cata_frutas.Elementos.Elementos_Estáticos;
+
+import cata_frutas.Elementos.Elementos_Dinâmicos.Acerola;
+
+public class Arvore_Acerola extends Arvore{
+	
+	public Arvore_Acerola(int x, int y, Acerola acerola) {
+		super(x, y, acerola);
+	}
+
+}
