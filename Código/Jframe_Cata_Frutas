@@ -38,13 +38,14 @@ public class Frame extends JFrame {
 	frames, painéis, labels, scrolls, caixas de texto, caixas de saida, cores e bordas.
 	*/
 	private static final long serialVersionUID = 1L;
-	private static JPanel painel1;
-	private static JPanel painelini;
-	private static JPanel painelIJ;
-	private static JPanel painelCT;
-	private static JPanel painelIT;
-	private static CustomPanel painelTE;
-	private static JPanel painelIN;
+	private static JPanel painelPrimario;
+	private static JPanel painelInicial;
+	private static JPanel painelIniciarJogo;
+	private static JPanel painelCriaçãoTerreno;
+	private static JPanel painelImportarTerreno;
+	private static CustomPanel painelTerrenoExemplo;
+	private static JPanel painelInstrução;
+	private static CustomPanel painelJogo;
 	
 	private static JFrame frameIN;
 	
@@ -54,7 +55,7 @@ public class Frame extends JFrame {
 	public JLabel caixaNoticias;
 	
 	public JScrollPane scroll;
-	public JScrollPane scrollIN;
+	public JScrollPane scrollInstrucoes;
 	public JScrollPane scrollIM;
 	public JScrollPane scrollTE;
 	public JScrollPane scrollTE2;
@@ -63,9 +64,9 @@ public class Frame extends JFrame {
 	public StringBuilder consoleBuffer;
 	
 	JTextArea caixaTexto;
-	JTextArea caixatexto2;
+	JTextArea caixaTexto2;
 	JTextArea caixaInstru;
-	JTextField caixatexto3;
+	JTextField caixaTexto3;
 	
 	
 	GridBagConstraints gbc; 
@@ -94,7 +95,7 @@ public class Frame extends JFrame {
 	public static LineBorder borda1 = new LineBorder(cor2);
 	public static LineBorder borda2 = new LineBorder(cor1);
 	
-	public static ImageIcon imglogo = new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\Logo.png");
+	public static ImageIcon imgLogo = new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\Logo.png");
 	
 	
 	// Inicialização das imagens principais, que serão redimensionadas na geração do terreno
@@ -134,6 +135,9 @@ public class Frame extends JFrame {
     public static ImageIcon imggrama;
     public static ImageIcon imgPedra;
     
+    public static int painel = 0;
+    public static int botoesAtivados = 0;
+    
 	
 	/*Inicialização dos objetos que serão utilizados na construção do terreno, na 
 	 * importação do terreno, e no salvamento do arquivo com as entradas. 
@@ -164,8 +168,6 @@ public class Frame extends JFrame {
 	public static String memoriaEN[][] = new String[11][3];
 	public static int xbtn = 0;
 	public static int ybtn = 0;
-	public static int xbtn2 = 0;
-	public static int ybtn2 = 0;
 	
 	
 	
@@ -175,13 +177,6 @@ public class Frame extends JFrame {
 	
 	public static Jogador jogador1;
 	public static Jogador jogador2;
-	public static Laranja laranja;
-	public static Maracuja maracuja;
-	public static Abacate abacate;
-	public static Coco coco;
-	public static Goiaba goiaba;
-	public static Amora amora;
-	public static Acerola acerola;
 	
 	
 	//Criação de uma classe chamada Botoes com o intuito de facilitar a criação dos botões.
@@ -251,24 +246,26 @@ public class Frame extends JFrame {
 			borda2 = var2;
 			var2 = borda1;
 			
-			painel1.setBackground(cor1);
-			painelIJ.setBackground(cor1);
-			painelIN.setBackground(cor1);
-			painelini.setBackground(cor1);
-			painelCT.setBackground(cor1);
-			painelIT.setBackground(cor1);
-			painelTE.setBackground(cor1);
+			painelPrimario.setBackground(cor1);
+			painelIniciarJogo.setBackground(cor1);
+			painelInstrução.setBackground(cor1);
+			painelInicial.setBackground(cor1);
+			painelCriaçãoTerreno.setBackground(cor1);
+			painelImportarTerreno.setBackground(cor1);
+			painelTerrenoExemplo.setBackground(cor1);
 			caixaSaidas.setForeground(cor2);
 			caixaSaidas2.setForeground(cor2);
 			caixaInstru.setForeground(cor2);
-			scrollIN.setBorder(borda1);
+			scrollInstrucoes.setBorder(borda1);
 			if(corGrama == 1) {
 				corGrama = 0;
-				painelTE.updateImagem("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\grama" + corGrama +".png");
+				painelTerrenoExemplo.updateImagem("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\grama" + corGrama +".png");
+				painelJogo.updateImagem("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\grama" + corGrama +".png");
 			}
 			else {
 				corGrama = 1;
-				painelTE.updateImagem("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\grama" + corGrama +".jpg");
+				painelTerrenoExemplo.updateImagem("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\grama" + corGrama +".jpg");
+				painelJogo.updateImagem("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\grama" + corGrama +".png");
 			}
 			logo.setForeground(cor2);
 			for(int i = 0; i < listaBotoes.size(); i++) {
@@ -308,7 +305,7 @@ public class Frame extends JFrame {
 		setSize(600,400);
 		setLocationRelativeTo(null);
 		setResizable(false);
-		setIconImage(imglogo.getImage());
+		setIconImage(imgLogo.getImage());
 		setTitle("Cata Frutas");
 		inicializa();
 		
@@ -320,11 +317,11 @@ public class Frame extends JFrame {
 	public void inicializa() {
 
 	    // Painel principal onde os outros componentes serão adicionados
-	    painel1 = new JPanel();
-	    painel1.setBorder(new EmptyBorder(5, 5, 5, 5)); // Define uma borda vazia com preenchimento
-	    painel1.setBackground(cor1); // Define a cor de fundo do painel
-	    painel1.setBounds(0, 0, 600, 400); // Define o tamanho e a posição do painel
-	    painel1.setLayout(new BorderLayout(0, 0)); // Utiliza o layout BorderLayout para organizar os componentes
+	    painelPrimario = new JPanel();
+	    painelPrimario.setBorder(new EmptyBorder(5, 5, 5, 5)); // Define uma borda vazia com preenchimento
+	    painelPrimario.setBackground(cor1); // Define a cor de fundo do painel
+	    painelPrimario.setBounds(0, 0, 600, 400); // Define o tamanho e a posição do painel
+	    painelPrimario.setLayout(new BorderLayout(0, 0)); // Utiliza o layout BorderLayout para organizar os componentes
 
 	    // Logo que será exibido no topo da tela
 	    logo = new JLabel("Cata Frutas");
@@ -332,44 +329,44 @@ public class Frame extends JFrame {
 	    logo.setFont(new Font("Georgia", Font.ITALIC, 48)); // Define a fonte do texto
 	    logo.setForeground(cor2); // Define a cor do texto
 	    logo.setIcon(null); // Não há ícone associado ao rótulo
-	    logo.setBounds(10, 10, painel1.getX(), painel1.getY()); // Define a posição e o tamanho do rótulo, mas isso não afeta pois o BorderLayout cuida disso
-	    painel1.add(logo, BorderLayout.NORTH); // Adiciona o logo no topo do painel principal (região Norte)
+	    logo.setBounds(10, 10, painelPrimario.getX(), painelPrimario.getY()); // Define a posição e o tamanho do rótulo, mas isso não afeta pois o BorderLayout cuida disso
+	    painelPrimario.add(logo, BorderLayout.NORTH); // Adiciona o logo no topo do painel principal (região Norte)
 
 	    // Painel inicial central onde outros componentes podem ser adicionados
-	    painelini = new JPanel();
-	    painelini.setBackground(new Color(255, 238, 138)); // Define a cor de fundo do painel
-	    painelini.setLayout(null); // Usa um layout nulo, permitindo que os componentes sejam posicionados manualmente
-	    painel1.add(painelini, BorderLayout.CENTER); // Adiciona o painel central no painel principal
+	    painelInicial = new JPanel();
+	    painelInicial.setBackground(new Color(255, 238, 138)); // Define a cor de fundo do painel
+	    painelInicial.setLayout(null); // Usa um layout nulo, permitindo que os componentes sejam posicionados manualmente
+	    painelPrimario.add(painelInicial, BorderLayout.CENTER); // Adiciona o painel central no painel principal
 
 	    // Painel para opções de iniciar jogo, ainda sem componentes adicionados
-	    painelIJ = new JPanel();
-	    painelIJ.setLayout(null); // Layout nulo para posicionamento manual dos componentes
-	    painelIJ.setBackground(painel1.getBackground()); // Cor de fundo igual ao painel principal
+	    painelIniciarJogo = new JPanel();
+	    painelIniciarJogo.setLayout(null); // Layout nulo para posicionamento manual dos componentes
+	    painelIniciarJogo.setBackground(painelPrimario.getBackground()); // Cor de fundo igual ao painel principal
 
 	    // Painel de instruções, sem componentes no momento
-	    painelIN = new JPanel();
-	    painelIN.setLayout(null);
-	    painelIN.setBackground(cor1); // Usa a cor cor1 definida anteriormente
+	    painelInstrução = new JPanel();
+	    painelInstrução.setLayout(null);
+	    painelInstrução.setBackground(cor1); // Usa a cor cor1 definida anteriormente
 
 	    // Painel para criar terreno
-	    painelCT = new JPanel();
-	    painelCT.setLayout(null);
-	    painelCT.setBackground(painel1.getBackground());
+	    painelCriaçãoTerreno = new JPanel();
+	    painelCriaçãoTerreno.setLayout(null);
+	    painelCriaçãoTerreno.setBackground(painelPrimario.getBackground());
 
 	    // Painel para importar terreno
-	    painelIT = new JPanel();
-	    painelIT.setLayout(null);
-	    painelIT.setBackground(painel1.getBackground());
+	    painelImportarTerreno = new JPanel();
+	    painelImportarTerreno.setLayout(null);
+	    painelImportarTerreno.setBackground(painelPrimario.getBackground());
 
 	    // Painel personalizado com uma imagem de fundo (grama)
-	    painelTE = new CustomPanel("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\grama" + corGrama + ".jpg");
-	    painelTE.setLayout(new GridBagLayout()); // Utiliza um layout GridBag para flexibilidade na organização dos componentes
+	    painelTerrenoExemplo = new CustomPanel("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\grama" + corGrama + ".jpg");
+	    painelTerrenoExemplo.setLayout(new GridBagLayout()); // Utiliza um layout GridBag para flexibilidade na organização dos componentes
 
 	    // Posição inicial dos botões
-	    xbtn = (int) (painel1.getWidth() / 2) - 75; // Centraliza os botões horizontalmente
-	    ybtn = (int) (painel1.getHeight() / 2 - 130); // Define a posição vertical dos botões
+	    xbtn = (int) (painelPrimario.getWidth() / 2) - 75; // Centraliza os botões horizontalmente
+	    ybtn = (int) (painelPrimario.getHeight() / 2 - 130); // Define a posição vertical dos botões
 
-	    setContentPane(painel1); // Define o painel1 como o conteúdo principal da janela
+	    setContentPane(painelPrimario); // Define o painel1 como o conteúdo principal da janela
 
 	    listaBotoes = new ArrayList<Botoes>(); // Inicializa a lista de botões
 
@@ -503,7 +500,7 @@ public class Frame extends JFrame {
 		// Inicializa uma janela para exibir instruções
 		frameIN = new JFrame();
 		frameIN.setTitle("Instruções"); // Define o título da janela
-		frameIN.setIconImage(imglogo.getImage()); // Define o ícone da janela
+		frameIN.setIconImage(imgLogo.getImage()); // Define o ícone da janela
 		frameIN.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Fecha a janela sem finalizar o programa
 		frameIN.setSize(800, 500); // Define o tamanho da janela
 		frameIN.setLocationRelativeTo(null); // Centraliza a janela na tela
@@ -574,20 +571,20 @@ public class Frame extends JFrame {
 		caixaInstru.setWrapStyleWord(true);  // Quebra de linha respeitando palavras inteiras
 		caixaInstru.setFont(new Font("Georgia", Font.ITALIC, 12));  // Define a fonte do texto
 		caixaInstru.setForeground(cor2);  // Define a cor do texto
-		caixaInstru.setBackground(painelIN.getBackground());  // Usa a mesma cor de fundo do painel
+		caixaInstru.setBackground(painelInstrução.getBackground());  // Usa a mesma cor de fundo do painel
 		caixaInstru.setEditable(false);  // Impede que o texto seja editável
 		caixaInstru.setOpaque(false);  // Torna o fundo transparente
 
 		// Configura o JScrollPane para exibir a área de texto
-		scrollIN = new JScrollPane(caixaInstru);
-		scrollIN.setBounds(16, 30, 750, 360);  // Define as dimensões e posição do JScrollPane
-		scrollIN.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);  // Adiciona uma barra de rolagem vertical
-		scrollIN.setBorder(borda1);  // Define a borda do JScrollPane
-		scrollIN.setOpaque(false);  // Torna o JScrollPane transparente
-		scrollIN.getViewport().setOpaque(false);  // Torna a área visível transparente
+		scrollInstrucoes = new JScrollPane(caixaInstru);
+		scrollInstrucoes.setBounds(16, 30, 750, 360);  // Define as dimensões e posição do JScrollPane
+		scrollInstrucoes.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);  // Adiciona uma barra de rolagem vertical
+		scrollInstrucoes.setBorder(borda1);  // Define a borda do JScrollPane
+		scrollInstrucoes.setOpaque(false);  // Torna o JScrollPane transparente
+		scrollInstrucoes.getViewport().setOpaque(false);  // Torna a área visível transparente
 
 		// Personaliza a aparência da barra de rolagem usando BasicScrollBarUI
-		scrollIN.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
+		scrollInstrucoes.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
 		    @Override
 		    protected void configureScrollBarColors() {
 		        this.thumbColor = cor2;  // Define a cor da parte deslizante (thumb)
@@ -617,27 +614,28 @@ public class Frame extends JFrame {
 		});
 
 		// Adiciona o JScrollPane e o botão "Retornar" ao painel
-		frameIN.add(painelIN);
-		painelIN.add(scrollIN);
-		painelIN.add(botaoRI2);
+		frameIN.add(painelInstrução);
+		painelInstrução.add(scrollInstrucoes);
+		painelInstrução.add(botaoRI2);
 
-		
 
 		caixaNoticias = new JLabel("<html></html>");
 		caixaNoticias.setHorizontalAlignment(SwingConstants.CENTER); // Centraliza o texto no label
-		caixaNoticias.setFont(new Font("Georgia", Font.ITALIC, 18	)); // Define a fonte
-		caixaNoticias.setForeground(cor2); // Define a cor do texto
+		caixaNoticias.setForeground(new Color(255,255,255)); // Define a cor do texto
 		caixaNoticias.setIcon(null); // Não há ícone associado ao rótulo
-		caixaNoticias.setBounds(xbtn - 190, ybtn - 12, 500, 40); // Define a posição e tamanho do rótulo
-
+		caixaNoticias.setBounds(15,100,500,300);
+		caixaNoticias.setBackground(cor1);
+		
 		scrollNoticias = new JScrollPane();
-		scrollNoticias.setBounds(16, 30, 750, 360);  // Define as dimensões e posição do JScrollPane
+		scrollNoticias.setBounds(15, 100, 500, 300);  // Define as dimensões e posição do JScrollPane
 		scrollNoticias.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);  // Adiciona uma barra de rolagem vertical
 		scrollNoticias.setBorder(borda1);  // Define a borda do JScrollPane
-		scrollNoticias.setOpaque(false);  // Torna o JScrollPane transparente
-		scrollNoticias.getViewport().setOpaque(false);  // Torna a área visível transparente
-	    
-		redirecionarSaidaConsole();
+		scrollNoticias.setBackground(cor1);
+		
+		
+		painelJogo = new CustomPanel("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\grama" + corGrama + ".jpg");
+	    painelJogo.setLayout(new GridBagLayout()); // Utiliza um layout GridBag para flexibilidade na organização dos componentes
+
 		
 		painelInicio();
 		
@@ -797,18 +795,10 @@ public class Frame extends JFrame {
 		                        memoriaEN[j][0] = partes[0];
 		                        memoriaEN[j][1] = partes[1];
 		                        memoriaEN[j][2] = ""; // Deixa o terceiro campo vazio
-		                        // Exibe os valores no console para verificação
-		                        System.out.println(memoriaEN[j][0]);
-		                        System.out.println(memoriaEN[j][1]);
-		                        System.out.println(memoriaEN[j][2]);
 		                    } else if (partes.length == 3) {  // Para linhas com 3 partes (frutas)
 		                        memoriaEN[j][0] = partes[0];  // Nome da fruta
 		                        memoriaEN[j][1] = partes[1];  // Quantidade de árvores
 		                        memoriaEN[j][2] = partes[2];  // Quantidade de frutas
-		                        // Exibe os valores no console para verificação
-		                        System.out.println(memoriaEN[j][0]);
-		                        System.out.println(memoriaEN[j][1]);
-		                        System.out.println(memoriaEN[j][2]);
 		                    } else {
 		                    	caixaSaidas2.setText("Erro: formato da linha " + (j + 1) + " inválido.");
 		                        return; // Sai da função se houver erro no formato da linha
@@ -842,8 +832,8 @@ public class Frame extends JFrame {
 		            setExtendedState(MAXIMIZED_BOTH);  // Maximiza a janela
 		            painelTerrenoExemplo();  // Exibe o painel do terreno de exemplo
 		            terreno.criaTerrenoSistema();  // Configura o sistema de terreno exemplo
-		            criacaoVisualTerreno();  // Chama o método para criar o terreno
-		            configurarKeyListener();
+		            painel = 1; // Define a criação do terreno no painel de terreno exemplo
+		            criacaoVisualTerrenoJogo();  // Chama o método para criar o terreno
 		        }
 		    }
 		});
@@ -855,7 +845,6 @@ public class Frame extends JFrame {
 		        try {
 					terreno.exportarEntradas();
 				} catch (IOException | InterruptedException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 		    }
@@ -877,7 +866,8 @@ public class Frame extends JFrame {
 		    public void actionPerformed(ActionEvent e) {
 		        botaoClickado(botaoNT);  // Marca o botão como clicado
 		        terreno.criaTerrenoSistema();  // Configura o terreno exemplo
-		        criacaoVisualTerreno();  // Chama o método de criação de terreno
+		        painel = 1; // Define a criação do terreno no painel de terreno exemplo
+		        criacaoVisualTerrenoJogo();  // Chama o método de criação de terreno
 		    }
 		});
 
@@ -898,6 +888,28 @@ public class Frame extends JFrame {
 		        repaint();  // Redesenha a janela
 		    }
 		});
+		
+		botaoStart.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		        botaoClickado(botaoStart);
+		    	if(terreno.floresta != null) {
+			        setExtendedState(MAXIMIZED_BOTH);
+			        painelJogo();
+			        painel = 0; //Define a criação do tereno no painel de jogo
+			        criacaoVisualTerrenoJogo();
+		    	}
+		    	else {
+		    		terreno.criaTerrenoSistema();
+		    		setExtendedState(MAXIMIZED_BOTH);
+			        painelJogo();
+			        terreno.criaTerrenoSistema();
+			        painel = 0; //Define a criação do tereno no painel de jogo
+			        criacaoVisualTerrenoJogo();
+		    	
+		    	}
+	            configurarKeyListener();
+		    }
+		});
 	}
 	
 	public void botaoClickado(Botoes botao) {
@@ -909,24 +921,24 @@ public class Frame extends JFrame {
 	}
 
 	public void painelInicio() {
-	    painelini.add(botaoIJ);  // Adiciona o botão "Iniciar Jogo"
-	    painelini.add(botaoMJ);  // Adiciona o botão "Modos de Jogo"
-	    painelini.add(botaoIN);   // Adiciona o botão "Instruções"
-	    painelini.add(botaoT);    // Adiciona o botão de alternar entre modos de tema
-	    painel1.removeAll();      // Remove todos os componentes do painel principal
-	    painel1.add(logo, BorderLayout.NORTH);  // Adiciona o logo ao topo do painel
-	    painel1.add(painelini);   // Adiciona o painel inicial ao centro
+	    painelInicial.add(botaoIJ);  // Adiciona o botão "Iniciar Jogo"
+	    painelInicial.add(botaoMJ);  // Adiciona o botão "Modos de Jogo"
+	    painelInicial.add(botaoIN);   // Adiciona o botão "Instruções"
+	    painelInicial.add(botaoT);    // Adiciona o botão de alternar entre modos de tema
+	    painelPrimario.removeAll();      // Remove todos os componentes do painel principal
+	    painelPrimario.add(logo, BorderLayout.NORTH);  // Adiciona o logo ao topo do painel
+	    painelPrimario.add(painelInicial);   // Adiciona o painel inicial ao centro
 	    revalidate();             // Revalida o layout
 	    repaint();                // Redesenha o painel
 	}
 
 	public void painelIniciarJogo() {
-	    painelIJ.add(botaoCT);   // Adiciona o botão "Criar Terreno"
-	    painelIJ.add(botaoIT);   // Adiciona o botão "Importar Terreno"
-	    painelIJ.add(botaoRI);   // Adiciona o botão "Retornar"
-	    painel1.removeAll();      // Remove todos os componentes do painel principal
-	    painel1.add(logo, BorderLayout.NORTH);  // Adiciona o logo ao topo do painel
-	    painel1.add(painelIJ, BorderLayout.CENTER);  // Adiciona o painel do jogo ao centro
+	    painelIniciarJogo.add(botaoCT);   // Adiciona o botão "Criar Terreno"
+	    painelIniciarJogo.add(botaoIT);   // Adiciona o botão "Importar Terreno"
+	    painelIniciarJogo.add(botaoRI);   // Adiciona o botão "Retornar"
+	    painelPrimario.removeAll();      // Remove todos os componentes do painel principal
+	    painelPrimario.add(logo, BorderLayout.NORTH);  // Adiciona o logo ao topo do painel
+	    painelPrimario.add(painelIniciarJogo, BorderLayout.CENTER);  // Adiciona o painel do jogo ao centro
 	    revalidate();             // Revalida o layout
 	    repaint();                // Redesenha o painel
 	}
@@ -938,80 +950,66 @@ public class Frame extends JFrame {
 	}
 
 	public void painelCriacaoTerreno() {
-	    painelCT.add(caixaSaidas);  // Adiciona a caixa de saídas ao painel de criação de terreno
-	    painelCT.add(scroll);        // Adiciona a barra de rolagem ao painel de criação de terreno
-	    painelCT.add(botaoEN);      // Adiciona o botão "Enviar" ao painel de criação de terreno
-	    painelCT.add(botaoTE);      // Adiciona o botão "Terreno Exemplo" ao painel de criação de terreno
-	    painelCT.add(botaoStart);   // Adiciona o botão "Start" ao painel de criação de terreno
-	    painelCT.add(botaoRC);      // Adiciona o botão "Retornar" ao painel de criação de terreno
-	    painel1.removeAll();        // Remove todos os componentes do painel principal
-	    painel1.add(logo, BorderLayout.NORTH);  // Adiciona o logo ao topo do painel
-	    painel1.add(painelCT, BorderLayout.CENTER);  // Adiciona o painel de criação de terreno ao centro
+	    painelCriaçãoTerreno.add(caixaSaidas);  // Adiciona a caixa de saídas ao painel de criação de terreno
+	    painelCriaçãoTerreno.add(scroll);        // Adiciona a barra de rolagem ao painel de criação de terreno
+	    painelCriaçãoTerreno.add(botaoEN);      // Adiciona o botão "Enviar" ao painel de criação de terreno
+	    painelCriaçãoTerreno.add(botaoTE);      // Adiciona o botão "Terreno Exemplo" ao painel de criação de terreno
+	    painelCriaçãoTerreno.add(botaoStart);   // Adiciona o botão "Start" ao painel de criação de terreno
+	    painelCriaçãoTerreno.add(botaoRC);      // Adiciona o botão "Retornar" ao painel de criação de terreno
+	    painelPrimario.removeAll();        // Remove todos os componentes do painel principal
+	    painelPrimario.add(logo, BorderLayout.NORTH);  // Adiciona o logo ao topo do painel
+	    painelPrimario.add(painelCriaçãoTerreno, BorderLayout.CENTER);  // Adiciona o painel de criação de terreno ao centro
 	    revalidate();               // Revalida o layout
 	    repaint();                  // Redesenha o painel
 	}
 
 	
 	public void painelImportarTerreno() {
-	    painelIT.add(caixaSaidas2);	  // Adiciona a caixa de saidas2
-		painelIT.add(botaoC);         // Adiciona o botão "Caminho" ao painel de importação
-	    painelIT.add(botaoTE);        // Adiciona o botão "Terreno Exemplo" ao painel de importação
-	    painelIT.add(botaoStart);     // Adiciona o botão "Start" ao painel de importação
-	    painelIT.add(botaoRC);        // Adiciona o botão "Retornar" ao painel de importação
-	    painel1.removeAll();          // Remove todos os componentes do painel principal
-	    painel1.add(logo, BorderLayout.NORTH);  // Adiciona o logo ao topo do painel
-	    painel1.add(painelIT, BorderLayout.CENTER);  // Adiciona o painel de importação ao centro
+	    painelImportarTerreno.add(caixaSaidas2);	  // Adiciona a caixa de saidas2
+		painelImportarTerreno.add(botaoC);         // Adiciona o botão "Caminho" ao painel de importação
+	    painelImportarTerreno.add(botaoTE);        // Adiciona o botão "Terreno Exemplo" ao painel de importação
+	    painelImportarTerreno.add(botaoStart);     // Adiciona o botão "Start" ao painel de importação
+	    painelImportarTerreno.add(botaoRC);        // Adiciona o botão "Retornar" ao painel de importação
+	    painelPrimario.removeAll();          // Remove todos os componentes do painel principal
+	    painelPrimario.add(logo, BorderLayout.NORTH);  // Adiciona o logo ao topo do painel
+	    painelPrimario.add(painelImportarTerreno, BorderLayout.CENTER);  // Adiciona o painel de importação ao centro
 	    revalidate();                 // Revalida o layout
 	    repaint();                    // Redesenha o painel
 	}
 
 	
 	public void painelTerrenoExemplo() {
-	    painel1.removeAll(); // Remove todos os componentes do painel principal
-	    painel1.add(botaoRT); // Adiciona o botão "Retornar"
-	    painel1.add(botaoST); // Adiciona o botão "Salvar Terreno"
-	    painel1.add(botaoNT); // Adiciona o botão "Novo Terreno"
-	    painel1.add(caixaNoticias);
-	    painel1.add(logo, BorderLayout.NORTH);  // Adiciona o logo ao topo do painel
+	    painelPrimario.removeAll(); // Remove todos os componentes do painel principal
+	    painelPrimario.add(botaoRT); // Adiciona o botão "Retornar"
+	    painelPrimario.add(botaoST); // Adiciona o botão "Salvar Terreno"
+	    painelPrimario.add(botaoNT); // Adiciona o botão "Novo Terreno"
+	    painelPrimario.add(logo, BorderLayout.NORTH);  // Adiciona o logo ao topo do painel
 	    gbc = new GridBagConstraints();  // Cria um novo GridBagConstraints
 	    gbc.weightx = 0;                 
 	    gbc.weighty = 0;
 	    gbc.insets = new Insets(0, 0, 0, 0); // Define as margens do GridBagConstraints
 	    gbc.anchor = GridBagConstraints.CENTER; // Centraliza o painel
-	    painelTE.setBounds(1366/2, 720/2 , 300, 300); // Define as dimensões do painel
-	    scrollTE = new JScrollPane(painelTE); // Cria uma barra de rolagem para o painel
-	    scrollTE.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED); // Define a política da barra de rolagem vertical
-	    scrollTE.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED); // Define a política da barra de rolagem horizontal
-	    scrollTE.setBorder(borda1); // Define a borda da barra de rolagem
-	    painelTE.setBackground(cor1); // Define a cor de fundo do painel
-	    painelTE.setBorder(borda1); // Define a borda do painel
-	    painel1.add(painelTE, BorderLayout.CENTER); // Adiciona o painel de terreno ao centro do painel principal
+	    painelTerrenoExemplo.setBounds(1366/2, 720/2 , 300, 300); // Define as dimensões do painel
+	    painelTerrenoExemplo.setBackground(cor1); // Define a cor de fundo do painel
+	    painelTerrenoExemplo.setBorder(borda1); // Define a borda do painel
+	    painelPrimario.add(painelTerrenoExemplo, BorderLayout.CENTER); // Adiciona o painel de terreno ao centro do painel principal
 	    revalidate(); // Revalida o layout
 	    repaint(); // Redesenha o painel
 	}
 	
-	public void painelTerrenoExemplo2() {
-	    painel1.removeAll();               // Remove todos os componentes do painel principal
-	    painel1.add(botaoRT);              // Adiciona o botão "Retornar"
-	    painel1.add(botaoST);              // Adiciona o botão "Salvar Terreno"
-	    painel1.add(logo, BorderLayout.NORTH); // Adiciona o logo ao topo do painel
-	    
-	    gbc = new GridBagConstraints(); // Cria um novo GridBagConstraints
-
-	    painelTE.setBackground(cor1);    // Define a cor de fundo do painel
-	    painelTE.setBorder(borda1);       // Define a borda do painel
-
-	    scrollTE = new JScrollPane(painelTE); // Cria uma barra de rolagem para o painel
-	    scrollTE.setBounds(50, 50, 1366/2 + 300 , 720/2); // Define a posição e tamanho da barra de rolagem
-	    scrollTE.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); // Define a política da barra de rolagem vertical
-	    scrollTE.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS); // Define a política da barra de rolagem horizontal
-
-	    painel1.add(scrollTE); // Adiciona a barra de rolagem ao painel principal
-
-	    revalidate(); // Revalida o layout
-	    repaint(); // Redesenha o painel
+	
+	public void painelJogo() {
+		painelPrimario.removeAll();      // Remove todos os componentes do painel principal
+	    painelPrimario.add(caixaNoticias);
+		gbc = new GridBagConstraints();  // Cria um novo GridBagConstraints
+	    gbc.weightx = 0;                 
+	    gbc.weighty = 0;
+	    gbc.insets = new Insets(0, 0, 0, 0); // Define as margens do GridBagConstraints
+	    gbc.anchor = GridBagConstraints.CENTER; // Centraliza o painel
+	    painelPrimario.add(painelJogo, BorderLayout.CENTER);
+		revalidate();             // Revalida o layout
+	    repaint();  
 	}
-
 	
 	
 	// Função utilizada para criar uma imagem dentro da escala do tamanho do botão
@@ -1023,143 +1021,158 @@ public class Frame extends JFrame {
 	}
 	
 	
-
-	
-	
 	// Criando o terreno dentro do painel
-	public void criacaoVisualTerreno() {
-		int tamanhoCelula = 480 / terreno.Dimensao;
-		painelTE.setLayout(new GridBagLayout());  // Mantém o layout
-	    painelTE.removeAll();
-	    painelTE.removeAll();  // Limpa o painel antes de recriar as células
-	    
-	    ImageIcon imgjogador1 = criandoImagem(tamanhoCelula, imgPjogador1);
-	    ImageIcon imgjogador2 = criandoImagem(tamanhoCelula, imgPjogador2);
-	    ImageIcon imgArvoreAbacate = criandoImagem(tamanhoCelula, imgPArvoreAbacate);
-	    ImageIcon imgArvoreAmora = criandoImagem(tamanhoCelula, imgPArvoreAmora);
-	    ImageIcon imgArvoreLaranja = criandoImagem(tamanhoCelula, imgPArvoreLaranja);
-	    ImageIcon imgArvoreAcerola= criandoImagem(tamanhoCelula, imgPArvoreAcerola);
-	    ImageIcon imgArvoreGoiaba= criandoImagem(tamanhoCelula, imgPArvoreGoiaba);
-	    ImageIcon imgArvoreCoco = criandoImagem(tamanhoCelula, imgPArvoreCoco);
-	    ImageIcon imgFrutaMaracuja = criandoImagem(tamanhoCelula, imgPFrutaMaracuja);
-	    ImageIcon imgFrutaLaranja = criandoImagem(tamanhoCelula, imgPFrutaLaranja); 
-	    ImageIcon imgFrutaAbacate = criandoImagem(tamanhoCelula, imgPFrutaAbacate);
-	    ImageIcon imgFrutaGoiaba = criandoImagem(tamanhoCelula, imgPFrutaGoiaba);
-	    ImageIcon imgFrutaAmora = criandoImagem(tamanhoCelula, imgPFrutaAmora);
-	    ImageIcon imgFrutaCoco = criandoImagem(tamanhoCelula, imgPFrutaCoco);
-	    ImageIcon imgFrutaAcerola = criandoImagem(tamanhoCelula, imgPFrutaAcerola);
-	    ImageIcon imggrama = criandoImagem(tamanhoCelula, imgPgrama);
-	    ImageIcon imgPedra= criandoImagem(tamanhoCelula, imgPPedra);
-	    
-	    celulas = new JLabel[terreno.Dimensao][terreno.Dimensao];
-	    
-	    // Criação das imagens dentro de cada botão, de acordo com as posições da Matriz
-	    for (int i = 0; i < terreno.Dimensao; i++) {
-	        for (int j = 0; j < terreno.Dimensao; j++) {
-	    	    JLabel celula = new JLabel();
-	    	    celulas[i][j] = celula;
-	    	    celula.setBorder(borda1);
-	            celula.setBackground(null);
-	            celula.setOpaque(false);	            
-	            
-	            if(terreno.floresta[i][j] instanceof Jogador) {
-	            	Jogador jogador = (Jogador) terreno.floresta[i][j];
-            		if(jogador.id == 1) {
-	            		celula.setIcon(imgjogador1);
-	            		jogador1 = (Jogador) terreno.floresta[i][j];
-            		}
-            		else if(jogador.id == 2) {
-            			celula.setIcon(imgjogador2);
-            		}
-	            }
-	            else if(terreno.floresta[i][j] instanceof Pedra) {
-	            	celula.setIcon(imgPedra);
-	            }
-	            else if(terreno.floresta[i][j] instanceof Arvore) {
-	            	if(terreno.floresta[i][j] instanceof Arvore_Laranja) {
-	            		celula.setIcon(imgArvoreLaranja);
-	            	}
-	            	if(terreno.floresta[i][j] instanceof Arvore_Abacate) {
-	            		celula.setIcon(imgArvoreAbacate);
-	            	}
-	            	if(terreno.floresta[i][j] instanceof Arvore_Coco) {
-	            		celula.setIcon(imgArvoreCoco);
-	            	}
-	            	if(terreno.floresta[i][j] instanceof Arvore_Acerola) {
-	            		celula.setIcon(imgArvoreAcerola);
-	            	}
-	            	if(terreno.floresta[i][j] instanceof Arvore_Amora) {
-	            		celula.setIcon(imgArvoreAmora);
-	            	}
-	            	if(terreno.floresta[i][j] instanceof Arvore_Goiaba) {
-	            		celula.setIcon(imgArvoreGoiaba);
-	            	}
-	            }
-	            else if(terreno.floresta[i][j] instanceof Fruta) {
-	            	if(terreno.floresta[i][j] instanceof Maracuja) {
-	            		celula.setIcon(imgFrutaMaracuja);
-	            	}
-	            	if(terreno.floresta[i][j] instanceof Laranja) {
-	            		celula.setIcon(imgFrutaLaranja);
-	            	}
-	            	if(terreno.floresta[i][j] instanceof Abacate) {
-	            		celula.setIcon(imgFrutaAbacate);
-	            	}
-	            	if(terreno.floresta[i][j] instanceof Coco) {
-	            		celula.setIcon(imgFrutaCoco);
-	            	}
-	            	if(terreno.floresta[i][j] instanceof Acerola) {
-	            		celula.setIcon(imgFrutaAcerola);
-	            	}
-	            	if(terreno.floresta[i][j] instanceof Amora) {
-	            		celula.setIcon(imgFrutaAmora);
-	            	}
-	            	if(terreno.floresta[i][j] instanceof Goiaba) {
-	            		celula.setIcon(imgFrutaGoiaba);
-	            	}
-	            }
-	            else{
-	            	celula.setIcon(imggrama);
-	            }
-	            celula.setPreferredSize(new Dimension(tamanhoCelula, tamanhoCelula));
+		public void criacaoVisualTerrenoJogo() {
+			int tamanhoCelula = 480 / terreno.Dimensao;
+			if(painel == 0) {
+				painelJogo.setLayout(new GridBagLayout());  // Mantém o layout
+			    painelJogo.removeAll();  // Limpa o painel antes de recriar as células
+			}
+			else {
+				painelTerrenoExemplo.setLayout(new GridBagLayout());  // Mantém o layout
+			    painelTerrenoExemplo.removeAll();  // Limpa o painel antes de recriar as células
+			}
+		    
+		    ImageIcon imgjogador1 = criandoImagem(tamanhoCelula, imgPjogador1);
+		    ImageIcon imgjogador2 = criandoImagem(tamanhoCelula, imgPjogador2);
+		    ImageIcon imgArvoreAbacate = criandoImagem(tamanhoCelula, imgPArvoreAbacate);
+		    ImageIcon imgArvoreAmora = criandoImagem(tamanhoCelula, imgPArvoreAmora);
+		    ImageIcon imgArvoreLaranja = criandoImagem(tamanhoCelula, imgPArvoreLaranja);
+		    ImageIcon imgArvoreAcerola= criandoImagem(tamanhoCelula, imgPArvoreAcerola);
+		    ImageIcon imgArvoreGoiaba= criandoImagem(tamanhoCelula, imgPArvoreGoiaba);
+		    ImageIcon imgArvoreCoco = criandoImagem(tamanhoCelula, imgPArvoreCoco);
+		    ImageIcon imgFrutaMaracuja = criandoImagem(tamanhoCelula, imgPFrutaMaracuja);
+		    ImageIcon imgFrutaLaranja = criandoImagem(tamanhoCelula, imgPFrutaLaranja); 
+		    ImageIcon imgFrutaAbacate = criandoImagem(tamanhoCelula, imgPFrutaAbacate);
+		    ImageIcon imgFrutaGoiaba = criandoImagem(tamanhoCelula, imgPFrutaGoiaba);
+		    ImageIcon imgFrutaAmora = criandoImagem(tamanhoCelula, imgPFrutaAmora);
+		    ImageIcon imgFrutaCoco = criandoImagem(tamanhoCelula, imgPFrutaCoco);
+		    ImageIcon imgFrutaAcerola = criandoImagem(tamanhoCelula, imgPFrutaAcerola);
+		    ImageIcon imggrama = criandoImagem(tamanhoCelula, imgPgrama);
+		    ImageIcon imgPedra= criandoImagem(tamanhoCelula, imgPPedra);
+		    
+		    celulas = new JLabel[terreno.Dimensao][terreno.Dimensao];
+		    
+		    // Criação das imagens dentro de cada botão, de acordo com as posições da Matriz
+		    for (int i = 0; i < terreno.Dimensao; i++) {
+		        for (int j = 0; j < terreno.Dimensao; j++) {
+		    	    JLabel celula = new JLabel();
+		    	    celulas[i][j] = celula;
+		    	    celula.setBorder(borda1);
+		            celula.setBackground(null);
+		            celula.setOpaque(false);	            
+		            
+		            if(terreno.floresta[i][j] instanceof Jogador) {
+		            	Jogador jogador = (Jogador) terreno.floresta[i][j];
+	            		if(jogador.id == 1) {
+		            		celula.setIcon(imgjogador1);
+		            		jogador1 = (Jogador) terreno.floresta[i][j];
+	            		}
+	            		else if(jogador.id == 2) {
+	            			celula.setIcon(imgjogador2);
+	            		}
+		            }
+		            else if(terreno.floresta[i][j] instanceof Pedra) {
+		            	celula.setIcon(imgPedra);
+		            }
+		            else if(terreno.floresta[i][j] instanceof Arvore) {
+		            	if(terreno.floresta[i][j] instanceof Arvore_Laranja) {
+		            		celula.setIcon(imgArvoreLaranja);
+		            	}
+		            	if(terreno.floresta[i][j] instanceof Arvore_Abacate) {
+		            		celula.setIcon(imgArvoreAbacate);
+		            	}
+		            	if(terreno.floresta[i][j] instanceof Arvore_Coco) {
+		            		celula.setIcon(imgArvoreCoco);
+		            	}
+		            	if(terreno.floresta[i][j] instanceof Arvore_Acerola) {
+		            		celula.setIcon(imgArvoreAcerola);
+		            	}
+		            	if(terreno.floresta[i][j] instanceof Arvore_Amora) {
+		            		celula.setIcon(imgArvoreAmora);
+		            	}
+		            	if(terreno.floresta[i][j] instanceof Arvore_Goiaba) {
+		            		celula.setIcon(imgArvoreGoiaba);
+		            	}
+		            }
+		            else if(terreno.floresta[i][j] instanceof Fruta) {
+		            	if(terreno.floresta[i][j] instanceof Maracuja) {
+		            		celula.setIcon(imgFrutaMaracuja);
+		            	}
+		            	if(terreno.floresta[i][j] instanceof Laranja) {
+		            		celula.setIcon(imgFrutaLaranja);
+		            	}
+		            	if(terreno.floresta[i][j] instanceof Abacate) {
+		            		celula.setIcon(imgFrutaAbacate);
+		            	}
+		            	if(terreno.floresta[i][j] instanceof Coco) {
+		            		celula.setIcon(imgFrutaCoco);
+		            	}
+		            	if(terreno.floresta[i][j] instanceof Acerola) {
+		            		celula.setIcon(imgFrutaAcerola);
+		            	}
+		            	if(terreno.floresta[i][j] instanceof Amora) {
+		            		celula.setIcon(imgFrutaAmora);
+		            	}
+		            	if(terreno.floresta[i][j] instanceof Goiaba) {
+		            		celula.setIcon(imgFrutaGoiaba);
+		            	}
+		            }
+		            else{
+		            	celula.setIcon(imggrama);
+		            }
+		            celula.setPreferredSize(new Dimension(tamanhoCelula, tamanhoCelula));
 
-	            gbc.gridx = j;
-	            gbc.gridy = i;
-	            painelTE.add(celula, gbc);
-	        }
-	    }
-	    revalidate();
-	    repaint();
-	}
+		            gbc.gridx = j;
+		            gbc.gridy = i;
+		            
+		            if(painel == 0) {
+		            	painelJogo.add(celula, gbc);
+		            }
+		            else {
+		            	painelTerrenoExemplo.add(celula,gbc);
+		            }
+		        }
+		    }
+		    revalidate();
+		    repaint();
+		}
+
+	
+	
+	
 	
 	
 	// Função para configurar o KeyListener apenas uma vez
 	public void configurarKeyListener() {
-	    painelTE.setFocusable(true);
-	    painelTE.requestFocusInWindow(); // Garante que o painel receba o foco
+	    painelJogo.setFocusable(true);
+	    painelJogo.requestFocusInWindow(); // Garante que o painel receba o foco
 	    jogador1.setMovimentos();
-	    painelTE.addKeyListener(new KeyAdapter() {
-	        @Override
-	        public void keyPressed(KeyEvent e) {
-	            switch (e.getKeyCode()) {
-	                case KeyEvent.VK_UP:
-	                    terreno.floresta = jogador1.movimentar(1, terreno);
-	                    break;
-	                case KeyEvent.VK_DOWN:
-	                    terreno.floresta = jogador1.movimentar(2, terreno);
-	                    break;
-	                case KeyEvent.VK_RIGHT:
-	                    terreno.floresta = jogador1.movimentar(3, terreno);
-	                    break;
-	                case KeyEvent.VK_LEFT:
-	                    terreno.floresta = jogador1.movimentar(4, terreno);
-	                    break;
-	                default:
-	                    return; // Ignora outras teclas
-	            }
-	            criacaoVisualTerreno(); // Atualiza o terreno após o movimento
-	        }
-	    });
+	    if(botoesAtivados == 0) {
+	    	painelJogo.addKeyListener(new KeyAdapter() {
+		        @Override
+		        public void keyPressed(KeyEvent e) {
+		            switch (e.getKeyCode()) {
+		                case KeyEvent.VK_UP:
+		                    terreno.floresta = jogador1.movimentar(1, terreno);
+		                    break;
+		                case KeyEvent.VK_DOWN:
+		                    terreno.floresta = jogador1.movimentar(2, terreno);
+		                    break;
+		                case KeyEvent.VK_RIGHT:
+		                    terreno.floresta = jogador1.movimentar(3, terreno);
+		                    break;
+		                case KeyEvent.VK_LEFT:
+		                    terreno.floresta = jogador1.movimentar(4, terreno);
+		                    break;
+		                default:
+		                    return; // Ignora outras teclas
+		            }
+		            botoesAtivados = 1;
+		            criacaoVisualTerrenoJogo(); // Atualiza o terreno após o movimento
+		        }
+		    });
+	    }
 	}
 		
 	// Classe para possibilitar a criação de um painel com uma imagem como o plano de fundo
@@ -1193,15 +1206,16 @@ public class Frame extends JFrame {
 
         // Configuração do JLabel para mostrar o texto
         caixaNoticias = new JLabel("<html></html>");
-        caixaNoticias.setVerticalAlignment(SwingConstants.TOP);  // Alinhamento no topo
-        JScrollPane scrollPane = new JScrollPane(caixaNoticias);
-        scrollPane.setBounds(10, 20, 600, 400);
+        caixaNoticias.setVerticalAlignment(SwingConstants.LEFT);  // Alinhamento no topo
+        scrollNoticias.setBackground(cor2);
+        scrollNoticias.setBounds(15, 100, 500, 300);
         // Configuração da janela
         setLayout(new BorderLayout());
-        add(scrollPane, BorderLayout.CENTER);
-        setBounds(10, 30, 600, 400);
+        add(scrollNoticias, BorderLayout.EAST);
+        setBounds(15, 100, 500, 300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+        setBackground(cor2);
+        
         // Redirecionando a saída do console para o JLabel
         redirecionarSaidaConsole();
 
