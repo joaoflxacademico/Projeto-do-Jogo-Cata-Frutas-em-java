@@ -1,0 +1,11 @@
+package cata_frutas.Elementos.Elementos_Estáticos;
+
+import cata_frutas.Elementos.Elementos_Dinâmicos.Coco;
+
+public class Arvore_Coco extends Arvore{
+	
+	public Arvore_Coco(int x, int y, Coco coco) {
+		super(x, y, coco);
+	}
+
+}
