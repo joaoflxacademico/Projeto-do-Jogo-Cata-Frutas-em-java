@@ -13,6 +13,8 @@ public class Jogador extends Elemento_Dinamico {
 	public Mochila mochilaJogador;
 	public int Dimensao;
 	public boolean debaixoDeArvore;
+	public boolean doente = false;
+	public int forca = 1;
 	
 	public Jogador(int x, int y,int tamanhoMochila, int id,int dimensao) {
 		super(x,y);
@@ -22,15 +24,17 @@ public class Jogador extends Elemento_Dinamico {
 	}
 	
 	
-	public void calculoEmpurrao(Jogador pA, Jogador pB) {
+	public void empurrar(Elemento[][] floresta, Jogador pA, Jogador pB) {
 		int forcaAtaque = pA.mochilaJogador.mochila.length;
 		int forcaDefesa = pB.mochilaJogador.mochila.length;
 		
-		double log2Atq = Math.log10(forcaAtaque + 1) / Math.log10(2);
+		double log2Atq = this.forca * Math.log10(forcaAtaque + 1) / Math.log10(2);
 		double log2Def = Math.log10(forcaDefesa + 1) / Math.log(2);
 		int empurrao = (int) Math.round(log2Atq - log2Def);
 		
-		System.out.println(empurrao);
+		if(empurrao > 1) {
+			pB.derrubarFrutas(floresta, empurrao);
+		}
 		
 	}
 	
@@ -47,11 +51,42 @@ public class Jogador extends Elemento_Dinamico {
 		System.out.println(this.movimentosRestantes);
 	}
 	
-	public void saltar(Elemento objeto, int direcao) {
-		int x = objeto.getPosicao().getX();
-		int y = objeto.getPosicao().getY();
+	public Elemento[][] saltar(Elemento[][] floresta, int direcao) {
+		if(this.movimentosRestantes < 3) {
+	    	return floresta;
+	    }
 		
+		int x = this.getPosicao().getX();
+	    int y = this.getPosicao().getY();
+	    int novox = x, novoy = y;
 		
+	    switch(direcao) {
+	    case 1:
+	    	novox = x - 2;
+	    	break;
+	    case 2:
+	    	novox = x + 2;
+	    	break;
+	    case 3:
+	    	novoy = y + 2;
+	    	break;
+	    case 4:
+	    	novoy = y - 2;
+	    	break;
+	    }
+	    
+	    if(!verificaPosicao(novox, novoy)) {
+	    	System.out.println("Movimento inválido.");
+	    	return floresta;
+	    }
+	    
+	    this.setPosicao(novox, novoy);
+	    this.movimentosRestantes -= 3;
+	    floresta[novox][novoy] = this;
+	    floresta[x][y] = new Grama(x,y);
+	    
+	    return floresta;
+	    
 	}
 	
 	public Elemento[][] movimentar(int direcao, Terreno terreno) {
@@ -79,16 +114,19 @@ public class Jogador extends Elemento_Dinamico {
 	    }
 	    
 	    if(!verificaPosicao(novox, novoy)) {
+	    	System.out.println("Movimento inválido.");
 	    	return terreno.floresta;
 	    }
 	    
 	    if(debaixoDeArvore) {
 	    	if(terreno.floresta[novox][novoy] instanceof Pedra) {
-		    	this.setPosicao(x, y);
+                System.out.println("Tem uma pedra no caminho.");
+	    		this.setPosicao(x, y);
 		    	return terreno.floresta;
 		    }
 	    	
 		    else if(terreno.floresta[novox][novoy] instanceof Jogador) {
+                System.out.println("Existe um jogador no caminho.");
 		    	this.setPosicao(x, y);
 		    	return terreno.floresta;
 		    }
@@ -108,6 +146,7 @@ public class Jogador extends Elemento_Dinamico {
 		    }
 
 	    	else if(terreno.floresta[novox][novoy] instanceof Arvore) {
+                System.out.println("Entrando debaixo de uma árvore.");
 	    		for(int i = 0; i < terreno.listaArvores.size(); i++) {
 		    		if(terreno.listaArvores.get(i).getJogador() == this) {
 		    			terreno.listaArvores.get(i).setJogador(null);
@@ -136,11 +175,13 @@ public class Jogador extends Elemento_Dinamico {
 	    }
 	    
 	    if(terreno.floresta[novox][novoy] instanceof Pedra) {
+            System.out.println("Tem uma pedra no caminho.");
 	    	this.setPosicao(x, y);
 	    	return terreno.floresta;
 	    }
 	    
 	    else if(terreno.floresta[novox][novoy] instanceof Jogador) {
+            System.out.println("Existe um jogador no caminho.");
 	    	this.setPosicao(x, y);
 	    	return terreno.floresta;
 	    }
@@ -155,6 +196,7 @@ public class Jogador extends Elemento_Dinamico {
 	    }
 	    
 	    else if(terreno.floresta[novox][novoy] instanceof Arvore) {
+            System.out.println("Entrando debaixo de uma árvore.");
 	    	this.debaixoDeArvore = true;
 	    	Arvore arvore = (Arvore) terreno.floresta[novox][novoy];
 	    	arvore.setJogador(this);
@@ -177,6 +219,31 @@ public class Jogador extends Elemento_Dinamico {
 	
 	public boolean verificaPosicao(int x, int y) {
 		return x >= 0 && x < this.Dimensao && y >= 0 && y < this.Dimensao;
+	}
+	
+	public void encerrarTurno(){
+		this.movimentosRestantes = 0;
+	}
+	
+	public void malEstar() {
+		if(this.doente == true) {
+			this.encerrarTurno();
+		}
+	}
+	
+	public void derrubarFrutas(Elemento[][] floresta, int empurrao) {
+		for(int i = 0; i < empurrao; i++) {
+			int posicao = ale(this.tamanhoMochila);
+			int x = this.getPosicao().getX();
+			int y = this.getPosicao().getY();
+			int novox = ale(1) + x;
+			int novoy = ale(1) + y;
+			Fruta fruta = this.mochilaJogador.mochila[x];
+			this.mochilaJogador.mochila[x] = null;
+			if(floresta[x][y] instanceof Grama) {
+				floresta[novox][novoy] = fruta;
+			}
+		}
 	}
 	
 }
