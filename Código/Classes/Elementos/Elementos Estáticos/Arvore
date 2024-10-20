@@ -1,14 +1,18 @@
 package cata_frutas.Elementos.Elementos_Estáticos;
 
+import cata_frutas.Elementos.Elemento;
 import cata_frutas.Elementos.Ponto;
 import cata_frutas.Elementos.Elementos_Dinâmicos.Fruta;
+import cata_frutas.Elementos.Elementos_Dinâmicos.Jogador;
 
-public class Arvore extends Elemento_Estatico{
+public abstract class Arvore extends Elemento_Estatico{
 	Fruta tipofruta;
 	int ultimaFruta;
+	Jogador jogador = null;
 	
-	public Arvore(int x, int y) {
+	public Arvore(int x, int y, Fruta fruta) {
 		super(x,y);
+		this.tipofruta = fruta;
 		this.ultimaFruta = 0;
 	}
 	
@@ -16,10 +20,25 @@ public class Arvore extends Elemento_Estatico{
 		return this.tipofruta;
 	}
 	
-	public Ponto soltaFruta() {
-		int x = (int) Math.round(Math.random());
-		int y = (int) Math.round(Math.random());
-		
-		return new Ponto(x,y);
+	public void soltarFruta(){
+		if(this.ultimaFruta == 5 && this.jogador.debaixoDeArvore) {
+			this.jogador.mochilaJogador.armazenaFruta(tipofruta);
+			this.ultimaFruta = 0;
+		}
+	}
+	
+	public void atualizarArvore() {
+		if(this.ultimaFruta == 5) {
+			return;
+		}
+		this.ultimaFruta++;
+	}
+	
+	public void setJogador(Jogador jogador) {
+		this.jogador = jogador;
+	}
+	
+	public Jogador getJogador() {
+		return this.jogador;
 	}
 }
