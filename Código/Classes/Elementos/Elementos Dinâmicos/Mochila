@@ -1,41 +1,53 @@
 package cata_frutas.Elementos.Elementos_Dinâmicos;
 
+import java.util.HashMap;
 
 public class Mochila{
 	public Fruta[] mochila;
+	HashMap<Fruta, Integer> mochilaHash = new HashMap<Fruta, Integer>();
 	
 	public Mochila(int tamanho) {
 		this.mochila = new Fruta[tamanho];
 	}
 	
-	public Fruta retornaFruta(int posicao) {
+	public Fruta retornaFruta(Fruta fruta) {
 		Fruta retorno = null;
-		if(posicao > 0 && posicao < this.mochila.length) {
-			if(this.mochila[posicao] != null) {
-				retorno = this.mochila[posicao];
-				}
-			else {
-				System.out.printf("\nPosição %d inválida para o tamanho %d da mochila.", posicao, this.mochila.length);
-			}
-		}
-		else {
-			System.out.printf("\nPosição %d inválida para o tamanho %d da mochila.", posicao, this.mochila.length);
+		if(mochilaHash.get(fruta) > 0) {
+			this.mochilaHash.put(fruta, mochilaHash.get(fruta) - 1);
+			retorno = fruta;
 		}
 		return retorno;
 	}
 	
 	public void armazenaFruta(Fruta fruta) {
+		if(!mochilaHash.containsKey(fruta)) {
+			mochilaHash.put(fruta, 1);
+		}
+		else {
+			mochilaHash.put(fruta, mochilaHash.get(fruta) + 1);
+		}
 		if(this.mochilaCheia() != true) {
 			for(int i = 0; i < this.mochila.length; i++) {
 				if(this.mochila[i] == null) {
 					this.mochila[i] = fruta;
-					System.out.printf("Fruta %s armazenada com sucesso.",fruta);
+					System.out.printf("%s armazenada com sucesso.\n", fruta.nome);
+					System.out.printf("%d frutas %s na sua mochila.\n", this.mochilaHash.get(fruta), fruta.nome);
 					break;
 				}
 			}
 		}
 	}
 	
+	public void exibirMochila() {
+		try {
+			for(int i = 0; i < this.mochila.length; i++) {
+				System.out.printf("Fruta %d: %s \n", i , this.mochila[i].nome);
+			}
+		}
+		catch (Exception NullPointerException) {
+		}
+	}
+
 	public boolean mochilaCheia() {
 		boolean resp = false;
 		for(int i = 0; i < this.mochila.length; i++) {
