@@ -1,12 +1,15 @@
 package cata_frutas.Elementos.Elementos_Dinâmicos;
 
+
 public class Laranja extends Fruta{
 	
 	public Laranja(int x, int y, float bichada) {
 		super(x,y,bichada);
+		this.nome = "Laranja";
 	}
 	
 	@Override
- 	public void efeito() {
-		};
+	public void efeito(Jogador jogador) {
+		jogador.doente = false;
+	}
 }
