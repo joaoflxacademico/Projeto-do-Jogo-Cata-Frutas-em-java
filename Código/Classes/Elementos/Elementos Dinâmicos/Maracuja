@@ -4,10 +4,10 @@ public class Maracuja extends Fruta{
 	
 	public Maracuja(int x, int y, float bichada) {
 		super(x,y,bichada);
+		this.nome = "Maracujá";
 	}
-	
+
 	@Override
- 	public void efeito() {
-		
-	};
+	public void efeito(Jogador jogador) {}
+	
 }
