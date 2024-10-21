@@ -4,10 +4,11 @@ public class Abacate extends Fruta{
 	
 	public Abacate(int x, int y, float bichada) {
 		super(x,y,bichada);
+		this.nome = "Abacate";
 	}
 	
 	@Override
- 	public void efeito() {
-		
+ 	public void efeito(Jogador jogador) {
+		jogador.forca = 2;
 	};
 }
