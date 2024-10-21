@@ -2,12 +2,17 @@ package cata_frutas.Elementos.Elementos_Dinâmicos;
 
 public abstract class Fruta extends Elemento_Dinamico{
 	public float bichada;
+	public boolean frutaBichada;
+	public String nome;
 	
 	public Fruta(int x, int y, float bichada) {
 		super(x,y);
 		this.bichada = bichada;
+		
+		if(ale(100) <= bichada) {
+			this.frutaBichada = true;
+		}
 	}
-	
-	public abstract void efeito();
-	
+
+	public abstract void efeito(Jogador jogador);
 }
