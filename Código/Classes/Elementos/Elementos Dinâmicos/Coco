@@ -4,10 +4,11 @@ public class Coco extends Fruta{
 	
 	public Coco(int x, int y, float bichada) {
 		super(x,y,bichada);
+		this.nome = "Coco";
 	}
 	
 	@Override
- 	public void efeito() {
-		
-	};
+ 	public void efeito(Jogador jogador) {
+		jogador.movimentosRestantes = jogador.movimentosRestantes * 2;
+	}
 }
