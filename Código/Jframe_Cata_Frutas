@@ -936,6 +936,7 @@ public class Frame extends JFrame {
 	public void painelJogo() {
 		painelPrimario.removeAll();      // Remove todos os componentes do painel principal
 	    painelPrimario.add(caixaNoticias);
+	    
 		gbc = new GridBagConstraints();  // Cria um novo GridBagConstraints
 	    gbc.weightx = 0;                 
 	    gbc.weighty = 0;
@@ -1085,6 +1086,7 @@ public class Frame extends JFrame {
 	    painelJogo.requestFocusInWindow(); // Garante que o painel receba o foco
 	    if(botoesAtivados == 0) {
     		Jogador jogadorDaVez = jogadores[contadorTurno % 2];
+        	terreno.turno(jogadorDaVez);
     	    jogadorDaVez.setMovimentos();
 	    	painelJogo.addKeyListener(new KeyAdapter() {
 		        @Override
@@ -1106,11 +1108,25 @@ public class Frame extends JFrame {
 		                    System.out.println("Movimentando para esquerda.");
 		                    terreno.floresta = jogadorDaVez.movimentar(4, terreno);
 		                    break;
-		                case KeyEvent.VK_E:
-		                    System.out.println("Realizando salto.");
-		                	terreno.floresta = jogadorDaVez.saltar(terreno.floresta,1);
-		                case KeyEvent.VK_F:
+		                case KeyEvent.VK_I:
+		                    System.out.println("Realizando salto para cima.");
+		                	terreno.floresta = jogadorDaVez.saltar(1,terreno,1);
+		                	break;
+		                case KeyEvent.VK_K:
+		                    System.out.println("Realizando salto para baixo.");
+		                	terreno.floresta = jogadorDaVez.saltar(2,terreno,1);
+		                	break;
+		                case KeyEvent.VK_L:
+		                    System.out.println("Realizando salto para direita.");
+		                	terreno.floresta = jogadorDaVez.saltar(3,terreno,1);
+		                	break;
+		                case KeyEvent.VK_J:
+		                    System.out.println("Realizando salto para esquerda.");
+		                	terreno.floresta = jogadorDaVez.saltar(4,terreno,1);
+		                	break;
+		                case KeyEvent.VK_T:
 		                	jogadorDaVez.encerrarTurno();
+		                	contadorTurno++;
 		                	break;
 		                case KeyEvent.VK_C:
 		                	jogadorDaVez.mochilaJogador.exibirMochila();
