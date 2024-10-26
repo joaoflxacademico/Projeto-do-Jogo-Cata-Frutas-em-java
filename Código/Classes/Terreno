@@ -24,6 +24,9 @@ public class Terreno {
 	public float Bichada;
 	public int Mochila;
 	public ArrayList<Arvore> listaArvores = new ArrayList<Arvore>();
+	public int pontosVitoria;
+	public int numeroTurno;
+	public int numeroRodada;
 	
 	public Terreno(String[][] MemoriraEN) {
 		this.memoriaEN = MemoriraEN;
@@ -310,6 +313,8 @@ public class Terreno {
 				arvoresTotais += arvores[j];
 			}
 			
+			this.pontosVitoria = (arvores[0] / 2) + 1;//Define o número de marácujas que devem ser catados para uma vitória
+			
 			espacosDisponiveis -= frutasTotais - arvoresTotais;
 			
 			
@@ -357,14 +362,7 @@ public class Terreno {
 		return (int) Math.round(Math.random()*i);
 	}
 	
-	public void turno(Jogador jogador) {
-		for(int i = 0; i < listaArvores.size(); i++) {
-			listaArvores.get(i).soltarFruta();
-			listaArvores.get(i).atualizarArvore();
-		}
-		jogador.malEstar();
-		
-	}
+	
 	
 }
 	
