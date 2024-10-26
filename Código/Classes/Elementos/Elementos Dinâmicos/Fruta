@@ -4,10 +4,12 @@ public abstract class Fruta extends Elemento_Dinamico{
 	public float bichada;
 	public boolean frutaBichada;
 	public String nome;
+	public boolean noChao;
 	
 	public Fruta(int x, int y, float bichada) {
 		super(x,y);
 		this.bichada = bichada;
+		this.noChao = true;
 		
 		if(ale(100) <= bichada) {
 			this.frutaBichada = true;
