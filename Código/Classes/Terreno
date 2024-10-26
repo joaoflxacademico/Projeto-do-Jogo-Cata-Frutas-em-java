@@ -28,11 +28,16 @@ public class Terreno {
 	public int pontosVitoria;
 	public int numeroTurno;
 	public int numeroRodada;
+	public Jogador[] jogadores;
 	
 	public Terreno(String[][] MemoriraEN) {
 		this.memoriaEN = MemoriraEN;
 	}
 	
+	
+	public void setJogadores(Jogador[] jogadores) {
+		this.jogadores = jogadores;
+	}
 	
 	 // ADICIONAR OS METODOS PARA IMPORTAR E EXPORTAR AS ENTRADAS DA CRIACAO DO TERRENO
 	public void importarEntradas() {
