@@ -710,7 +710,7 @@ public class Frame extends JFrame {
 		
 		
 		
-		painelJogo = new CustomPanel("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\grama" + corGrama + ".jpg");
+		painelJogo = new CustomPanel(CaminhoImagem+File.separator+"grama"+corGrama+".png");
 	    painelJogo.setLayout(new GridBagLayout()); // Utiliza um layout GridBag para flexibilidade na organização dos componentes
 	    
 		painelInicio();
