@@ -1,9 +1,11 @@
 package cata_frutas.Elementos.Elementos_Estáticos;
 
+import cata_frutas.Terreno;
 import cata_frutas.Elementos.Elemento;
 import cata_frutas.Elementos.Ponto;
 import cata_frutas.Elementos.Elementos_Dinâmicos.Fruta;
 import cata_frutas.Elementos.Elementos_Dinâmicos.Jogador;
+import cata_frutas.Elementos.Elementos_Dinâmicos.Maracuja;
 
 public abstract class Arvore extends Elemento_Estatico{
 	Fruta tipofruta;
@@ -20,11 +22,51 @@ public abstract class Arvore extends Elemento_Estatico{
 		return this.tipofruta;
 	}
 	
-	public void soltarFruta(){
-		if(this.ultimaFruta == 5 && this.jogador.debaixoDeArvore) {
-			this.jogador.mochilaJogador.armazenaFruta(tipofruta);
-			this.ultimaFruta = 0;
+	public Elemento[][] soltarFruta(Elemento[][] floresta){
+		try {
+			if(this.ultimaFruta == 5 && this.jogador.debaixoDeArvore) {
+				for(int i = 0; i < this.jogador.tamanhoMochila; i++) {
+					if(this.jogador.mochilaJogador.mochila[i] == null) {
+						this.fruta.noChao = false;
+						this.jogador.mochilaJogador.mochila[i] = this.fruta;
+						System.out.println("A fruta caiu na mochila do jogador.");
+						this.ultimaFruta = 0;
+						return floresta;
+					}
+				}
+				for(int j = 0; j < floresta.length; j++) {
+					int x = ale(j);
+					int y = ale(j);
+					if(floresta[x][y] instanceof Grama) {
+						floresta[x][y] = this.fruta;
+						System.out.println(("A fruta caiu no chão."));
+						return floresta;
+					}
+				}
+			}
+		}catch(NullPointerException e) {
+			return floresta;
 		}
+		return floresta;
+	}
+	
+	public Elemento[][] soltarMaracuja(Terreno terreno){
+		if((terreno.numeroRodada)% 2 == 0) {
+			for(int i = 0;;i++) {
+				int sorte = ale(terreno.listaArvores.size() - 1);
+				int x = terreno.listaArvores.get(sorte).getPosicao().getX();
+				int y = terreno.listaArvores.get(sorte).getPosicao().getY();
+				for(int j = 1; j < 10 ; j++) {
+					int somax = ale(j+i);
+					int somay = ale(j+i);
+					if(verificaPosicao(x + somax, y + somay, terreno.Dimensao) && terreno.floresta[x + somax][y + somay] instanceof Grama) {
+						terreno.floresta[x + somax][y + somay] = new Maracuja(x + somax,y + somay, terreno.Bichada);
+						return terreno.floresta;
+					}
+				}
+			}
+		}
+		return terreno.floresta;
 	}
 	
 	public void atualizarArvore() {
@@ -40,5 +82,9 @@ public abstract class Arvore extends Elemento_Estatico{
 	
 	public Jogador getJogador() {
 		return this.jogador;
+	}
+	
+	public boolean verificaPosicao(int x, int y, int dimensao) {
+		return x >= 0 && x < dimensao && y >= 0 && y < dimensao;
 	}
 }
