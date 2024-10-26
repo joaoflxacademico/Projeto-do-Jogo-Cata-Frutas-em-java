@@ -71,7 +71,7 @@ public class Frame extends JFrame {
 
 	public StringBuilder consoleBuffer;
 	
-	JTextArea caixaTexto;
+	JTextArea caixaTextoEntradas;
 	JTextArea caixaTexto2;
 	JTextArea caixaInstru;
 	JTextField caixaTexto3;
@@ -461,19 +461,19 @@ public class Frame extends JFrame {
 	    caixaSaidas.setBounds(xbtn - 190, ybtn - 80, 500, 40); // Define o tamanho e a posição do rótulo
 
 	    // Área de texto onde o usuário pode digitar
-	    caixaTexto = new JTextArea();
-	    caixaTexto.setBorder(borda1); // Define a borda da área de texto
-	    caixaTexto.setFont(caixaSaidas.getFont()); // Usa a mesma fonte do rótulo
-	    caixaTexto.setLineWrap(true); // Habilita a quebra de linha automática
-	    caixaTexto.setWrapStyleWord(true); // Quebra a linha por palavra
-
+	    caixaTextoEntradas = new JTextArea();
+	    caixaTextoEntradas.setBorder(borda1); // Define a borda da área de texto
+	    caixaTextoEntradas.setFont(caixaSaidas.getFont()); // Usa a mesma fonte do rótulo
+	    caixaTextoEntradas.setLineWrap(true); // Habilita a quebra de linha automática
+	    caixaTextoEntradas.setWrapStyleWord(true); // Quebra a linha por palavra
+	    
 	    // Componente de rolagem para a área de texto
-	    scroll = new JScrollPane(caixaTexto);
+	    scroll = new JScrollPane(caixaTextoEntradas);
 	    scroll.setBounds(xbtn - 30, ybtn - 50, 180, 90); // Define a posição e o tamanho do componente de rolagem
 	    scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); // Barra de rolagem vertical sempre visível
 	    scroll.setBorder(borda1); // Define a borda do componente de rolagem
 
-
+	    
 		
 		//Cria um scroll personalizado sem os botões, e com uma coloração diferente
 		scroll.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
@@ -685,7 +685,7 @@ public class Frame extends JFrame {
 		caixaTituloNoticias = new JLabel("Notícias:");
 		caixaTituloNoticias.setHorizontalAlignment(SwingConstants.LEFT); // Centraliza o texto no label
 		caixaTituloNoticias.setFont(new Font("Georgia", Font.ITALIC, 24));  // Define a fonte do texto
-		caixaTituloNoticias.setForeground(cor2); // Define a cor do texto
+		caixaTituloNoticias.setForeground(caixaSaidas.getForeground());
 		caixaTituloNoticias.setIcon(null); // Não há ícone associado ao rótulo
 		caixaTituloNoticias.setBounds(25,100,270,30);
 		caixaTituloNoticias.setBackground(cor1);
@@ -694,7 +694,7 @@ public class Frame extends JFrame {
 		caixaJogadorTurno = new JLabel("Jogador da vez:");
 		caixaJogadorTurno.setHorizontalAlignment(SwingConstants.LEFT); // Centraliza o texto no label
 		caixaJogadorTurno.setFont(new Font("Georgia", Font.ITALIC, 24));  // Define a fonte do texto
-		caixaJogadorTurno.setForeground(cor2); // Define a cor do texto
+		caixaJogadorTurno.setForeground(caixaSaidas.getForeground());
 		caixaJogadorTurno.setIcon(null); // Não há ícone associado ao rótulo
 		caixaJogadorTurno.setBounds(25,40,270,30);
 		caixaJogadorTurno.setBackground(cor1);
@@ -703,7 +703,7 @@ public class Frame extends JFrame {
 		caixaMovimentos = new JLabel("Movimentos restantes:");
 		caixaMovimentos.setHorizontalAlignment(SwingConstants.LEFT); // Centraliza o texto no label
 		caixaMovimentos.setFont(new Font("Georgia", Font.ITALIC, 24));
-		caixaMovimentos.setForeground(cor2); // Define a cor do texto
+		caixaMovimentos.setForeground(caixaSaidas.getForeground());
 		caixaMovimentos.setIcon(null); // Não há ícone associado ao rótulo
 		caixaMovimentos.setBounds(25,70,340,30);
 		caixaMovimentos.setBackground(cor1);
@@ -777,52 +777,20 @@ public class Frame extends JFrame {
 		botaoEN.addActionListener(new ActionListener() {
 		    @Override
 		    public void actionPerformed(ActionEvent e) {
-		        uiaceita = false;
-		        
-		        // Captura o texto inserido
-		        userInput = caixaTexto.getText();
-		        
-		        // Verifica se a entrada é vazia
-		        if (userInput.isEmpty() || userInput.isBlank()) {
-		            caixaSaidas.setText("Erro: A entrada não pode ser vazia.");
-		            return;
-		        }
-		        
-		        String[] linhas = userInput.split("\n"); // Divide o texto em linhas
-		        
-		        // Processar as linhas
-		        for (int j = 0; j < linhas.length; j++) {
-		            String linha = linhas[j].trim(); // Remove espaços extras
-		            String[] partes = linha.split(" ");
-
-		            // Validação do formato das linhas (primeiras e últimas linhas têm no máximo 2 partes)
-		            if (((j <= 1) || (j >= 9)) && partes.length > 2) {
-		                caixaSaidas.setText("Erro: formato da linha " + (j + 1) + " inválido.");
-		                return;
-		            } else if (partes.length == 2) {  // Para linhas com 2 partes (dimensões e pedras)
-		                memoriaEN[j][0] = partes[0];
-		                memoriaEN[j][1] = partes[1];
-		                memoriaEN[j][2] = ""; // Deixa o terceiro campo vazio
-		            } else if (partes.length == 3) {  // Para linhas com 3 partes (frutas)
-		                memoriaEN[j][0] = partes[0];  // Nome da fruta
-		                memoriaEN[j][1] = partes[1];  // Quantidade de árvores
-		                memoriaEN[j][2] = partes[2];  // Quantidade de frutas    
-		            } else {
-		                caixaSaidas.setText("Erro: formato da linha " + (j + 1) + " inválido.");
-		                return; // Sai da função se houver erro no formato da linha
-		            }
-		        }
-		        
-		        terreno = new Terreno(memoriaEN);
-		        // Verifica o terreno após processar as entradas
-		        boolean resultado = terreno.verificaTerreno();
-		        if (resultado) {
-		            caixaSaidas.setText("Entradas aceitas.");
-		        }
+		    	enviarEntradas();
 		    }
 		});
 
 		
+		caixaTextoEntradas.addKeyListener(new KeyAdapter() {
+		    @Override
+	    	public void keyPressed(KeyEvent e) {
+	            if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+			        botaoClickado(botaoEN);  // Marca o botão como clicado
+			        enviarEntradas();
+	            }
+           }
+		});
 
 		// Ação para o botão "Enviar"(Importar Terreno)
 		botaoC.addActionListener(new ActionListener() {
@@ -839,13 +807,15 @@ public class Frame extends JFrame {
 		botaoTE.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
 		        botaoClickado(botaoTE);  // Marca o botão como clicado
-		        if (terreno.verificaTerreno()) {  // Verifica se o terreno está configurado corretamente
-		            setExtendedState(MAXIMIZED_BOTH);  // Maximiza a janela
-		            painelTerrenoExemplo();  // Exibe o painel do terreno de exemplo
-		            terreno.criaTerrenoSistema();  // Configura o sistema de terreno exemplo
-		            painel = 1; // Define a criação do terreno no painel de terreno exemplo
-		            criacaoVisualTerrenoJogo();  // Chama o método para criar o terreno
-		        }
+		        try {
+			        if (terreno.verificaTerreno()) {  // Verifica se o terreno está configurado corretamente
+			            setExtendedState(MAXIMIZED_BOTH);  // Maximiza a janela
+			            painelTerrenoExemplo();  // Exibe o painel do terreno de exemplo
+			            terreno.criaTerrenoSistema();  // Configura o sistema de terreno exemplo
+			            painel = 1; // Define a criação do terreno no painel de terreno exemplo
+			            criacaoVisualTerrenoJogo();  // Chama o método para criar o terreno
+			        }
+			    }catch(NullPointerException f) {}
 		    }
 		});
 
@@ -922,27 +892,73 @@ public class Frame extends JFrame {
 		            protected void done() {
 		                // Configurações do jogo que ocorrem após a inserção dos nomes
 		                abrirCaminho();
-		                if (terreno.floresta != null) {
-		                    setExtendedState(MAXIMIZED_BOTH); // Maximiza a tela
-		                    painelJogo(); // Inicia o painel do jogo
-		                    painel = 0; // Define o painel de terreno
-		                    criacaoVisualTerrenoJogo(); // Cria visualmente o terreno do jogo
-		                } else {
-		                    // Se o terreno ainda não foi criado, cria-o agora
-		                    terreno.criaTerrenoSistema();
-		                    setExtendedState(MAXIMIZED_BOTH);
-		                    painelJogo();
-		                    painel = 0;
-		                    criacaoVisualTerrenoJogo();
-		                }
-		                configurarKeyListener(); // Configura o listener de teclas
-		                redirecionarSaidaConsole(); // Redireciona a saída do console (se aplicável)
+		                try {
+			                if (terreno.floresta != null) {
+			                    setExtendedState(MAXIMIZED_BOTH); // Maximiza a tela
+			                    painelJogo(); // Inicia o painel do jogo
+			                    painel = 0; // Define o painel de terreno
+			                    criacaoVisualTerrenoJogo(); // Cria visualmente o terreno do jogo
+			                } else {
+			                    // Se o terreno ainda não foi criado, cria-o agora
+			                    terreno.criaTerrenoSistema();
+			                    setExtendedState(MAXIMIZED_BOTH);
+			                    painelJogo();
+			                    painel = 0;
+			                    criacaoVisualTerrenoJogo();
+			                }
+			                configurarKeyListener(); // Configura o listener de teclas
+			               }catch(NullPointerException e) {}
 		            }
-		        };
+			        };
 		        
 		        worker.execute(); // Inicia a thread para esperar a conclusão de frameNomes
 		    }
 		});
+	}
+	
+	public void enviarEntradas() {
+		uiaceita = false;
+        
+        // Captura o texto inserido
+        userInput = caixaTextoEntradas.getText();
+        
+        // Verifica se a entrada é vazia
+        if (userInput.isEmpty() || userInput.isBlank()) {
+            caixaSaidas.setText("Erro: A entrada não pode ser vazia.");
+            return;
+        }
+        
+        String[] linhas = userInput.split("\n"); // Divide o texto em linhas
+        
+        // Processar as linhas
+        for (int j = 0; j < linhas.length; j++) {
+            String linha = linhas[j].trim(); // Remove espaços extras
+            String[] partes = linha.split(" ");
+
+            // Validação do formato das linhas (primeiras e últimas linhas têm no máximo 2 partes)
+            if (((j <= 1) || (j >= 9)) && partes.length > 2) {
+                caixaSaidas.setText("Erro: formato da linha " + (j + 1) + " inválido.");
+                return;
+            } else if (partes.length == 2) {  // Para linhas com 2 partes (dimensões e pedras)
+                memoriaEN[j][0] = partes[0];
+                memoriaEN[j][1] = partes[1];
+                memoriaEN[j][2] = ""; // Deixa o terceiro campo vazio
+            } else if (partes.length == 3) {  // Para linhas com 3 partes (frutas)
+                memoriaEN[j][0] = partes[0];  // Nome da fruta
+                memoriaEN[j][1] = partes[1];  // Quantidade de árvores
+                memoriaEN[j][2] = partes[2];  // Quantidade de frutas    
+            } else {
+                caixaSaidas.setText("Erro: formato da linha " + (j + 1) + " inválido.");
+                return; // Sai da função se houver erro no formato da linha
+            }
+        }
+        
+        terreno = new Terreno(memoriaEN);
+        // Verifica o terreno após processar as entradas
+        boolean resultado = terreno.verificaTerreno();
+        if (resultado) {
+            caixaSaidas.setText("Entradas aceitas.");
+        }
 	}
 
 	
@@ -1067,7 +1083,7 @@ public class Frame extends JFrame {
  		caixaSaidasNomes = new JLabel("Nome do Jogador 1");
  		caixaSaidasNomes.setHorizontalAlignment(SwingConstants.CENTER); // Centraliza o texto
  		caixaSaidasNomes.setFont(new Font("Georgia", Font.ITALIC, 14)); // Define a fonte e o estilo do texto
- 		caixaSaidasNomes.setForeground(cor2); // Define a cor do texto
+ 		caixaSaidasNomes.setForeground(caixaSaidas.getForeground());
  		caixaSaidasNomes.setIcon(null); // Sem ícone associado
  		caixaSaidasNomes.setBounds(80,5,180,30); // Define o tamanho e a posição do rótulo
 	    painelNomes.add(caixaSaidasNomes);
@@ -1075,6 +1091,7 @@ public class Frame extends JFrame {
  		caixaTextoNomes = new JTextArea();
 	    caixaTextoNomes.setBorder(borda1); // Define a borda da área de texto
 	    caixaTextoNomes.setFont(caixaSaidas.getFont()); // Usa a mesma fonte do rótulo
+	    caixaTextoNomes.setForeground(new Color(0,0,0));
 	    caixaTextoNomes.setLineWrap(true); // Habilita a quebra de linha automática
 	    caixaTextoNomes.setWrapStyleWord(true); // Quebra a linha por palavra
 	    caixaTextoNomes.setBounds(70,35,200,20);
@@ -1086,28 +1103,42 @@ public class Frame extends JFrame {
 		painelNomes.add(botaoNomes);
  		
  		painelNomes.setFocusable(true);
-	    painelNomes.requestFocusInWindow(); // Garante que o painel receba o foco
+	    caixaTextoNomes.requestFocusInWindow(); // Garante que o painel receba o foco
 	    
 	    botaoNomes.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
 		        botaoClickado(botaoNomes);  // Marca o botão como clicado
-		        if(p1 == null) {
-		        	p1 = caixaTextoNomes.getText();
-		        	caixaTextoNomes.setText("");
-		        	caixaSaidasNomes.setText("Nome do Jogador 2:");
-		        	caixaJogadorTurno.setText("Jogador da Vez: " + p1);
-		        	return;
-		        }
-		        if(p2 == null){
-		        	p2 = caixaTextoNomes.getText();
-		        	frameNomes.setVisible(false);
-		        	return;
-		        }
+		        verificaNomes();
 		    }
 		});
 	    
+
+	    caixaTextoNomes.addKeyListener(new KeyAdapter() {
+		    @Override
+	    	public void keyPressed(KeyEvent e) {
+	            if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+			        botaoClickado(botaoNomes);  // Marca o botão como clicado
+			        verificaNomes();
+			        caixaTextoNomes.requestFocusInWindow();
+	            }
+           }
+		});
 	}
 	
+	public void verificaNomes() {
+		if(p1 == null) {
+        	p1 = caixaTextoNomes.getText();
+        	caixaTextoNomes.setText("");
+        	caixaSaidasNomes.setText("Nome do Jogador 2:");
+        	caixaJogadorTurno.setText("Jogador da Vez: " + p1);
+        	return;
+        }
+        if(p2 == null){
+        	p2 = caixaTextoNomes.getText();
+        	frameNomes.setVisible(false);
+        	return;
+        }
+	}
 	
 	// Função utilizada para criar uma imagem dentro da escala do tamanho do botão
 	public ImageIcon criandoImagem(int tamanho, ImageIcon img) {
@@ -1169,6 +1200,7 @@ public class Frame extends JFrame {
 	            			celula.setIcon(imgjogador2);
 	            			jogadores[1] = (Jogador) terreno.floresta[i][j];
 	            			jogadores[1].setNome(p2);
+	            			terreno.setJogadores(jogadores);
 	            		}
 		            }
 		            else if(terreno.floresta[i][j] instanceof Pedra) {
