@@ -56,7 +56,10 @@ public class Frame extends JFrame {
 	public JLabel caixaSaidas;
 	public JLabel caixaSaidas2;
 	public JLabel caixaNoticias;
+	public JLabel caixaTituloNoticias;
 	public JLabel caixaSaidasNomes;
+	public JLabel caixaMovimentos;
+	public JLabel caixaJogadorTurno;
 	
 	
 	public JScrollPane scroll;
@@ -94,6 +97,7 @@ public class Frame extends JFrame {
 	public Botoes botaoST;
 	public Botoes botaoNT;
 	public Botoes botaoRI2;
+	public Botoes botaoNomes;
 	
 	
 	public static Color cor1 = new Color(255,238,138);
@@ -663,22 +667,50 @@ public class Frame extends JFrame {
 
 
 		caixaNoticias = new JLabel("<html></html>");
-		caixaNoticias.setHorizontalAlignment(SwingConstants.CENTER); // Centraliza o texto no label
-		caixaNoticias.setForeground(new Color(255,255,255)); // Define a cor do texto
+		caixaNoticias.setHorizontalAlignment(SwingConstants.LEFT); // Centraliza o texto no label
+		caixaNoticias.setForeground(cor2); // Define a cor do texto
 		caixaNoticias.setIcon(null); // Não há ícone associado ao rótulo
-		caixaNoticias.setBounds(15,100,500,300);
+		caixaNoticias.setBounds(25,120,500,300);
 		caixaNoticias.setBackground(cor1);
 		
 		scrollNoticias = new JScrollPane();
-		scrollNoticias.setBounds(15, 100, 500, 300);  // Define as dimensões e posição do JScrollPane
+		scrollNoticias.setBounds(25, 120, 500, 300);  // Define as dimensões e posição do JScrollPane
 		scrollNoticias.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);  // Adiciona uma barra de rolagem vertical
 		scrollNoticias.setBorder(borda1);  // Define a borda do JScrollPane
 		scrollNoticias.setBackground(cor1);
 		
 		
-		painelJogo = new CustomPanel(CaminhoimgPgrama);
-	  	painelJogo.setLayout(new GridBagLayout()); // Utiliza um layout GridBag para flexibilidade na organização dos componentes
-
+		caixaTituloNoticias = new JLabel("Notícias:");
+		caixaTituloNoticias.setHorizontalAlignment(SwingConstants.LEFT); // Centraliza o texto no label
+		caixaTituloNoticias.setFont(new Font("Georgia", Font.ITALIC, 24));  // Define a fonte do texto
+		caixaTituloNoticias.setForeground(cor2); // Define a cor do texto
+		caixaTituloNoticias.setIcon(null); // Não há ícone associado ao rótulo
+		caixaTituloNoticias.setBounds(25,100,270,30);
+		caixaTituloNoticias.setBackground(cor1);
+		
+		
+		caixaJogadorTurno = new JLabel("Jogador da vez:");
+		caixaJogadorTurno.setHorizontalAlignment(SwingConstants.LEFT); // Centraliza o texto no label
+		caixaJogadorTurno.setFont(new Font("Georgia", Font.ITALIC, 24));  // Define a fonte do texto
+		caixaJogadorTurno.setForeground(cor2); // Define a cor do texto
+		caixaJogadorTurno.setIcon(null); // Não há ícone associado ao rótulo
+		caixaJogadorTurno.setBounds(25,40,270,30);
+		caixaJogadorTurno.setBackground(cor1);
+		
+		
+		caixaMovimentos = new JLabel("Movimentos restantes:");
+		caixaMovimentos.setHorizontalAlignment(SwingConstants.LEFT); // Centraliza o texto no label
+		caixaMovimentos.setFont(new Font("Georgia", Font.ITALIC, 24));
+		caixaMovimentos.setForeground(cor2); // Define a cor do texto
+		caixaMovimentos.setIcon(null); // Não há ícone associado ao rótulo
+		caixaMovimentos.setBounds(25,70,340,30);
+		caixaMovimentos.setBackground(cor1);
+		
+		
+		
+		painelJogo = new CustomPanel("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\grama" + corGrama + ".jpg");
+	    painelJogo.setLayout(new GridBagLayout()); // Utiliza um layout GridBag para flexibilidade na organização dos componentes
+	    
 		painelInicio();
 		
 		
@@ -869,6 +901,7 @@ public class Frame extends JFrame {
 		botaoStart.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
 		        botaoClickado(botaoStart);
+		        frameNomes();
 		        abrirCaminho();
 		    	if(terreno.floresta != null) {
 			        setExtendedState(MAXIMIZED_BOTH);
@@ -885,9 +918,9 @@ public class Frame extends JFrame {
 			        criacaoVisualTerrenoJogo();
 		    	}
 	            configurarKeyListener();
+	            redirecionarSaidaConsole();
 		    }
 		});
-	}
 	
 	public void botaoClickado(Botoes botao) {
 	    botao.setBackground(botaoT.getBackground());  // Define o fundo do botão clicado com o fundo de botaoM
@@ -988,12 +1021,13 @@ public class Frame extends JFrame {
 	    repaint();  
 	}
 	
+	
 	public void frameNomes() {
 		frameNomes = new JFrame();
  		frameNomes.setTitle("Nomes dos Jogadores"); // Define o título da janela
  		frameNomes.setIconImage(imgLogo.getImage()); // Define o ícone da janela
  		frameNomes.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE); // Fecha a janela sem finalizar o programa
- 		frameNomes.setSize(350, 120); // Define o tamanho da janela
+ 		frameNomes.setSize(350, 130); // Define o tamanho da janela
  		frameNomes.setLocationRelativeTo(null); // Centraliza a janela na tela
  		frameNomes.setResizable(false); // Impede o redimensionamento da janela
  		frameNomes.setVisible(true); // A janela é invisível inicialmente
@@ -1020,30 +1054,32 @@ public class Frame extends JFrame {
 	    caixaTextoNomes.setBounds(70,35,200,20);
  		painelNomes.add(caixaTextoNomes);
  		
+		botaoNomes = new Botoes("Enviar", cor1, cor2, borda1, borda2, 100, 35);
+		botaoNomes.setBounds(145, 60, 50, 30);
+		listaBotoes.add(botaoT); // Adiciona o botão à lista de botões
+		painelNomes.add(botaoNomes);
+ 		
  		painelNomes.setFocusable(true);
 	    painelNomes.requestFocusInWindow(); // Garante que o painel receba o foco
- 		painelNomes.addKeyListener(new KeyAdapter() {
- 			int choice = 0;
-	        @Override
-	        public void keyPressed(KeyEvent e) {
-	        	if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-		            if(choice == 0) {
-		            	jogadores[0].setNome(caixaTextoNomes.getText());
-		            	caixaSaidasNomes.setText("Nome do Jogador 2");
-		            	caixaTextoNomes.setText("");
-		            	revalidate();
-		            	repaint();
-		            	choice = 1;
-		            }
-		            if(choice == 1) {
-		            	jogadores[1].setNome(caixaTextoNomes.getText());
-		            	frameNomes.setVisible(false);
-		            	revalidate();
-		            	repaint();
-		            }
-	        	}
-	         }
-            });
+	    
+	    botaoNomes.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		        botaoClickado(botaoNomes);  // Marca o botão como clicado
+		        if(p1 == null) {
+		        	p1 = caixaTextoNomes.getText();
+		        	caixaTextoNomes.setText("");
+		        	caixaSaidasNomes.setText("Nome do Jogador 2:");
+		        	caixaJogadorTurno.setText("Jogador da Vez: " + p1);
+		        	return;
+		        }
+		        if(p2 == null){
+		        	p2 = caixaTextoNomes.getText();
+		        	frameNomes.setVisible(false);
+		        	return;
+		        }
+		    }
+		});
+	    
 	}
 	
 	
