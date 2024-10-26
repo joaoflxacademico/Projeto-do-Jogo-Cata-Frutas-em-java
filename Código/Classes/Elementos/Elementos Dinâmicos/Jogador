@@ -65,7 +65,7 @@ public class Jogador extends Elemento_Dinamico {
 		
 	}
 	
-	public void empurrar(Elemento[][] floresta, Jogador pA, Jogador pB) {
+	public Elemento[][] empurrar(Elemento[][] floresta, Jogador pA, Jogador pB) {
 		int forcaAtaque = pA.mochilaJogador.mochila.length;
 		int forcaDefesa = pB.mochilaJogador.mochila.length;
 		
@@ -73,10 +73,13 @@ public class Jogador extends Elemento_Dinamico {
 		double log2Def = Math.log10(forcaDefesa + 1) / Math.log(2);
 		int empurrao = (int) Math.round(log2Atq - log2Def);
 		
+		System.out.printf("%d frutas foram derrubadas!!!\n", empurrao);
+		
 		if(empurrao > 1) {
-			pB.derrubarFrutas(floresta, empurrao);
+			floresta = pB.derrubarFrutas(floresta, empurrao);
 		}
 		
+		return floresta;
 	}
 	
 	public void setNome(String nome) {
@@ -287,7 +290,8 @@ public class Jogador extends Elemento_Dinamico {
 			    }
 		    	
 			    else if(objeto instanceof Jogador) {
-	                System.out.println("Existe um jogador no caminho.");
+			    	System.out.println("Empurrando o outro jogador!");
+	                terreno.floresta = this.empurrar(terreno.floresta, this, (terreno.jogadores[0]  == this ? terreno.jogadores[1] : terreno.jogadores[0]));
 			    	this.setPosicao(x, y);
 			    	return terreno.floresta;
 			    }
@@ -347,7 +351,8 @@ public class Jogador extends Elemento_Dinamico {
 		    }
 		    
 		    else if(objeto instanceof Jogador) {
-	            System.out.println("Existe um jogador no caminho.");
+		    	System.out.println("Empurrando o outro jogador!");
+                terreno.floresta = this.empurrar(terreno.floresta, this, (terreno.jogadores[0]  == this ? terreno.jogadores[1] : terreno.jogadores[0]));
 		    	this.setPosicao(x, y);
 		    	return terreno.floresta;
 		    }
@@ -406,7 +411,7 @@ public class Jogador extends Elemento_Dinamico {
 		}
 	}
 	
-	public void derrubarFrutas(Elemento[][] floresta, int empurrao) {
+	public Elemento[][] derrubarFrutas(Elemento[][] floresta, int empurrao) {
 		for(int i = 0; i < empurrao; i++) {
 			int posicao = ale(this.tamanhoMochila);
 			int x = this.getPosicao().getX();
@@ -419,6 +424,7 @@ public class Jogador extends Elemento_Dinamico {
 				floresta[novox][novoy] = fruta;
 			}
 		}
+		return floresta;
 	}
 	
 }
