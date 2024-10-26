@@ -207,6 +207,8 @@ public class Frame extends JFrame {
 	public static int arvoresTotais;
 	public static int  corGrama = 1;
 	public String userInput;
+	public String p1;
+	public String p2;
 	
 	public static JLabel[][] celulas;
 	
@@ -1007,10 +1009,12 @@ public class Frame extends JFrame {
 	    repaint(); // Redesenha o painel
 	}
 	
-	
 	public void painelJogo() {
 		painelPrimario.removeAll();      // Remove todos os componentes do painel principal
-	    painelPrimario.add(caixaNoticias);
+	    painelPrimario.add(caixaTituloNoticias);
+		painelPrimario.add(caixaNoticias);
+	    painelPrimario.add(caixaJogadorTurno);
+	    painelPrimario.add(caixaMovimentos);
 		gbc = new GridBagConstraints();  // Cria um novo GridBagConstraints
 	    gbc.weightx = 0;                 
 	    gbc.weighty = 0;
