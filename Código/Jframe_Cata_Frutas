@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -46,13 +47,17 @@ public class Frame extends JFrame {
 	private static CustomPanel painelTerrenoExemplo;
 	private static JPanel painelInstrução;
 	private static CustomPanel painelJogo;
+	private static JPanel painelNomes;
 	
 	private static JFrame frameIN;
+	private static JFrame frameNomes;
 	
 	public JLabel logo;
 	public JLabel caixaSaidas;
 	public JLabel caixaSaidas2;
 	public JLabel caixaNoticias;
+	public JLabel caixaSaidasNomes;
+	
 	
 	public JScrollPane scroll;
 	public JScrollPane scrollInstrucoes;
@@ -67,6 +72,7 @@ public class Frame extends JFrame {
 	JTextArea caixaTexto2;
 	JTextArea caixaInstru;
 	JTextField caixaTexto3;
+	JTextArea caixaTextoNomes;
 	
 	
 	GridBagConstraints gbc; 
@@ -635,8 +641,7 @@ public class Frame extends JFrame {
 		
 		painelJogo = new CustomPanel("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\grama" + corGrama + ".jpg");
 	    painelJogo.setLayout(new GridBagLayout()); // Utiliza um layout GridBag para flexibilidade na organização dos componentes
-
-		
+	    
 		painelInicio();
 		
 		
@@ -936,7 +941,6 @@ public class Frame extends JFrame {
 	public void painelJogo() {
 		painelPrimario.removeAll();      // Remove todos os componentes do painel principal
 	    painelPrimario.add(caixaNoticias);
-	    
 		gbc = new GridBagConstraints();  // Cria um novo GridBagConstraints
 	    gbc.weightx = 0;                 
 	    gbc.weighty = 0;
@@ -945,6 +949,64 @@ public class Frame extends JFrame {
 	    painelPrimario.add(painelJogo, BorderLayout.CENTER);
 		revalidate();             // Revalida o layout
 	    repaint();  
+	}
+	
+	public void frameNomes() {
+		frameNomes = new JFrame();
+ 		frameNomes.setTitle("Nomes dos Jogadores"); // Define o título da janela
+ 		frameNomes.setIconImage(imgLogo.getImage()); // Define o ícone da janela
+ 		frameNomes.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE); // Fecha a janela sem finalizar o programa
+ 		frameNomes.setSize(350, 120); // Define o tamanho da janela
+ 		frameNomes.setLocationRelativeTo(null); // Centraliza a janela na tela
+ 		frameNomes.setResizable(false); // Impede o redimensionamento da janela
+ 		frameNomes.setVisible(true); // A janela é invisível inicialmente
+ 		frameNomes.setBackground(painelPrimario.getBackground());
+
+ 		painelNomes = new JPanel();
+	    painelNomes.setLayout(null);
+	    painelNomes.setBackground(painelPrimario.getBackground()); // Usa a cor cor1 definida anteriormente
+ 		frameNomes.add(painelNomes);
+	    
+ 		caixaSaidasNomes = new JLabel("Nome do Jogador 1");
+ 		caixaSaidasNomes.setHorizontalAlignment(SwingConstants.CENTER); // Centraliza o texto
+ 		caixaSaidasNomes.setFont(new Font("Georgia", Font.ITALIC, 14)); // Define a fonte e o estilo do texto
+ 		caixaSaidasNomes.setForeground(cor2); // Define a cor do texto
+ 		caixaSaidasNomes.setIcon(null); // Sem ícone associado
+ 		caixaSaidasNomes.setBounds(80,5,180,30); // Define o tamanho e a posição do rótulo
+	    painelNomes.add(caixaSaidasNomes);
+ 		
+ 		caixaTextoNomes = new JTextArea();
+	    caixaTextoNomes.setBorder(borda1); // Define a borda da área de texto
+	    caixaTextoNomes.setFont(caixaSaidas.getFont()); // Usa a mesma fonte do rótulo
+	    caixaTextoNomes.setLineWrap(true); // Habilita a quebra de linha automática
+	    caixaTextoNomes.setWrapStyleWord(true); // Quebra a linha por palavra
+	    caixaTextoNomes.setBounds(70,35,200,20);
+ 		painelNomes.add(caixaTextoNomes);
+ 		
+ 		painelNomes.setFocusable(true);
+	    painelNomes.requestFocusInWindow(); // Garante que o painel receba o foco
+ 		painelNomes.addKeyListener(new KeyAdapter() {
+ 			int choice = 0;
+	        @Override
+	        public void keyPressed(KeyEvent e) {
+	        	if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+		            if(choice == 0) {
+		            	jogadores[0].setNome(caixaTextoNomes.getText());
+		            	caixaSaidasNomes.setText("Nome do Jogador 2");
+		            	caixaTextoNomes.setText("");
+		            	revalidate();
+		            	repaint();
+		            	choice = 1;
+		            }
+		            if(choice == 1) {
+		            	jogadores[1].setNome(caixaTextoNomes.getText());
+		            	frameNomes.setVisible(false);
+		            	revalidate();
+		            	repaint();
+		            }
+	        	}
+	         }
+            });
 	}
 	
 	
@@ -1077,18 +1139,43 @@ public class Frame extends JFrame {
 
 	
 	
-	
-	
-	
-	// Função para configurar o KeyListener apenas uma vez
-	public void configurarKeyListener() {
-	    painelJogo.setFocusable(true);
-	    painelJogo.requestFocusInWindow(); // Garante que o painel receba o foco
-	    if(botoesAtivados == 0) {
-    		Jogador jogadorDaVez = jogadores[contadorTurno % 2];
-        	terreno.turno(jogadorDaVez);
-    	    jogadorDaVez.setMovimentos();
-	    	painelJogo.addKeyListener(new KeyAdapter() {
+		
+		public void turno(Jogador jogador, Terreno terreno) {
+			terreno.numeroTurno++;
+			if(jogador.pontuacao == terreno.pontosVitoria) {
+				System.out.printf("O Jogador %s ganhou!!!\n", jogador.nome);
+				return;
+			}
+			for(int i = 0; i < terreno.listaArvores.size(); i++) {
+				terreno.floresta = terreno.listaArvores.get(i).soltarFruta(terreno.floresta);
+				terreno.listaArvores.get(i).atualizarArvore();
+			}
+			terreno.listaArvores.get(1).soltarMaracuja(terreno);
+			criacaoVisualTerrenoJogo();
+			System.out.printf("Turno do Jogador: %s\n", jogador.nome);
+			jogador.setMovimentos();
+			jogador.malEstar();
+			
+		}
+		
+		// Função para configurar o KeyListener apenas uma vez
+		public void configurarKeyListener() {
+		    painelJogo.setFocusable(true);
+		    painelJogo.requestFocusInWindow(); // Garante que o painel receba o foco
+
+		    // Remove todos os KeyListeners para garantir que apenas o jogador ativo controle
+		    for (KeyListener kl : painelJogo.getKeyListeners()) {
+		        painelJogo.removeKeyListener(kl);
+		    }
+		    
+		    // Obtém o jogador do turno atual
+		    terreno.numeroTurno = contadorTurno;
+		    terreno.numeroRodada = terreno.numeroTurno/2;
+		    Jogador jogadorDaVez = jogadores[contadorTurno % 2];
+		    turno(jogadorDaVez,terreno);
+
+		    // Adiciona o KeyListener para o jogador ativo
+		    painelJogo.addKeyListener(new KeyAdapter() {
 		        @Override
 		        public void keyPressed(KeyEvent e) {
 		            switch (e.getKeyCode()) {
@@ -1108,41 +1195,48 @@ public class Frame extends JFrame {
 		                    System.out.println("Movimentando para esquerda.");
 		                    terreno.floresta = jogadorDaVez.movimentar(4, terreno);
 		                    break;
+		                case KeyEvent.VK_Q:
+		                    System.out.println("Catando fruta.");
+		                    jogadorDaVez.mochilaJogador.armazenaFruta(jogadorDaVez, terreno.floresta);
+		                    break;
 		                case KeyEvent.VK_I:
 		                    System.out.println("Realizando salto para cima.");
-		                	terreno.floresta = jogadorDaVez.saltar(1,terreno,1);
-		                	break;
+		                    terreno.floresta = jogadorDaVez.saltar(1, terreno, 1);
+		                    break;
 		                case KeyEvent.VK_K:
 		                    System.out.println("Realizando salto para baixo.");
-		                	terreno.floresta = jogadorDaVez.saltar(2,terreno,1);
-		                	break;
+		                    terreno.floresta = jogadorDaVez.saltar(2, terreno, 1);
+		                    break;
 		                case KeyEvent.VK_L:
 		                    System.out.println("Realizando salto para direita.");
-		                	terreno.floresta = jogadorDaVez.saltar(3,terreno,1);
-		                	break;
+		                    terreno.floresta = jogadorDaVez.saltar(3, terreno, 1);
+		                    break;
 		                case KeyEvent.VK_J:
 		                    System.out.println("Realizando salto para esquerda.");
-		                	terreno.floresta = jogadorDaVez.saltar(4,terreno,1);
-		                	break;
-		                case KeyEvent.VK_T:
-		                	jogadorDaVez.encerrarTurno();
-		                	contadorTurno++;
-		                	break;
+		                    terreno.floresta = jogadorDaVez.saltar(4, terreno, 1);
+		                    break;
 		                case KeyEvent.VK_C:
-		                	jogadorDaVez.mochilaJogador.exibirMochila();
-		                	break;
+		                    jogadorDaVez.mochilaJogador.exibirMochila();
+		                    break;
 		                case KeyEvent.VK_1:
-		                	jogadorDaVez.comerFrutas(1);
-		                	break;
+		                    jogadorDaVez.comerFrutas(1);
+		                    break;
+		                case KeyEvent.VK_T:
+		                    System.out.println("Turno encerrado para " + jogadorDaVez.getNome());
+		                    jogadorDaVez.encerrarTurno();
+		                    contadorTurno++; // Alterna para o próximo jogador
+		                    configurarKeyListener(); // Atualiza o listener para o novo jogador da vez
+		                    return;
 		                default:
 		                    return; // Ignora outras teclas
 		            }
-		            botoesAtivados = 1;
+
+		            botoesAtivados++;
 		            criacaoVisualTerrenoJogo(); // Atualiza o terreno após o movimento
 		        }
 		    });
-	    }
-	}
+		}
+
 		
 	// Classe para possibilitar a criação de um painel com uma imagem como o plano de fundo
 	public class CustomPanel extends JPanel {
