@@ -101,27 +101,63 @@ public class Frame extends JFrame {
 	public static LineBorder borda1 = new LineBorder(cor2);
 	public static LineBorder borda2 = new LineBorder(cor1);
 	
-	public static ImageIcon imgLogo = new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\Logo.png");
+	public String CaminhoImagem="src"+ File.separator + "imagens";
 	
+	public String CaminhoimgLogo=CaminhoImagem+File.separator+"Logo.png";
+	public File testepath = new File(CaminhoimgLogo);
+	public ImageIcon imgLogo = new ImageIcon(CaminhoimgLogo);
 	
 	// Inicialização das imagens principais, que serão redimensionadas na geração do terreno
-	ImageIcon imgPjogador1 = new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\UpView guy-1.png");
-    ImageIcon imgPjogador2 = new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\UpView guy-2.png");
-    ImageIcon imgPArvoreAbacate = new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\ArvoreAbacate.png");
-    ImageIcon imgPArvoreAmora = new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\ArvoreAmora.png");
-    ImageIcon imgPArvoreLaranja = new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\ArvoreLaranja.png");
-    ImageIcon imgPArvoreAcerola= new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\arvoreAcerola.png");
-    ImageIcon imgPArvoreGoiaba= new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\ArvoreGoiaba.png");
-    ImageIcon imgPArvoreCoco = new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\ArvoreCoco.png");
-    ImageIcon imgPFrutaMaracuja = new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\maracuja.png");
-    ImageIcon imgPFrutaLaranja = new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\laranja.png"); 
-    ImageIcon imgPFrutaAbacate = new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\abacate.png");
-    ImageIcon imgPFrutaGoiaba = new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\goiaba.png");
-    ImageIcon imgPFrutaAmora = new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\amora.png");
-    ImageIcon imgPFrutaCoco = new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\coco.png");
-    ImageIcon imgPFrutaAcerola = new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\acerola.png");
-    ImageIcon imgPgrama = new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\grama.jpeg");
-    ImageIcon imgPPedra= new ImageIcon("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\pedra.png");
+	public String CaminhoimgPjogador1=CaminhoImagem+File.separator+"UpView guy-1.png";	
+	ImageIcon imgPjogador1 = new ImageIcon(CaminhoimgPjogador1);
+	
+	public String CaminhoimgPjogador2=CaminhoImagem+File.separator+"UpView guy-2.png";	
+	ImageIcon imgPjogador2 = new ImageIcon(CaminhoimgPjogador2);
+    
+	public String CaminhoimgPArvoreAbacate=CaminhoImagem+File.separator+"ArvoreAbacate.png";
+	ImageIcon imgPArvoreAbacate = new ImageIcon(CaminhoimgPArvoreAbacate);
+    
+	public String CaminhoimgPArvoreAmora=CaminhoImagem+File.separator+"ArvoreAmora.png";
+	ImageIcon imgPArvoreAmora = new ImageIcon(CaminhoimgPArvoreAmora);
+    
+	public String CaminhoimgPArvoreLaranja=CaminhoImagem+File.separator+"ArvoreLaranja.png";
+	ImageIcon imgPArvoreLaranja = new ImageIcon(CaminhoimgPArvoreLaranja);
+    
+	public String CaminhoimgPArvoreAcerola=CaminhoImagem+File.separator+"arvoreAcerola.png";
+	ImageIcon imgPArvoreAcerola= new ImageIcon(CaminhoimgPArvoreAcerola);
+    
+	public String CaminhoimgPArvoreGoiaba=CaminhoImagem+File.separator+"ArvoreGoiaba.png";
+	ImageIcon imgPArvoreGoiaba= new ImageIcon(CaminhoimgPArvoreGoiaba);
+    
+	public String CaminhoimgPArvoreCoco=CaminhoImagem+File.separator+"ArvoreCoco.png";
+	ImageIcon imgPArvoreCoco = new ImageIcon(CaminhoimgPArvoreCoco);
+    
+	public String CaminhoimgPFrutaMaracuja=CaminhoImagem+File.separator+"maracuja.png";
+	ImageIcon imgPFrutaMaracuja = new ImageIcon(CaminhoimgPFrutaMaracuja);
+    
+	public String CaminhoimgPFrutaLaranja=CaminhoImagem+File.separator+"laranja.png";
+	ImageIcon imgPFrutaLaranja = new ImageIcon(CaminhoimgPFrutaLaranja); 
+    
+	public String CaminhoimgPFrutaAbacate=CaminhoImagem+File.separator+"abacate.png";
+	ImageIcon imgPFrutaAbacate = new ImageIcon(CaminhoimgPFrutaAbacate);
+    
+	public String CaminhoimgPFrutaGoiaba=CaminhoImagem+File.separator+"goiaba.png";
+	ImageIcon imgPFrutaGoiaba = new ImageIcon(CaminhoimgPFrutaGoiaba);
+    
+	public String CaminhoimgPFrutaAmora=CaminhoImagem+File.separator+"amora.png";
+	ImageIcon imgPFrutaAmora = new ImageIcon(CaminhoimgPFrutaAmora);
+    
+	public String CaminhoimgPFrutaCoco=CaminhoImagem+File.separator+"coco.png";
+	ImageIcon imgPFrutaCoco = new ImageIcon(CaminhoimgPFrutaCoco);
+    
+	public String CaminhoimgPFrutaAcerola=CaminhoImagem+File.separator+"acerola.png";
+	ImageIcon imgPFrutaAcerola = new ImageIcon(CaminhoimgPFrutaAcerola);
+    
+	public String CaminhoimgPgrama=CaminhoImagem+File.separator+"Logo.png";
+	ImageIcon imgPgrama = new ImageIcon(CaminhoimgPgrama);
+    
+	public String CaminhoimgPPedra=CaminhoImagem+File.separator+"pedra.png";
+	ImageIcon imgPPedra= new ImageIcon(CaminhoimgPPedra);
     
     public static ImageIcon imgjogador1;
     public static ImageIcon imgjogador2;
@@ -265,13 +301,14 @@ public class Frame extends JFrame {
 			scrollInstrucoes.setBorder(borda1);
 			if(corGrama == 1) {
 				corGrama = 0;
-				painelTerrenoExemplo.updateImagem("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\grama" + corGrama +".png");
-				painelJogo.updateImagem("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\grama" + corGrama +".png");
+				CaminhoimgPgrama=CaminhoImagem+File.separator+"grama" + corGrama +".png";
+				painelTerrenoExemplo.updateImagem(CaminhoimgPgrama);
+				painelJogo.updateImagem(CaminhoimgPgrama);
 			}
 			else {
 				corGrama = 1;
-				painelTerrenoExemplo.updateImagem("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\grama" + corGrama +".jpg");
-				painelJogo.updateImagem("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\grama" + corGrama +".png");
+				painelTerrenoExemplo.updateImagem(CaminhoimgPgrama);
+				painelJogo.updateImagem(CaminhoimgPgrama);
 			}
 			logo.setForeground(cor2);
 			for(int i = 0; i < listaBotoes.size(); i++) {
@@ -364,8 +401,8 @@ public class Frame extends JFrame {
 	    painelImportarTerreno.setLayout(null);
 	    painelImportarTerreno.setBackground(painelPrimario.getBackground());
 
-	    // Painel personalizado com uma imagem de fundo (grama)
-	    painelTerrenoExemplo = new CustomPanel("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\grama" + corGrama + ".jpg");
+	     // Painel personalizado com uma imagem de fundo (grama)
+	    painelTerrenoExemplo = new CustomPanel(CaminhoimgPgrama);
 	    painelTerrenoExemplo.setLayout(new GridBagLayout()); // Utiliza um layout GridBag para flexibilidade na organização dos componentes
 
 	    // Posição inicial dos botões
@@ -639,9 +676,9 @@ public class Frame extends JFrame {
 		scrollNoticias.setBackground(cor1);
 		
 		
-		painelJogo = new CustomPanel("C:\\Users\\ander\\João Vitor\\Estudos\\UFS\\Trabalhos\\Cata Frutas-POO\\Páginas\\grama" + corGrama + ".jpg");
-	    painelJogo.setLayout(new GridBagLayout()); // Utiliza um layout GridBag para flexibilidade na organização dos componentes
-	    
+		painelJogo = new CustomPanel(CaminhoimgPgrama);
+	  	painelJogo.setLayout(new GridBagLayout()); // Utiliza um layout GridBag para flexibilidade na organização dos componentes
+
 		painelInicio();
 		
 		
