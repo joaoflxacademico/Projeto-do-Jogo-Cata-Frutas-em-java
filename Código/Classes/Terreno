@@ -24,6 +24,7 @@ public class Terreno {
 	public float Bichada;
 	public int Mochila;
 	public ArrayList<Arvore> listaArvores = new ArrayList<Arvore>();
+	public ArrayList<Fruta> listaFrutas = new ArrayList<Fruta>();
 	public int pontosVitoria;
 	public int numeroTurno;
 	public int numeroRodada;
@@ -212,30 +213,37 @@ public class Terreno {
 		            case 0:
 		                Maracuja maracuja = new Maracuja(x,y,Bichada);
 		                floresta[x][y] = maracuja;
+		                listaFrutas.add(maracuja);
 		                break;
 		            case 1:
 		            	Laranja laranja = new Laranja(x,y,Bichada);
 		                floresta[x][y] = laranja;
+		                listaFrutas.add(laranja);
 		                break;
 		            case 2:
 		            	Abacate abacate = new Abacate(x,y,Bichada);
 		                floresta[x][y] = abacate;
+		                listaFrutas.add(abacate);
 		                break;
 		            case 3:
 		            	Coco coco = new Coco(x,y,Bichada);
 		                floresta[x][y] = coco;
+		                listaFrutas.add(coco);
 		                break;
 		            case 4:
 		            	Acerola acerola = new Acerola(x,y,Bichada);
 		                floresta[x][y] = acerola;
+		                listaFrutas.add(acerola);
 		                break;
 		            case 5:
 		            	Amora amora = new Amora(x,y,Bichada);
 		                floresta[x][y] = amora;
+		                listaFrutas.add(amora);
 		                break;
 		            case 6:
 		            	Goiaba goiaba = new Goiaba(x,y,Bichada);
 		                floresta[x][y] = goiaba;
+		                listaFrutas.add(goiaba);
 		                break;
 		            }
 		            f++;
