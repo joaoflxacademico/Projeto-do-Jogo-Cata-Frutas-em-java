@@ -1142,10 +1142,12 @@ public class Frame extends JFrame {
 	            		if(jogador.id == 1) {
 		            		celula.setIcon(imgjogador1);
 		            		jogadores[0] = (Jogador) terreno.floresta[i][j];
+		            		jogadores[0].setNome(p1);
 	            		}
 	            		else if(jogador.id == 2) {
 	            			celula.setIcon(imgjogador2);
 	            			jogadores[1] = (Jogador) terreno.floresta[i][j];
+	            			jogadores[1].setNome(p2);
 	            		}
 		            }
 		            else if(terreno.floresta[i][j] instanceof Pedra) {
@@ -1249,6 +1251,7 @@ public class Frame extends JFrame {
 		    terreno.numeroTurno = contadorTurno;
 		    terreno.numeroRodada = terreno.numeroTurno/2;
 		    Jogador jogadorDaVez = jogadores[contadorTurno % 2];
+		    caixaJogadorTurno.setText("Jogador da Vez: " + jogadorDaVez.nome);
 		    turno(jogadorDaVez,terreno);
 
 		    // Adiciona o KeyListener para o jogador ativo
@@ -1259,38 +1262,46 @@ public class Frame extends JFrame {
 		                case KeyEvent.VK_UP:
 		                    System.out.println("Movimentando para cima.");
 		                    terreno.floresta = jogadorDaVez.movimentar(1, terreno);
+		                    caixaMovimentos.setText("Movimentos restantes: " + jogadorDaVez.movimentosRestantes);
 		                    break;
 		                case KeyEvent.VK_DOWN:
 		                    System.out.println("Movimentando para baixo.");
 		                    terreno.floresta = jogadorDaVez.movimentar(2, terreno);
+		                    caixaMovimentos.setText("Movimentos restantes: " + jogadorDaVez.movimentosRestantes);
 		                    break;
 		                case KeyEvent.VK_RIGHT:
 		                    System.out.println("Movimentando para direita.");
 		                    terreno.floresta = jogadorDaVez.movimentar(3, terreno);
+		                    caixaMovimentos.setText("Movimentos restantes: " + jogadorDaVez.movimentosRestantes);
 		                    break;
 		                case KeyEvent.VK_LEFT:
 		                    System.out.println("Movimentando para esquerda.");
 		                    terreno.floresta = jogadorDaVez.movimentar(4, terreno);
+		                    caixaMovimentos.setText("Movimentos restantes: " + jogadorDaVez.movimentosRestantes);
 		                    break;
 		                case KeyEvent.VK_Q:
 		                    System.out.println("Catando fruta.");
-		                    jogadorDaVez.mochilaJogador.armazenaFruta(jogadorDaVez, terreno.floresta);
+		                    jogadorDaVez.mochilaJogador.armazenaFruta(jogadorDaVez, terreno);
 		                    break;
 		                case KeyEvent.VK_I:
 		                    System.out.println("Realizando salto para cima.");
 		                    terreno.floresta = jogadorDaVez.saltar(1, terreno, 1);
+		                    caixaMovimentos.setText("Movimentos restantes: " + jogadorDaVez.movimentosRestantes);
 		                    break;
 		                case KeyEvent.VK_K:
 		                    System.out.println("Realizando salto para baixo.");
 		                    terreno.floresta = jogadorDaVez.saltar(2, terreno, 1);
+		                    caixaMovimentos.setText("Movimentos restantes: " + jogadorDaVez.movimentosRestantes);
 		                    break;
 		                case KeyEvent.VK_L:
 		                    System.out.println("Realizando salto para direita.");
 		                    terreno.floresta = jogadorDaVez.saltar(3, terreno, 1);
+		                    caixaMovimentos.setText("Movimentos restantes: " + jogadorDaVez.movimentosRestantes);
 		                    break;
 		                case KeyEvent.VK_J:
 		                    System.out.println("Realizando salto para esquerda.");
 		                    terreno.floresta = jogadorDaVez.saltar(4, terreno, 1);
+		                    caixaMovimentos.setText("Movimentos restantes: " + jogadorDaVez.movimentosRestantes);
 		                    break;
 		                case KeyEvent.VK_C:
 		                    jogadorDaVez.mochilaJogador.exibirMochila();
@@ -1303,6 +1314,7 @@ public class Frame extends JFrame {
 		                    jogadorDaVez.encerrarTurno();
 		                    contadorTurno++; // Alterna para o próximo jogador
 		                    configurarKeyListener(); // Atualiza o listener para o novo jogador da vez
+		                    caixaMovimentos.setText("Movimentos restantes: " + jogadorDaVez.movimentosRestantes);
 		                    return;
 		                default:
 		                    return; // Ignora outras teclas
