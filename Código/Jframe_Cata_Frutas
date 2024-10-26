@@ -923,6 +923,7 @@ public class Frame extends JFrame {
 	            redirecionarSaidaConsole();
 		    }
 		});
+	}
 	
 	public void botaoClickado(Botoes botao) {
 	    botao.setBackground(botaoT.getBackground());  // Define o fundo do botão clicado com o fundo de botaoM
