@@ -15,7 +15,8 @@ import cata_frutas.Elementos.Elementos_Estáticos.*;
 
 public class Terreno {
 	public int Dimensao;
-	public Elemento[][] floresta;
+	public Elemento[][] florestaEstatica;
+	public Elemento[][] florestaDinamica;
 	public String[][] memoriaEN;
 	public int espacosDisponiveis;
 	public int pedra;
@@ -24,7 +25,7 @@ public class Terreno {
 	public float Bichada;
 	public int Mochila;
 	public ArrayList<Arvore> listaArvores = new ArrayList<Arvore>();
-	public ArrayList<Fruta> listaFrutas = new ArrayList<Fruta>();
+	public ArrayList<Grama> listaGramas = new ArrayList<Grama>();
 	public int pontosVitoria;
 	public int numeroTurno;
 	public int numeroRodada;
@@ -147,12 +148,12 @@ public class Terreno {
 	// Cria o terreno dentro do sistema, e armazena os valores em uma Matriz
 	public void criaTerrenoSistema() {
 
-	    floresta = new Elemento[Dimensao][Dimensao];
+	    florestaEstatica = new Elemento[Dimensao][Dimensao];
 	    
 	    // Inicializa o terreno com zeros
 	    for (int i = 0; i < Dimensao; i++) {
 	        for (int j = 0; j < Dimensao; j++) {
-	        	this.floresta[i][j] = new Grama(i,j);
+	        	this.florestaEstatica[i][j] = new Grama(i,j);
 	        }
 	    }
 
@@ -161,7 +162,7 @@ public class Terreno {
 	        int x = ale(Dimensao - 1);
 	        int y = ale(Dimensao - 1);
             Pedra pedra = new Pedra(x,y);
-            floresta[x][y] = pedra;
+            florestaEstatica[x][y] = pedra;
             
 	    }
 
@@ -170,36 +171,36 @@ public class Terreno {
 		    for (int a = 0; a < this.arvores[i];) {
 		        int x = ale(Dimensao - 1);
 		        int y = ale(Dimensao - 1);
-		        if (floresta[x][y] instanceof Grama) { // Verifica se a posição está livre
+		        if (florestaEstatica[x][y] instanceof Grama) { // Verifica se a posição está livre
 		            switch(i) {
 		            case 1:
 		            	Arvore_Laranja arvoreLaranja = new Arvore_Laranja(x,y,new Laranja(x, y, Bichada));
-		                floresta[x][y] = arvoreLaranja;
+		                florestaEstatica[x][y] = arvoreLaranja;
 		                listaArvores.add(arvoreLaranja);
 		                break;
 		            case 2:
 		            	Arvore_Abacate arvoreAbacate = new Arvore_Abacate(x,y, new Abacate(x, y, Bichada));
-		                floresta[x][y] = arvoreAbacate;
+		                florestaEstatica[x][y] = arvoreAbacate;
 		                listaArvores.add(arvoreAbacate);
 		                break;
 		            case 3:
 		            	Arvore_Coco arvoreCoco = new Arvore_Coco(x,y, new Coco(x, y, Bichada));
-		                floresta[x][y] = arvoreCoco;
+		                florestaEstatica[x][y] = arvoreCoco;
 		                listaArvores.add(arvoreCoco);
 		                break;
 		            case 4:
 		            	Arvore_Acerola arvoreAcerola = new Arvore_Acerola(x,y, new Acerola(x, y, Bichada));
-		                floresta[x][y] = arvoreAcerola;
+		                florestaEstatica[x][y] = arvoreAcerola;
 		                listaArvores.add(arvoreAcerola);
 		                break;
 		            case 5:
 		            	Arvore_Amora arvoreAmora = new Arvore_Amora(x,y, new Amora(x, y, Bichada));
-		                floresta[x][y] = arvoreAmora;
+		                florestaEstatica[x][y] = arvoreAmora;
 		                listaArvores.add(arvoreAmora);
 		                break;
 		            case 6:
 		            	Arvore_Goiaba arvoreGoiaba = new Arvore_Goiaba(x,y, new Goiaba(x, y, Bichada));
-		                floresta[x][y] = arvoreGoiaba;
+		                florestaEstatica[x][y] = arvoreGoiaba;
 		                listaArvores.add(arvoreGoiaba);
 		                break;
 		            }
@@ -213,42 +214,57 @@ public class Terreno {
 		    for (int f = 0; f < this.frutas[j];) {
 		        int x = ale(Dimensao - 1);
 		        int y = ale(Dimensao - 1);
-		        if (floresta[x][y] instanceof Grama) { // Verifica se a posição está livre
-		            switch(j) {
+		        if (florestaEstatica[x][y] instanceof Grama) { // Verifica se a posição está livre
+		            Grama grama;
+		        	switch(j) {
 		            case 0:
+		            	grama = new Grama(x,y);
 		                Maracuja maracuja = new Maracuja(x,y,Bichada);
-		                floresta[x][y] = maracuja;
-		                listaFrutas.add(maracuja);
+		                grama.setFruta(maracuja);
+		            	florestaEstatica[x][y] = grama;
+		                listaGramas.add(grama);
 		                break;
 		            case 1:
+		            	grama = new Grama(x,y);
 		            	Laranja laranja = new Laranja(x,y,Bichada);
-		                floresta[x][y] = laranja;
-		                listaFrutas.add(laranja);
+		            	grama.setFruta(laranja);
+		            	florestaEstatica[x][y] = grama;
+		                listaGramas.add(grama);
 		                break;
 		            case 2:
+		            	grama = new Grama(x,y);
 		            	Abacate abacate = new Abacate(x,y,Bichada);
-		                floresta[x][y] = abacate;
-		                listaFrutas.add(abacate);
+		            	grama.setFruta(abacate);
+		            	florestaEstatica[x][y] = grama;
+		                listaGramas.add(grama);
 		                break;
 		            case 3:
+		            	grama = new Grama(x,y);
 		            	Coco coco = new Coco(x,y,Bichada);
-		                floresta[x][y] = coco;
-		                listaFrutas.add(coco);
+		            	grama.setFruta(coco);
+		            	florestaEstatica[x][y] = grama;
+		                listaGramas.add(grama);
 		                break;
 		            case 4:
+		            	grama = new Grama(x,y);
 		            	Acerola acerola = new Acerola(x,y,Bichada);
-		                floresta[x][y] = acerola;
-		                listaFrutas.add(acerola);
+		            	grama.setFruta(acerola);
+		            	florestaEstatica[x][y] = grama;
+		                listaGramas.add(grama);
 		                break;
 		            case 5:
+		            	grama = new Grama(x,y);
 		            	Amora amora = new Amora(x,y,Bichada);
-		                floresta[x][y] = amora;
-		                listaFrutas.add(amora);
+		                grama.setFruta(amora);
+		            	florestaEstatica[x][y] = grama;
+		                listaGramas.add(grama);
 		                break;
 		            case 6:
+		            	grama = new Grama(x,y);
 		            	Goiaba goiaba = new Goiaba(x,y,Bichada);
-		                floresta[x][y] = goiaba;
-		                listaFrutas.add(goiaba);
+		                grama.setFruta(goiaba);
+		            	florestaEstatica[x][y] = grama;
+		                listaGramas.add(grama);
 		                break;
 		            }
 		            f++;
@@ -260,21 +276,35 @@ public class Terreno {
 	    for (int j = 1; j < 3;) {
 	        int x = ale(Dimensao - 1);
 	        int y = ale(Dimensao - 1);
-	        if (floresta[x][y] instanceof Grama) { // Verifica se a posição está livre
-	            switch(j) {
+	        if (florestaEstatica[x][y] instanceof Grama) { // Verifica se a posição está livre
+	            Grama grama;
+	        	switch(j) {
 	            case 1:
+	            	grama = new Grama(x,y);
 	            	Jogador jogador1 = new Jogador(x,y,Mochila,j,this.Dimensao);
-	            	floresta[x][y] = jogador1;
+	            	grama.setJogador(jogador1);
+	            	florestaEstatica[x][y] = grama;
 	                break;
 	            case 2:
+	            	grama = new Grama(x,y);
 	            	Jogador jogador2 = new Jogador(x,y,Mochila,j,this.Dimensao);
-	                floresta[x][y] = jogador2;
+	                grama.setJogador(jogador2);
+	            	florestaEstatica[x][y] = grama;;
 	                break;
 	            }
 	            j++;
 	        }
 	    }
+	    florestaDinamica = florestaEstatica;
 
+	}
+	
+	public void imprimeFrutas(ArrayList<Grama> listagramas) {
+		for(int i = 0; i < listagramas.size(); i++) {
+			System.out.println(listagramas.get(i).getFruta().nome);
+			System.out.println(listagramas.get(i).getPosicao().getX());
+			System.out.println(listagramas.get(i).getPosicao().getY());
+		}
 	}
 	
 	// Função para imprimir a matriz
