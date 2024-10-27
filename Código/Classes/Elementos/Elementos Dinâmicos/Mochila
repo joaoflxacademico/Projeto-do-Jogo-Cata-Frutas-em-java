@@ -1,13 +1,11 @@
 package cata_frutas.Elementos.Elementos_Dinâmicos;
 
-import cata_frutas.Terreno;
-import cata_frutas.Elementos.*;
-import java.util.HashMap;
-import java.util.Map;
+import cata_frutas.Elementos.Elementos_Estáticos.Grama;
+
+import java.util.ArrayList;
 
 public class Mochila {
     public Fruta[] mochila;
-    Map<Fruta, Integer> mochilaHash = new HashMap<>();
 
     // Construtor inicializa a mochila com o tamanho especificado
     public Mochila(int tamanho) {
@@ -24,44 +22,36 @@ public class Mochila {
                 return fruta;
             	}
             }
-        System.out.printf("Nenhuma Fruta %s disponível na mochila.",fruta.nome);
+        System.out.printf("Nenhuma Fruta %s disponível na mochila.\n",fruta.nome);
         return null;
     }
+
     // Método para armazenar uma fruta na mochila
-    public void armazenaFruta(Jogador jogador, Terreno terreno) {
-    	int xjogador = jogador.getPosicao().getX();
-    	int yjogador = jogador.getPosicao().getY();
-    	Fruta fruta = null;
-    	
-    	for(int i = 0; i < terreno.listaFrutas.size(); i++) {
-    		fruta = terreno.listaFrutas.get(i);
-    		int xfruta = fruta.getPosicao().getX();
-    		int yfruta = fruta.getPosicao().getY();
-    		
-    		if(fruta.noChao && xfruta == xjogador && yfruta == yjogador) {
-    			for(int j = 0; j < jogador.tamanhoMochila; j++) {
-    				if(jogador.mochilaJogador.mochila[j] == null) {
-    					fruta.noChao = false;
-    					jogador.mochilaJogador.mochila[j] = fruta;
-    				}
-    			}
+    public void armazenaFruta(Jogador jogador, ArrayList<Grama> listaGramas) {
+    	Grama grama = null;
+    	for(int i = 0; i < listaGramas.size(); i++) {
+    		grama = listaGramas.get(i);
+    		if(grama.getFruta() != null && grama.getJogador() == jogador) {
+    			break;
     		}
     	}
-    	
-        // Verifica se a mochila está cheia antes de armazenar no array
-        if (!this.mochilaCheia()) {
-            // Procura o primeiro espaço vazio na mochila para armazenar a fruta
-            for (int i = 0; i < this.mochila.length; i++) {
-                if (this.mochila[i] == null) {
-                    this.mochila[i] = fruta;
-                    System.out.printf("%s armazenada com sucesso.\n", fruta.nome);
-                    break;
-                }
-            }
-        } else {
+    	if(grama == null) {
+    		System.out.println(("Não existe fruta no espaço do jogador."));
+    	}
+    	if(!this.mochilaCheia()) {
+			for(int j = 0; j < jogador.tamanhoMochila; j++) {
+				if(jogador.mochilaJogador.mochila[j] == null) {
+					jogador.mochilaJogador.mochila[j] = (Fruta) grama.getFruta();
+					System.out.printf("Fruta: %s guardada na mochila do Jogador: %s\n",grama.getFruta().nome, jogador.nome);
+					return;
+				}
+			}
+    	}
+    	else {
             System.out.println("Mochila cheia! Não é possível armazenar mais frutas.");
         }
     }
+
 
     // Exibe todas as frutas armazenadas na mochila
     public void exibirMochila() {
@@ -77,8 +67,8 @@ public class Mochila {
     // Método para verificar se a mochila está cheia
     public boolean mochilaCheia() {
         // Se houver algum espaço vazio (null), a mochila não está cheia
-        for (Fruta fruta : mochila) {
-            if (fruta == null) {
+        for (int i = 0; i < this.mochila.length; i++) {
+            if (this.mochila[i] == null) {
                 return false;
             }
         }
