@@ -5,7 +5,7 @@ import cata_frutas.Elementos.Elementos_Dinâmicos.*;
 public class Grama extends Elemento_Estatico {
 	public int id = 0;
 	public Fruta fruta = null;
-	public Jogador joagador = null;
+	public Jogador jogador = null;
 	
 	public Grama(int x, int y) {
 		super(x,y);
