@@ -16,20 +16,17 @@ public class Mochila {
 
     // Método para retornar uma fruta da mochila
     public Fruta retornaFruta(Fruta fruta) {
-        // Verifica se a fruta existe no HashMap e se há alguma disponível
-        for(int i = 0; i < this.mochila.length; i++) {
-        	if (fruta == mochila[i]) {
+        // Verifica se a fruta existe 
+        for(int i = 0; i < this.mochila.length;i++) {
+        	if (mochila[i] != null && mochila[i].getClass().equals(fruta.getClass())) {
                 System.out.printf("Fruta %s retornada.\n", fruta.nome);
                 mochila[i] = null;
                 return fruta;
-            } else {
-                System.out.printf("Nenhuma fruta %s disponível na mochila.\n", fruta.nome);
-                return null;
+            	}
             }
-        }
+        System.out.printf("Nenhuma Fruta %s disponível na mochila.",fruta.nome);
         return null;
     }
-
     // Método para armazenar uma fruta na mochila
     public void armazenaFruta(Jogador jogador, Terreno terreno) {
     	int xjogador = jogador.getPosicao().getX();
