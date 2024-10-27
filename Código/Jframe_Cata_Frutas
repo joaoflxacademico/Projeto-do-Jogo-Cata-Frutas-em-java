@@ -893,7 +893,7 @@ public class Frame extends JFrame {
 		                // Configurações do jogo que ocorrem após a inserção dos nomes
 		                abrirCaminho();
 		                try {
-			                if (terreno.floresta != null) {
+			                if (terreno.florestaEstatica != null) {
 			                    setExtendedState(MAXIMIZED_BOTH); // Maximiza a tela
 			                    painelJogo(); // Inicia o painel do jogo
 			                    painel = 0; // Define o painel de terreno
@@ -1189,63 +1189,63 @@ public class Frame extends JFrame {
 		            celula.setBackground(null);
 		            celula.setOpaque(false);	            
 		            
-		            if(terreno.floresta[i][j] instanceof Jogador) {
-		            	Jogador jogador = (Jogador) terreno.floresta[i][j];
+		            if(terreno.florestaEstatica[i][j] instanceof Grama && ((Grama) terreno.florestaEstatica[i][j]).getJogador() != null) {
+		            	Jogador jogador = ((Grama) terreno.florestaEstatica[i][j]).getJogador();
 	            		if(jogador.id == 1) {
 		            		celula.setIcon(imgjogador1);
-		            		jogadores[0] = (Jogador) terreno.floresta[i][j];
+		            		jogadores[0] = jogador;
 		            		jogadores[0].setNome(p1);
 	            		}
 	            		else if(jogador.id == 2) {
 	            			celula.setIcon(imgjogador2);
-	            			jogadores[1] = (Jogador) terreno.floresta[i][j];
+	            			jogadores[1] = jogador;
 	            			jogadores[1].setNome(p2);
 	            			terreno.setJogadores(jogadores);
 	            		}
 		            }
-		            else if(terreno.floresta[i][j] instanceof Pedra) {
+		            else if(terreno.florestaEstatica[i][j] instanceof Pedra) {
 		            	celula.setIcon(imgPedra);
 		            }
-		            else if(terreno.floresta[i][j] instanceof Arvore) {
-		            	if(terreno.floresta[i][j] instanceof Arvore_Laranja) {
+		            else if(terreno.florestaEstatica[i][j] instanceof Arvore) {
+		            	if(terreno.florestaEstatica[i][j] instanceof Arvore_Laranja) {
 		            		celula.setIcon(imgArvoreLaranja);
 		            	}
-		            	if(terreno.floresta[i][j] instanceof Arvore_Abacate) {
+		            	if(terreno.florestaEstatica[i][j] instanceof Arvore_Abacate) {
 		            		celula.setIcon(imgArvoreAbacate);
 		            	}
-		            	if(terreno.floresta[i][j] instanceof Arvore_Coco) {
+		            	if(terreno.florestaEstatica[i][j] instanceof Arvore_Coco) {
 		            		celula.setIcon(imgArvoreCoco);
 		            	}
-		            	if(terreno.floresta[i][j] instanceof Arvore_Acerola) {
+		            	if(terreno.florestaEstatica[i][j] instanceof Arvore_Acerola) {
 		            		celula.setIcon(imgArvoreAcerola);
 		            	}
-		            	if(terreno.floresta[i][j] instanceof Arvore_Amora) {
+		            	if(terreno.florestaEstatica[i][j] instanceof Arvore_Amora) {
 		            		celula.setIcon(imgArvoreAmora);
 		            	}
-		            	if(terreno.floresta[i][j] instanceof Arvore_Goiaba) {
+		            	if(terreno.florestaEstatica[i][j] instanceof Arvore_Goiaba) {
 		            		celula.setIcon(imgArvoreGoiaba);
 		            	}
 		            }
-		            else if(terreno.floresta[i][j] instanceof Fruta) {
-		            	if(terreno.floresta[i][j] instanceof Maracuja) {
+		            else if(terreno.florestaEstatica[i][j] instanceof Grama) {
+		            	if(( (Grama) terreno.florestaEstatica[i][j]).getFruta() instanceof Maracuja) {
 		            		celula.setIcon(imgFrutaMaracuja);
 		            	}
-		            	if(terreno.floresta[i][j] instanceof Laranja) {
+		            	if(( (Grama) terreno.florestaEstatica[i][j]).getFruta() instanceof Laranja) {
 		            		celula.setIcon(imgFrutaLaranja);
 		            	}
-		            	if(terreno.floresta[i][j] instanceof Abacate) {
+		            	if(( (Grama) terreno.florestaEstatica[i][j]).getFruta() instanceof Abacate) {
 		            		celula.setIcon(imgFrutaAbacate);
 		            	}
-		            	if(terreno.floresta[i][j] instanceof Coco) {
+		            	if(( (Grama) terreno.florestaEstatica[i][j]).getFruta() instanceof Coco) {
 		            		celula.setIcon(imgFrutaCoco);
 		            	}
-		            	if(terreno.floresta[i][j] instanceof Acerola) {
+		            	if(( (Grama) terreno.florestaEstatica[i][j]).getFruta() instanceof Acerola) {
 		            		celula.setIcon(imgFrutaAcerola);
 		            	}
-		            	if(terreno.floresta[i][j] instanceof Amora) {
+		            	if(( (Grama) terreno.florestaEstatica[i][j]).getFruta() instanceof Amora) {
 		            		celula.setIcon(imgFrutaAmora);
 		            	}
-		            	if(terreno.floresta[i][j] instanceof Goiaba) {
+		            	if(( (Grama) terreno.florestaEstatica[i][j]).getFruta() instanceof Goiaba) {
 		            		celula.setIcon(imgFrutaGoiaba);
 		            	}
 		            }
@@ -1276,7 +1276,7 @@ public class Frame extends JFrame {
 				return;
 			}
 			for(int i = 0; i < terreno.listaArvores.size(); i++) {
-				terreno.floresta = terreno.listaArvores.get(i).soltarFruta(terreno.floresta);
+				terreno.florestaEstatica = terreno.listaArvores.get(i).soltarFruta(terreno.florestaEstatica);
 				terreno.listaArvores.get(i).atualizarArvore();
 			}
 			terreno.listaArvores.get(1).soltarMaracuja(terreno);
@@ -1311,46 +1311,46 @@ public class Frame extends JFrame {
 		            switch (e.getKeyCode()) {
 		                case KeyEvent.VK_UP:
 		                    System.out.println("Movimentando para cima.");
-		                    terreno.floresta = jogadorDaVez.movimentar(1, terreno);
+		                    terreno.florestaEstatica = jogadorDaVez.movimentar(1, terreno);
 		                    caixaMovimentos.setText("Movimentos restantes: " + jogadorDaVez.movimentosRestantes);
 		                    break;
 		                case KeyEvent.VK_DOWN:
 		                    System.out.println("Movimentando para baixo.");
-		                    terreno.floresta = jogadorDaVez.movimentar(2, terreno);
+		                    terreno.florestaEstatica = jogadorDaVez.movimentar(2, terreno);
 		                    caixaMovimentos.setText("Movimentos restantes: " + jogadorDaVez.movimentosRestantes);
 		                    break;
 		                case KeyEvent.VK_RIGHT:
 		                    System.out.println("Movimentando para direita.");
-		                    terreno.floresta = jogadorDaVez.movimentar(3, terreno);
+		                    terreno.florestaEstatica = jogadorDaVez.movimentar(3, terreno);
 		                    caixaMovimentos.setText("Movimentos restantes: " + jogadorDaVez.movimentosRestantes);
 		                    break;
 		                case KeyEvent.VK_LEFT:
 		                    System.out.println("Movimentando para esquerda.");
-		                    terreno.floresta = jogadorDaVez.movimentar(4, terreno);
+		                    terreno.florestaEstatica = jogadorDaVez.movimentar(4, terreno);
 		                    caixaMovimentos.setText("Movimentos restantes: " + jogadorDaVez.movimentosRestantes);
 		                    break;
 		                case KeyEvent.VK_Q:
 		                    System.out.println("Catando fruta.");
-		                    jogadorDaVez.mochilaJogador.armazenaFruta(jogadorDaVez, terreno);
+		                    jogadorDaVez.mochilaJogador.armazenaFruta(jogadorDaVez, terreno.listaGramas);
 		                    break;
 		                case KeyEvent.VK_I:
 		                    System.out.println("Realizando salto para cima.");
-		                    terreno.floresta = jogadorDaVez.saltar(1, terreno, 1);
+		                    terreno.florestaEstatica = jogadorDaVez.saltar(1, terreno, 1);
 		                    caixaMovimentos.setText("Movimentos restantes: " + jogadorDaVez.movimentosRestantes);
 		                    break;
 		                case KeyEvent.VK_K:
 		                    System.out.println("Realizando salto para baixo.");
-		                    terreno.floresta = jogadorDaVez.saltar(2, terreno, 1);
+		                    terreno.florestaEstatica = jogadorDaVez.saltar(2, terreno, 1);
 		                    caixaMovimentos.setText("Movimentos restantes: " + jogadorDaVez.movimentosRestantes);
 		                    break;
 		                case KeyEvent.VK_L:
 		                    System.out.println("Realizando salto para direita.");
-		                    terreno.floresta = jogadorDaVez.saltar(3, terreno, 1);
+		                    terreno.florestaEstatica = jogadorDaVez.saltar(3, terreno, 1);
 		                    caixaMovimentos.setText("Movimentos restantes: " + jogadorDaVez.movimentosRestantes);
 		                    break;
 		                case KeyEvent.VK_J:
 		                    System.out.println("Realizando salto para esquerda.");
-		                    terreno.floresta = jogadorDaVez.saltar(4, terreno, 1);
+		                    terreno.florestaEstatica = jogadorDaVez.saltar(4, terreno, 1);
 		                    caixaMovimentos.setText("Movimentos restantes: " + jogadorDaVez.movimentosRestantes);
 		                    break;
 		                case KeyEvent.VK_C:
