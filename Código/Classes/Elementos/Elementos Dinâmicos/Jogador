@@ -34,7 +34,7 @@ public class Jogador extends Elemento_Dinamico {
 		
 		switch(escolha) {
 		case 1:	
-			fruta = this.mochilaJogador.retornaFruta(new Laranja(0, 0, 0));
+			fruta = this.mochilaJogador.retornaFruta(new Laranja(0,0,0));
 			break;
 		case 2:
 			fruta = this.mochilaJogador.retornaFruta(new Abacate(0, 0, 0));
@@ -53,10 +53,6 @@ public class Jogador extends Elemento_Dinamico {
 			break;
 		}
 			
-		if(fruta == null) {
-			System.out.println("Você não possui essa fruta na sua mochila.");
-			return;
-		}
 		
 		this.doente = fruta.frutaBichada;
 		fruta.efeito(this);
@@ -73,10 +69,11 @@ public class Jogador extends Elemento_Dinamico {
 		double log2Def = Math.log10(forcaDefesa + 1) / Math.log(2);
 		int empurrao = (int) Math.round(log2Atq - log2Def);
 		
+		System.out.printf("O Jogador: %s empurrou %s!!!\n",pA.nome, pB.nome);
 		System.out.printf("%d frutas foram derrubadas!!!\n", empurrao);
 		
 		if(empurrao > 1) {
-			floresta = pB.derrubarFrutas(floresta, empurrao);
+			floresta = pB.derrubarFrutas(floresta, empurrao, pB);
 		}
 		
 		return floresta;
@@ -405,23 +402,26 @@ public class Jogador extends Elemento_Dinamico {
 		System.out.printf("Encerrando turno do Jogador: %s \n" , this.nome);
 	}
 	
+	
 	public void malEstar() {
 		if(this.doente == true) {
+			System.out.printf("O Jogador %s está passando mal!!!",this.nome);
 			this.encerrarTurno();
 		}
 	}
 	
-	public Elemento[][] derrubarFrutas(Elemento[][] floresta, int empurrao) {
-		for(int i = 0; i < empurrao; i++) {
-			int posicao = ale(this.tamanhoMochila);
-			int x = this.getPosicao().getX();
-			int y = this.getPosicao().getY();
-			int novox = ale(1) + x;
-			int novoy = ale(1) + y;
-			Fruta fruta = this.mochilaJogador.mochila[x];
-			this.mochilaJogador.mochila[x] = null;
-			if(floresta[x][y] instanceof Grama) {
-				floresta[novox][novoy] = fruta;
+	public Elemento[][] derrubarFrutas(Elemento[][] floresta, int empurrao, Jogador pB) {
+		for(int i = 0; i < empurrao;i++) {
+			int sorte = ale(this.tamanhoMochila - 1);
+			Fruta fruta = this.mochilaJogador.mochila[sorte];
+			int x = pB.getPosicao().getX();
+			int y = pB.getPosicao().getY();
+			for(int j = 0; j < 1 ; j++) {
+				int somax = ale(1 + j/6);
+				int somay = ale(1 + j/6);
+				if(verificaPosicao(x + somax, y + somay) && floresta[x + somax][y + somay] instanceof Grama) {
+					floresta[x + somax][y + somay] = fruta;
+				}
 			}
 		}
 		return floresta;
