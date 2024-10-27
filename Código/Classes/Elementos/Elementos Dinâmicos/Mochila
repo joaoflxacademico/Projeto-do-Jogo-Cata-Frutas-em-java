@@ -29,10 +29,10 @@ public class Mochila {
 
     // Método para armazenar uma fruta na mochila
     public void armazenaFruta(Jogador jogador, Terreno terreno) {
-    	Grama grama = null;	
+    	Grama grama = null;
     	for(int i = 0; i < terreno.listaGramas.size(); i++) {
     		grama = terreno.listaGramas.get(i);
-    		if(grama.getFruta() != null && grama.getJogador() == jogador && grama.getJogador() != terreno.jogadores[terreno.numeroTurno%2]) {
+    		if(grama.getFruta() != null && grama.getJogador() == jogador && grama.getJogador() == terreno.jogadores[terreno.numeroTurno%2]) {
     			break;
     		}
     	}
