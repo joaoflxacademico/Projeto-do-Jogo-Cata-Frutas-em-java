@@ -1,5 +1,6 @@
 package cata_frutas.Elementos.Elementos_Dinâmicos;
 
+import cata_frutas.Terreno;
 import cata_frutas.Elementos.Elementos_Estáticos.Grama;
 
 import java.util.ArrayList;
@@ -27,11 +28,11 @@ public class Mochila {
     }
 
     // Método para armazenar uma fruta na mochila
-    public void armazenaFruta(Jogador jogador, ArrayList<Grama> listaGramas) {
+    public void armazenaFruta(Jogador jogador, Terreno terreno) {
     	Grama grama = null;
-    	for(int i = 0; i < listaGramas.size(); i++) {
-    		grama = listaGramas.get(i);
-    		if(grama.getFruta() != null && grama.getJogador() == jogador) {
+    	for(int i = 0; i < terreno.listaGramas.size(); i++) {
+    		grama = terreno.listaGramas.get(i);
+    		if(grama.getFruta() != null && grama.getJogador() == jogador && grama.getJogador() == terreno.jogadores[terreno.numeroTurno%2]) {
     			break;
     		}
     	}
