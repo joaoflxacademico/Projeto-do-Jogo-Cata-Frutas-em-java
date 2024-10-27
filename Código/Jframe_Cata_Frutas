@@ -1276,8 +1276,8 @@ public class Frame extends JFrame {
 				return;
 			}
 			for(int i = 0; i < terreno.listaArvores.size(); i++) {
-				terreno.florestaEstatica = terreno.listaArvores.get(i).soltarFruta(terreno.florestaEstatica);
 				terreno.listaArvores.get(i).atualizarArvore();
+				terreno.florestaEstatica = terreno.listaArvores.get(i).soltarFruta(terreno.florestaEstatica);
 			}
 			terreno.listaArvores.get(1).soltarMaracuja(terreno);
 			criacaoVisualTerrenoJogo();
@@ -1331,7 +1331,7 @@ public class Frame extends JFrame {
 		                    break;
 		                case KeyEvent.VK_Q:
 		                    System.out.println("Catando fruta.");
-		                    jogadorDaVez.mochilaJogador.armazenaFruta(jogadorDaVez, terreno.listaGramas);
+		                    jogadorDaVez.mochilaJogador.armazenaFruta(jogadorDaVez, terreno);
 		                    break;
 		                case KeyEvent.VK_I:
 		                    System.out.println("Realizando salto para cima.");
@@ -1359,6 +1359,21 @@ public class Frame extends JFrame {
 		                case KeyEvent.VK_1:
 		                    jogadorDaVez.comerFrutas(1);
 		                    break;
+		                case KeyEvent.VK_2:
+		                    jogadorDaVez.comerFrutas(2);
+		                    break;
+		                case KeyEvent.VK_3:
+		                    jogadorDaVez.comerFrutas(3);
+		                    break;
+		                case KeyEvent.VK_4:
+		                    jogadorDaVez.comerFrutas(4);
+		                    break;
+		                case KeyEvent.VK_5:
+		                    jogadorDaVez.comerFrutas(5);
+		                    break;
+		                case KeyEvent.VK_6:
+		                    jogadorDaVez.comerFrutas(6);
+		                    break;
 		                case KeyEvent.VK_T:
 		                    System.out.println("Turno encerrado para " + jogadorDaVez.getNome());
 		                    jogadorDaVez.encerrarTurno();
@@ -1370,7 +1385,6 @@ public class Frame extends JFrame {
 		                    return; // Ignora outras teclas
 		            }
 
-		            botoesAtivados++;
 		            criacaoVisualTerrenoJogo(); // Atualiza o terreno após o movimento
 		        }
 		    });
