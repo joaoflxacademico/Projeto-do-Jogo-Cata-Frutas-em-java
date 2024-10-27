@@ -2,89 +2,101 @@ package cata_frutas.Elementos.Elementos_Estáticos;
 
 import cata_frutas.Terreno;
 import cata_frutas.Elementos.Elemento;
-import cata_frutas.Elementos.Ponto;
 import cata_frutas.Elementos.Elementos_Dinâmicos.Fruta;
 import cata_frutas.Elementos.Elementos_Dinâmicos.Jogador;
 import cata_frutas.Elementos.Elementos_Dinâmicos.Maracuja;
 
-public abstract class Arvore extends Elemento_Estatico{
-	Fruta tipofruta;
-	int ultimaFruta;
-	Jogador jogador = null;
-	
-	public Arvore(int x, int y, Fruta fruta) {
-		super(x,y);
-		this.tipofruta = fruta;
-		this.ultimaFruta = 0;
-	}
-	
-	public Fruta getFruta() {
-		return this.tipofruta;
-	}
-	
-	public Elemento[][] soltarFruta(Elemento[][] floresta){
-		try {
-			if(this.ultimaFruta == 5 && this.jogador.debaixoDeArvore) {
-				for(int i = 0; i < this.jogador.tamanhoMochila; i++) {
-					if(this.jogador.mochilaJogador.mochila[i] == null) {
-						this.fruta.noChao = false;
-						this.jogador.mochilaJogador.mochila[i] = this.fruta;
-						System.out.println("A fruta caiu na mochila do jogador.");
-						this.ultimaFruta = 0;
-						return floresta;
-					}
-				}
-				for(int j = 0; j < floresta.length; j++) {
-					int x = ale(j);
-					int y = ale(j);
-					if(floresta[x][y] instanceof Grama) {
-						floresta[x][y] = this.fruta;
-						System.out.println(("A fruta caiu no chão."));
-						return floresta;
-					}
-				}
-			}
-		}catch(NullPointerException e) {
-			return floresta;
-		}
-		return floresta;
-	}
-	
-	public Elemento[][] soltarMaracuja(Terreno terreno){
-		if((terreno.numeroRodada)% 2 == 0) {
-			for(int i = 0;;i++) {
-				int sorte = ale(terreno.listaArvores.size() - 1);
-				int x = terreno.listaArvores.get(sorte).getPosicao().getX();
-				int y = terreno.listaArvores.get(sorte).getPosicao().getY();
-				for(int j = 1; j < 10 ; j++) {
-					int somax = ale(j+i);
-					int somay = ale(j+i);
-					if(verificaPosicao(x + somax, y + somay, terreno.Dimensao) && terreno.floresta[x + somax][y + somay] instanceof Grama) {
-						terreno.floresta[x + somax][y + somay] = new Maracuja(x + somax,y + somay, terreno.Bichada);
-						return terreno.floresta;
-					}
-				}
-			}
-		}
-		return terreno.floresta;
-	}
-	
-	public void atualizarArvore() {
-		if(this.ultimaFruta == 5) {
-			return;
-		}
-		this.ultimaFruta++;
-	}
-	
-	public void setJogador(Jogador jogador) {
-		this.jogador = jogador;
-	}
-	
-	public Jogador getJogador() {
-		return this.jogador;
-	}
-	
-	public boolean verificaPosicao(int x, int y, int dimensao) {
-		return x >= 0 && x < dimensao && y >= 0 && y < dimensao;
-	}
+public abstract class Arvore extends Elemento_Estatico {
+    private Fruta tipoFruta;
+    private int ultimaFruta;
+    private Jogador jogador;
+
+    public Arvore(int x, int y, Fruta fruta) {
+        super(x, y);
+        this.tipoFruta = fruta;
+        this.ultimaFruta = 5;
+    }
+
+    public Fruta getFruta() {
+        return this.tipoFruta;
+    }
+
+    public Elemento[][] soltarFruta(Elemento[][] floresta) {
+        if (this.jogador == null ||  this.ultimaFruta < 5) {
+            return floresta;
+        }
+        if(!this.jogador.mochilaJogador.mochilaCheia()) {
+            for (int i = 0; i < this.jogador.mochilaJogador.mochila.length; i++) {
+                if (this.jogador.mochilaJogador.mochila[i] == null) {
+                    this.jogador.mochilaJogador.mochila[i] = this.tipoFruta;
+                    System.out.printf("A fruta %s caiu na mochila do jogador %s.\n",tipoFruta.nome, this.jogador.nome);
+                    this.ultimaFruta = 0;
+                    return floresta;
+                }
+            }
+        }
+        
+        System.out.printf("A mochila do Jogador %s está cheia!\n", this.jogador.nome);
+
+        // Tenta colocar a fruta no chão em uma posição aleatória de grama
+        for (int tentativas = 0; tentativas < 10; tentativas++) {
+            int x = aleatorio(floresta.length);
+            int y = aleatorio(floresta[0].length);
+            if (floresta[x][y] instanceof Grama) {
+                floresta[x][y] = this.tipoFruta;
+                System.out.printf("A fruta %s caiu no chão.\n",tipoFruta.nome);
+                return floresta;
+            }
+        }
+
+        return floresta;
+    }
+
+    public Elemento[][] soltarMaracuja(Terreno terreno) {
+        if ((terreno.numeroRodada) % 2 != 0) return terreno.florestaEstatica;
+
+        for (int tentativa = 0; tentativa < 10; tentativa++) {
+            int sorte = aleatorio(terreno.listaArvores.size());
+            int x = terreno.listaArvores.get(sorte).getPosicao().getX();
+            int y = terreno.listaArvores.get(sorte).getPosicao().getY();
+
+            int deslocamentoX = aleatorio(3) - 1; // -1, 0 ou 1
+            int deslocamentoY = aleatorio(3) - 1; // -1, 0 ou 1
+
+            int novoX = x + deslocamentoX;
+            int novoY = y + deslocamentoY;
+            
+            if (verificaPosicao(novoX, novoY, terreno.Dimensao) && terreno.florestaEstatica[novoX][novoY] instanceof Grama && ((Grama) terreno.florestaEstatica[novoX][novoY]).getFruta() == null) {
+                Grama grama = new Grama(novoX,novoY);
+                grama.setFruta(new Maracuja(novoX, novoY, terreno.Bichada));
+            	terreno.florestaEstatica[novoX][novoY] = grama;
+                System.out.println("Um maracujá foi solto!");
+                return terreno.florestaEstatica;
+            }
+        }
+
+        return terreno.florestaEstatica;
+    }
+
+    public void atualizarArvore() {
+        if (this.ultimaFruta < 5) {
+            this.ultimaFruta++;
+        }
+    }
+
+    public void setJogador(Jogador jogador) {
+        this.jogador = jogador;
+    }
+
+    public Jogador getJogador() {
+        return this.jogador;
+    }
+
+    public boolean verificaPosicao(int x, int y, int dimensao) {
+        return x >= 0 && x < dimensao && y >= 0 && y < dimensao;
+    }
+
+    private int aleatorio(int limite) {
+        return (int) (Math.random() * limite);
+    }
 }
