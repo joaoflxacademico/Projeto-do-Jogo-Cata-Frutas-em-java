@@ -23,6 +23,7 @@ public class Jogador extends Elemento_Dinamico {
 		this.id = id;
 		this.Dimensao = dimensao;
 		this.pontuacao = 0;
+		this.tamanhoMochila = tamanhoMochila;
 	}
 	
 	public void comerFrutas(int escolha) {
