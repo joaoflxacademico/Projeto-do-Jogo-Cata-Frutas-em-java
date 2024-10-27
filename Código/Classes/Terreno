@@ -209,68 +209,34 @@ public class Terreno {
 		    }
 	    }
 
-	    // Colocar Frutas
-	    for(int j = 0; j < 7; j++) {
-		    for (int f = 0; f < this.frutas[j];) {
-		        int x = ale(Dimensao - 1);
-		        int y = ale(Dimensao - 1);
-		        if (florestaEstatica[x][y] instanceof Grama) { // Verifica se a posição está livre
-		            Grama grama;
-		        	switch(j) {
-		            case 0:
-		            	grama = new Grama(x,y);
-		                Maracuja maracuja = new Maracuja(x,y,Bichada);
-		                grama.setFruta(maracuja);
-		            	florestaEstatica[x][y] = grama;
-		                listaGramas.add(grama);
-		                break;
-		            case 1:
-		            	grama = new Grama(x,y);
-		            	Laranja laranja = new Laranja(x,y,Bichada);
-		            	grama.setFruta(laranja);
-		            	florestaEstatica[x][y] = grama;
-		                listaGramas.add(grama);
-		                break;
-		            case 2:
-		            	grama = new Grama(x,y);
-		            	Abacate abacate = new Abacate(x,y,Bichada);
-		            	grama.setFruta(abacate);
-		            	florestaEstatica[x][y] = grama;
-		                listaGramas.add(grama);
-		                break;
-		            case 3:
-		            	grama = new Grama(x,y);
-		            	Coco coco = new Coco(x,y,Bichada);
-		            	grama.setFruta(coco);
-		            	florestaEstatica[x][y] = grama;
-		                listaGramas.add(grama);
-		                break;
-		            case 4:
-		            	grama = new Grama(x,y);
-		            	Acerola acerola = new Acerola(x,y,Bichada);
-		            	grama.setFruta(acerola);
-		            	florestaEstatica[x][y] = grama;
-		                listaGramas.add(grama);
-		                break;
-		            case 5:
-		            	grama = new Grama(x,y);
-		            	Amora amora = new Amora(x,y,Bichada);
-		                grama.setFruta(amora);
-		            	florestaEstatica[x][y] = grama;
-		                listaGramas.add(grama);
-		                break;
-		            case 6:
-		            	grama = new Grama(x,y);
-		            	Goiaba goiaba = new Goiaba(x,y,Bichada);
-		                grama.setFruta(goiaba);
-		            	florestaEstatica[x][y] = grama;
-		                listaGramas.add(grama);
-		                break;
-		            }
-		            f++;
-		        }
-		    }
+	 // Colocar Frutas
+	    for (int j = 0; j < 7; j++) {
+	        for (int f = 0; f < this.frutas[j]; ) {
+	            int x = ale(Dimensao - 1);
+	            int y = ale(Dimensao - 1);
+	            
+	            if (florestaEstatica[x][y] instanceof Grama) {
+	                Grama grama = new Grama(x, y);
+	                Fruta fruta;
+
+	                switch (j) {
+	                    case 0: fruta = new Maracuja(x, y, Bichada); break;
+	                    case 1: fruta = new Laranja(x, y, Bichada); break;
+	                    case 2: fruta = new Abacate(x, y, Bichada); break;
+	                    case 3: fruta = new Coco(x, y, Bichada); break;
+	                    case 4: fruta = new Acerola(x, y, Bichada); break;
+	                    case 5: fruta = new Goiaba(x, y, Bichada); break;
+	                    case 6: fruta = new Amora(x, y, Bichada); break;
+	                    default: continue;
+	                }
+
+	                // Configura a fruta na grama e incrementa f
+	                configurarFruta(grama, fruta, x, y);
+	                f++;
+	            }
+	        }
 	    }
+		        
 
 	    // Colocar Jogadores
 	    for (int j = 1; j < 3;) {
@@ -297,6 +263,12 @@ public class Terreno {
 	    }
 	    florestaDinamica = florestaEstatica;
 
+	}
+	
+	private void configurarFruta(Grama grama, Fruta fruta, int x, int y) {
+	    grama.setFruta(fruta);
+	    florestaEstatica[x][y] = grama;
+	    listaGramas.add(grama);
 	}
 	
 	public void imprimeFrutas(ArrayList<Grama> listagramas) {
