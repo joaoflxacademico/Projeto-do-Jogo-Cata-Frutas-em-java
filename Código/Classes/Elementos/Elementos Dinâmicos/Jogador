@@ -33,7 +33,7 @@ public class Jogador extends Elemento_Dinamico {
 		}
 		
 		if(this.movimentosRestantes == 0){
-			System.out.printf("O Jogador: %s não possuimais movimentos para comer uma fruta.", this.nome);
+			System.out.printf("O Jogador: %s não possui mais movimentos para comer uma fruta.", this.nome);
 			return;
 		}
 
@@ -148,7 +148,7 @@ public class Jogador extends Elemento_Dinamico {
 	    	ypedra = novoy + 1;
 	    	break;
 	    }
-		System.out.println("Realizando salto para a posição %d,%d",novox,novoy);
+		System.out.printf("Realizando salto para a posição %d,%d.\n",novox+1,novoy+1);
 	    if(!verificaPosicao(xpedra, ypedra)) {
 	    	return terreno.florestaEstatica;
 	    }
@@ -306,7 +306,7 @@ public class Jogador extends Elemento_Dinamico {
 		    	return terreno.florestaEstatica;
 		    }
 
-		 	System.out.println("Realizando movimento para a posição %d,%d",novox,novoy);   
+		 	System.out.printf("Realizando movimento para a posição %d,%d.\n",novox+1,novoy+1);   
 
 		    if(debaixoDeArvore) {
 		    	if(objeto instanceof Pedra) {
