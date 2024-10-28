@@ -28,9 +28,15 @@ public class Jogador extends Elemento_Dinamico {
 	
 	public void comerFrutas(int escolha) {
 		if(this.mochilaJogador == null) {
+			System.out.printf("O Jogador: %s não possui frutas em sua mochila.", this.nome);
 			return;
 		}
 		
+		if(this.movimentosRestantes == 0){
+			System.out.printf("O Jogador: %s não possuimais movimentos para comer uma fruta.", this.nome);
+			return;
+		}
+
 		Fruta fruta = null;
 		try {
 			switch(escolha) {
@@ -54,7 +60,7 @@ public class Jogador extends Elemento_Dinamico {
 				break;
 			}
 				
-			
+			this.movimentosRestantes--;
 			this.doente = fruta.frutaBichada;
 			fruta.efeito(this);
 			
