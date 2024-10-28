@@ -112,26 +112,22 @@ public class Jogador extends Elemento_Dinamico {
 	    case 1:
 	    	novox = x - 2 - (cont-1);
 	    	xpedra = novox + 1;
-	    	System.out.println(novox + "," + xpedra);
 	    	break;
 	    case 2:
 	    	novox = x + 2 + (cont-1);
 	    	xpedra = novox - 1;
-	    	System.out.println(novox + "," + xpedra);
 	    	break;
 	    case 3:
 	    	novoy = y + 2 + (cont-1);
 	    	ypedra = novoy - 1;
-	    	System.out.println(novoy + "," + ypedra);
 	    	break;
 	    case 4:
 	    	novoy = y - 2 - (cont-1);
 	    	ypedra = novoy + 1;
-	    	System.out.println(novoy + "," + ypedra); 
 	    	break;
 	    }
+		System.out.println("Realizando salto para a posição %d,%d",novox,novoy);
 	    if(!verificaPosicao(xpedra, ypedra)) {
-	    	System.out.println("teste, valor fora da matriz");
 	    	return terreno.florestaEstatica;
 	    }
 	    try {
@@ -287,7 +283,9 @@ public class Jogador extends Elemento_Dinamico {
 		    	System.out.println("Movimento inválido.");
 		    	return terreno.florestaEstatica;
 		    }
-		    
+
+		 	System.out.println("Realizando movimento para a posição %d,%d",novox,novoy);   
+			
 		    if(debaixoDeArvore) {
 		    	if(objeto instanceof Pedra) {
 	                System.out.println("Tem uma pedra no caminho.");
