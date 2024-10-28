@@ -1320,6 +1320,7 @@ public class Frame extends JFrame {
 		    terreno.numeroRodada = terreno.numeroTurno/2;
 		    Jogador jogadorDaVez = jogadores[contadorTurno % 2];
 		    caixaJogadorTurno.setText("Jogador da Vez: " + jogadorDaVez.nome);
+            caixaMovimentos.setText("Movimentos restantes: " + jogadorDaVez.movimentosRestantes);
 		    turno(jogadorDaVez,terreno);
 
 		    // Adiciona o KeyListener para o jogador ativo
@@ -1376,21 +1377,27 @@ public class Frame extends JFrame {
 		                    break;
 		                case KeyEvent.VK_1:
 		                    jogadorDaVez.comerFrutas(1);
+		                    caixaMovimentos.setText("Movimentos restantes: " + jogadorDaVez.movimentosRestantes);
 		                    break;
 		                case KeyEvent.VK_2:
 		                    jogadorDaVez.comerFrutas(2);
+		                    caixaMovimentos.setText("Movimentos restantes: " + jogadorDaVez.movimentosRestantes);
 		                    break;
 		                case KeyEvent.VK_3:
 		                    jogadorDaVez.comerFrutas(3);
+		                    caixaMovimentos.setText("Movimentos restantes: " + jogadorDaVez.movimentosRestantes);
 		                    break;
 		                case KeyEvent.VK_4:
 		                    jogadorDaVez.comerFrutas(4);
+		                    caixaMovimentos.setText("Movimentos restantes: " + jogadorDaVez.movimentosRestantes);
 		                    break;
 		                case KeyEvent.VK_5:
 		                    jogadorDaVez.comerFrutas(5);
+		                    caixaMovimentos.setText("Movimentos restantes: " + jogadorDaVez.movimentosRestantes);
 		                    break;
 		                case KeyEvent.VK_6:
 		                    jogadorDaVez.comerFrutas(6);
+		                    caixaMovimentos.setText("Movimentos restantes: " + jogadorDaVez.movimentosRestantes);
 		                    break;
 		                case KeyEvent.VK_T:
 		                    System.out.println("Turno encerrado para " + jogadorDaVez.getNome());
