@@ -57,7 +57,7 @@ public class Mochila {
     	}
     	
     	System.out.printf("Fruta %s encontrada na mochila!\n", fruta.nome);
-    	System.out.printf("Comendo %s...",fruta.nome);
+    	System.out.printf("Comendo %s...\n",fruta.nome);
     	return fruta;
     }
 
