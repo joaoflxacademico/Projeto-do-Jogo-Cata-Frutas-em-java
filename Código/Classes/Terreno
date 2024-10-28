@@ -27,6 +27,7 @@ public class Terreno {
 	public ArrayList<Arvore> listaArvores = new ArrayList<Arvore>();
 	public ArrayList<Grama> listaGramas = new ArrayList<Grama>();
 	public int pontosVitoria;
+	public int maracujasEmCampo;
 	public int numeroTurno;
 	public int numeroRodada;
 	public Jogador[] jogadores;
@@ -327,7 +328,7 @@ public class Terreno {
 			for(int j = 1; j < 7; j++) {
 				arvoresTotais += arvores[j];
 			}
-			
+			this.maracujasEmCampo = frutas[0];
 			this.pontosVitoria = (arvores[0] / 2) + 1;//Define o número de marácujas que devem ser catados para uma vitória
 			
 			espacosDisponiveis -= frutasTotais - arvoresTotais;
