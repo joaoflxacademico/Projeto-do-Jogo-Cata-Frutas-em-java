@@ -53,7 +53,9 @@ public abstract class Arvore extends Elemento_Estatico {
     }
 
     public Elemento[][] soltarMaracuja(Terreno terreno) {
-        if ((terreno.numeroRodada) % 2 != 0) return terreno.florestaEstatica;
+        if ((terreno.numeroRodada) % 2 != 0 || terreno.pontosVitoia == terreno.maracujasEmCampo){
+             return terreno.florestaEstatica;
+        }
 
         for (int tentativa = 0; tentativa < 10; tentativa++) {
             int sorte = aleatorio(terreno.listaArvores.size());
@@ -70,6 +72,7 @@ public abstract class Arvore extends Elemento_Estatico {
                 Grama grama = new Grama(novoX,novoY);
                 grama.setFruta(new Maracuja(novoX, novoY, terreno.Bichada));
             	terreno.florestaEstatica[novoX][novoY] = grama;
+                terreno.maracujasEmCampo++;
                 System.out.println("Um maracujá foi solto!");
                 return terreno.florestaEstatica;
             }
