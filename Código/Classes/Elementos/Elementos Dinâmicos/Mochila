@@ -14,17 +14,51 @@ public class Mochila {
     }
 
     // Método para retornar uma fruta da mochila
-    public Fruta retornaFruta(Fruta fruta) {
-        // Verifica se a fruta existe 
-        for(int i = 0; i < this.mochila.length;i++) {
-        	if (mochila[i] != null && mochila[i].getClass().equals(fruta.getClass())) {
-                System.out.printf("Fruta %s retornada.\n", fruta.nome);
-                mochila[i] = null;
-                return fruta;
-            	}
-            }
-        System.out.printf("Nenhuma Fruta %s disponível na mochila.\n",fruta.nome);
-        return null;
+    public Fruta retornaFruta(int escolha) {
+    	Fruta fruta = null;
+    	for(int i = 0; i < this.mochila.length; i++) {
+    		switch(escolha) {
+    		case 1:
+    			if(this.mochila[i] instanceof Laranja) {
+    				fruta = this.mochila[i];
+    			}
+    			break;
+    		case 2:
+    			if(this.mochila[i] instanceof Abacate) {
+    				fruta = this.mochila[i];
+    			}
+    			break;
+    		case 3:
+    			if(this.mochila[i] instanceof Coco) {
+    				fruta = this.mochila[i];
+    			}
+    			break;
+    		case 4:
+    			if(this.mochila[i] instanceof Goiaba) {
+    				fruta = this.mochila[i];
+    			}
+    			break;
+    		case 5:
+    			if(this.mochila[i] instanceof Acerola) {
+    				fruta = this.mochila[i];
+    			}
+    			break;
+    		case 6:
+    			if(this.mochila[i] instanceof Amora) {
+    				fruta = this.mochila[i];
+    			}
+    			break;
+    		}
+    	}
+    	
+    	if(fruta == null) {
+    		System.out.println("O tipo de fruta selecionado não existe na mochila do Jogador.");
+    		return fruta;
+    	}
+    	
+    	System.out.printf("Fruta %s encontrada na mochila!\n", fruta.nome);
+    	System.out.printf("Comendo %s...",fruta.nome);
+    	return fruta;
     }
 
     // Método para armazenar uma fruta na mochila
@@ -32,12 +66,16 @@ public class Mochila {
     	Grama grama = null;
     	for(int i = 0; i < terreno.listaGramas.size(); i++) {
     		grama = terreno.listaGramas.get(i);
-    		if(grama.getFruta() != null && grama.getJogador() == jogador && grama.getJogador() == terreno.jogadores[terreno.numeroTurno%2]) {
+    		if(grama.getJogador() == jogador) {
     			break;
+    		}
+    		else {
+    			grama = null;
     		}
     	}
     	if(grama == null) {
     		System.out.println(("Não existe fruta no espaço do jogador."));
+    		return;
     	}
     	if(!this.mochilaCheia()) {
 			for(int j = 0; j < jogador.tamanhoMochila; j++) {
