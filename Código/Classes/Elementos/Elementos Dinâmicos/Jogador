@@ -59,12 +59,34 @@ public class Jogador extends Elemento_Dinamico {
 				fruta = this.mochilaJogador.retornaFruta(new Amora(0, 0, 0));
 				break;
 			}
-				
-			this.movimentosRestantes--;
-			this.doente = fruta.frutaBichada;
-			fruta.efeito(this);
-			
-			System.out.printf("Você comeu a %s \n", fruta.nome);
+			if(fruta != null){
+				this.movimentosRestantes--;
+				this.doente = fruta.frutaBichada;
+				fruta.efeito(this);
+				switch(escolha){
+					case 1:	
+						System.out.printf("O Jogador: %s se sente saudável!", this.nome);
+						break;
+					case 2:
+						System.out.printf("O Jogador: %s se sente forte!", this.nome);
+						break;
+					case 3:	
+						System.out.printf("O Jogador: %s se sente revigorado!", this.nome);
+						break;
+					case 4:
+						System.out.printf("O Jogador: %s come uma fruta saborosa.", this.nome);
+						break;
+					case 5:	
+						System.out.printf("O Jogador: %s come uma fruta deliciosa.", this.nome);
+						break;
+					case 6:
+						System.out.printf("O Jogador: %s come uma fruta gostosa.", this.nome);
+						break;
+				}
+			}
+			else{
+				return;
+			}
 		}catch(NullPointerException e) {}
 		
 	}
@@ -285,7 +307,7 @@ public class Jogador extends Elemento_Dinamico {
 		    }
 
 		 	System.out.println("Realizando movimento para a posição %d,%d",novox,novoy);   
-			
+
 		    if(debaixoDeArvore) {
 		    	if(objeto instanceof Pedra) {
 	                System.out.println("Tem uma pedra no caminho.");
