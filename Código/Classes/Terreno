@@ -16,8 +16,6 @@ import cata_frutas.Elementos.Elementos_Estáticos.*;
 public class Terreno {
 	public int Dimensao;
 	public Elemento[][] floresta;
-	public Elemento[][] matrizJogadores;
-	public Elemento[][][] matrizFinal;
 	public String[][] memoriaEN;
 	public int espacosDisponiveis;
 	public int pedra;
@@ -151,8 +149,7 @@ public class Terreno {
 	public void criaTerrenoSistema() {
 
 	    floresta = new Elemento[Dimensao][Dimensao];
-	    matrizJogadores=new Elemento[Dimensao][Dimensao];
-	    matrizFinal=new Elemento[2][Dimensao][Dimensao];
+	    
 	    // Inicializa o terreno com zeros
 	    for (int i = 0; i < Dimensao; i++) {
 	        for (int j = 0; j < Dimensao; j++) {
@@ -218,7 +215,7 @@ public class Terreno {
 	            int x = ale(Dimensao - 1);
 	            int y = ale(Dimensao - 1);
 	            
-		        if (floresta[x][y] instanceof Grama) { // Verifica se a posição está livre
+	            if (floresta[x][y] instanceof Grama) {
 	                Grama grama = new Grama(x, y);
 	                Fruta fruta;
 
@@ -258,19 +255,18 @@ public class Terreno {
 	            	grama = new Grama(x,y);
 	            	Jogador jogador2 = new Jogador(x,y,Mochila,j,this.Dimensao);
 	                grama.setJogador(jogador2);
-	                floresta[x][y] = grama;;
+	            	floresta[x][y] = grama;;
 	                break;
 	            }
 	            j++;
 	        }
 	    }
-	   matrizFinal[0]=floresta;
-	   matrizFinal[1]=matrizJogadores;
+
 	}
 	
 	private void configurarFruta(Grama grama, Fruta fruta, int x, int y) {
 	    grama.setFruta(fruta);
-	    matrizFinal[0][x][y] = grama;
+	    floresta[x][y] = grama;
 	    listaGramas.add(grama);
 	}
 	
