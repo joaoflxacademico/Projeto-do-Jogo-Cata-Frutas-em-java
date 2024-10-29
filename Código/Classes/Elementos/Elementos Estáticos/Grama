@@ -3,27 +3,36 @@ package cata_frutas.Elementos.Elementos_Estáticos;
 import cata_frutas.Elementos.Elementos_Dinâmicos.*;
 
 public class Grama extends Elemento_Estatico {
-	public int id = 0;
-	public Fruta fruta = null;
-	public Jogador jogador = null;
-	
-	public Grama(int x, int y) {
-		super(x,y);
-	}
-	
-	public void setFruta(Fruta fruta) {
-		this.fruta = fruta;
-	}
-	
-	public Fruta getFruta() {
-		return this.fruta;
-	}
-	
-	public void setJogador(Jogador jogador) {
-		this.jogador = jogador;
-	}
-	
-	public Jogador getJogador() {
-		return this.jogador;
-	}
+    public int id = 0;
+    public Fruta fruta = null;
+    public Jogador jogador = null;
+    public Arvore arvore = null;  // Novo atributo
+
+    public Grama(int x, int y) {
+        super(x, y);
+    }
+
+    public void setFruta(Fruta fruta) {
+        this.fruta = fruta;
+    }
+
+    public Fruta getFruta() {
+        return this.fruta;
+    }
+
+    public void setJogador(Jogador jogador) {
+        this.jogador = jogador;
+    }
+
+    public Jogador getJogador() {
+        return this.jogador;
+    }
+
+    public void setArvore(Arvore arvore) {
+        this.arvore = arvore;
+    }
+
+    public Arvore getArvore() {
+        return this.arvore;
+    }
 }
