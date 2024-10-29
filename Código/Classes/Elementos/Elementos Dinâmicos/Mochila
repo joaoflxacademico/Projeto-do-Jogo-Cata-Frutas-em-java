@@ -73,7 +73,7 @@ public class Mochila {
     			grama = null;
     		}
     	}
-    	if(grama == null) {
+    	if(grama.getFruta() == null) {
     		System.out.println(("Não existe fruta no espaço do jogador."));
     		return;
     	}
@@ -82,6 +82,7 @@ public class Mochila {
 				if(jogador.mochilaJogador.mochila[j] == null) {
 					jogador.mochilaJogador.mochila[j] = (Fruta) grama.getFruta();
 					System.out.printf("Fruta: %s guardada na mochila do Jogador: %s\n",grama.getFruta().nome, jogador.nome);
+					grama.setFruta(null);
 					return;
 				}
 			}
