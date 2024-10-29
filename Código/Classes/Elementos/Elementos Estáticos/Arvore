@@ -21,9 +21,9 @@ public abstract class Arvore extends Elemento_Estatico {
         return this.tipoFruta;
     }
 
-    public Elemento[][][] soltarFruta(Elemento[][][] matrizFinal) {
+    public Elemento[][] soltarFruta(Elemento[][] floresta) {
         if (this.jogador == null ||  this.ultimaFruta < 5) {
-            return matrizFinal;
+            return floresta;
         }
         if(!this.jogador.mochilaJogador.mochilaCheia()) {
             for (int i = 0; i < this.jogador.mochilaJogador.mochila.length; i++) {
@@ -31,7 +31,7 @@ public abstract class Arvore extends Elemento_Estatico {
                     this.jogador.mochilaJogador.mochila[i] = this.tipoFruta;
                     System.out.printf("A fruta %s caiu na mochila do jogador %s.\n",tipoFruta.nome, this.jogador.nome);
                     this.ultimaFruta = 0;
-                    return matrizFinal;
+                    return floresta;
                 }
             }
         }
@@ -40,21 +40,21 @@ public abstract class Arvore extends Elemento_Estatico {
 
         // Tenta colocar a fruta no chão em uma posição aleatória de grama
         for (int tentativas = 0; tentativas < 10; tentativas++) {
-            int x = aleatorio(matrizFinal[0].length);
-            int y = aleatorio(matrizFinal[0][0].length);
-            if (matrizFinal[0][0][y] instanceof Grama) {
-            	matrizFinal[0][x][y] = this.tipoFruta;
+            int x = aleatorio(floresta.length);
+            int y = aleatorio(floresta[0].length);
+            if (floresta[x][y] instanceof Grama) {
+                floresta[x][y] = this.tipoFruta;
                 System.out.printf("A fruta %s caiu no chão.\n",tipoFruta.nome);
-                return matrizFinal;
+                return floresta;
             }
         }
 
-        return matrizFinal;
+        return floresta;
     }
 
-    public Elemento[][][] soltarMaracuja(Terreno terreno) {
+    public Elemento[][] soltarMaracuja(Terreno terreno) {
         if ((terreno.numeroRodada) % 2 != 0 || terreno.pontosVitoria == terreno.maracujasEmCampo){
-             return terreno.matrizFinal;
+             return terreno.floresta;
         }
 
         for (int tentativa = 0; tentativa < 10; tentativa++) {
@@ -68,17 +68,17 @@ public abstract class Arvore extends Elemento_Estatico {
             int novoX = x + deslocamentoX;
             int novoY = y + deslocamentoY;
             
-            if (verificaPosicao(novoX, novoY, terreno.Dimensao) && terreno.matrizFinal[0][novoX][novoY] instanceof Grama && ((Grama) terreno.matrizFinal[0][novoX][novoY]).getFruta() == null) {
+            if (verificaPosicao(novoX, novoY, terreno.Dimensao) && terreno.floresta[novoX][novoY] instanceof Grama && ((Grama) terreno.floresta[novoX][novoY]).getFruta() == null) {
                 Grama grama = new Grama(novoX,novoY);
                 grama.setFruta(new Maracuja(novoX, novoY, terreno.Bichada));
             	terreno.floresta[novoX][novoY] = grama;
                 terreno.maracujasEmCampo++;
                 System.out.println("Um maracujá foi solto!");
-                return terreno.matrizFinal;
+                return terreno.floresta;
             }
         }
 
-        return terreno.matrizFinal;
+        return terreno.floresta;
     }
 
     public void atualizarArvore() {
